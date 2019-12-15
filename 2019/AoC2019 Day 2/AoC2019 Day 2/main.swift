@@ -7,18 +7,11 @@ print(str)
 
 var input: String
 
-if let fileURL = Bundle.main.url(forResource: "input", withExtension: "txt") {
-    print("file from bundle \(fileURL)")
-    input = try String(contentsOf: fileURL, encoding: String.Encoding.utf8)
-} else {
-    let fileURL = URL(fileURLWithPath: "./input.txt")
-    print("file from disk \(fileURL)")
-    input = try String(contentsOf: fileURL, encoding: String.Encoding.utf8)
-}
 
-print(input)
+let fileURL = URL(fileURLWithPath: "input.txt", relativeTo: URL(fileURLWithPath: FileManager.default.currentDirectoryPath))
+let fileInput = try String(contentsOf: fileURL, encoding: .utf8)
 
-let program = input.components(separatedBy: ",").compactMap { Int($0) }
+let program = fileInput.components(separatedBy: ",").compactMap { Int($0) }
 
 enum Opcode: Int {
     case add = 1
@@ -55,54 +48,49 @@ func processIntcodeProgram(_ program: [Int]) throws -> [Int] {
             result[position] = product
         case .halt:
             instructionLength = 1
-//            print("opcode halt found at instruction pointer \(instructionPointer)")
-            break
+            return result
         case .none:
             print("opcode exception found at instruction pointer \(instructionPointer), value \(result[instructionPointer])")
             throw OpcodeError.invalidOpcode
         }
 
-        instructionPointer += 4
+        instructionPointer += instructionLength
     }
 
     return result
 }
 
-let example1 = [1,9,10,3,2,3,11,0,99,30,40,50]
-let example2 = [1,0,0,0,99]
-let example3 = [2,3,0,3,99]
-let example4 = [2,4,4,5,99,0]
-let example5 = [1,1,1,4,99,5,6,0,99]
+func testPart1(input: [Int], correctOutput: [Int]) {
+    guard let output = try? processIntcodeProgram(input), output == correctOutput else {
+        print("Testing FAILED: input:\(input) correctOutput:\(correctOutput)")
+        return
+    }
+    print("Testing PASSED: input:\(input) correctOutput:\(correctOutput)")
+}
+
+testPart1(input: [1,9,10,3,2,3,11,0,99,30,40,50], correctOutput: [3500,9,10,70,2,3,11,0,99,30,40,50])
+testPart1(input: [1,0,0,0,99], correctOutput: [2,0,0,0,99])
+testPart1(input: [2,3,0,3,99], correctOutput: [2,3,0,6,99])
+testPart1(input: [2,4,4,5,99,0], correctOutput: [2,4,4,5,99,9801])
+testPart1(input: [1,1,1,4,99,5,6,0,99], correctOutput: [30,1,1,4,2,5,6,0,99])
 
 do {
-    var executedProgram = try processIntcodeProgram(example1)
-    print("\(executedProgram)")
-    executedProgram = try processIntcodeProgram(example2)
-    print("\(executedProgram)")
-    executedProgram = try processIntcodeProgram(example3)
-    print("\(executedProgram)")
-    executedProgram = try processIntcodeProgram(example4)
-    print("\(executedProgram)")
-    executedProgram = try processIntcodeProgram(example5)
-    print("\(executedProgram)")
-
     print("Running reset program to 1202 program alarm state")
     var resetProgram = program
     resetProgram[1] = 12
     resetProgram[2] = 2
-    executedProgram = try processIntcodeProgram(resetProgram)
+    let executedProgram = try processIntcodeProgram(resetProgram)
     print("\(executedProgram)")
     print("value left at postion 0: \(executedProgram[0])")
-    // correct answer = 3267740
 } catch {
     print("\(error)")
 }
 
 // PART 2
 // determine what pair of inputs produces the output 19690720
-print("PART 2")
+print("\nPART 2")
 
-func findNounAndVerbProducingOutput(_ output: Int, program: [Int]) throws -> (Int, Int) {
+func findNounAndVerbProducingOutput(_ output: Int, program: [Int]) throws -> (noun: Int, verb: Int) {
     for noun in 0...99 {
         for verb in 0...99 {
             var p = program
