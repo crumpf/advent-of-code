@@ -1,15 +1,14 @@
 import Foundation
-// import UIKit
 
 // https://adventofcode.com/2019/day/3
 
 var str = "Advent of Code 2019, Day 3"
 print(str)
 
-//let fileURL = Bundle.main.url(forResource: "input", withExtension: "txt")
-let fileURL = URL(fileURLWithPath: "./input.txt")
-let input = try String(contentsOf: fileURL, encoding: String.Encoding.utf8)
-let wireData = input.components(separatedBy: "\n")
+let fileURL = URL(fileURLWithPath: "input.txt", relativeTo: URL(fileURLWithPath: FileManager.default.currentDirectoryPath))
+let fileInput = try String(contentsOf: fileURL, encoding: .utf8)
+
+let wireData = fileInput.components(separatedBy: "\n")
 
 struct GridPoint {
     var x: Int
@@ -142,8 +141,8 @@ if (md == 135) {
 
 let wire1 = Wire(path: wireData[0])
 let wire2 = Wire(path: wireData[1])
-//md = smallestManhattanDistance(first: wire1, second: wire2)
-//print("Manhattan distance to closest intersection: \(md)")
+md = smallestManhattanDistance(first: wire1, second: wire2)
+print("Manhattan distance to closest intersection: \(md)")
 // 721 is correct answer
 
 
