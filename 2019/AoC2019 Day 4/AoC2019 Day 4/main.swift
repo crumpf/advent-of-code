@@ -112,22 +112,18 @@ func findPossibilities(in range: ClosedRange<Int>) -> Set<Int> {
     return candidates
 }
 
+func testPart1(num: Int, valid: Bool) {
+    guard isValid(num) == valid else {
+        print("testing part 1 for \(num) FAILED")
+        return
+    }
+    print("testing part 1 for \(num) PASSED")
+}
+
 // Tests
-if isValid(111111) {
-    print("test1 passed, 111111 valid")
-} else {
-    print("test1 failed")
-}
-if !isValid(223450) {
-    print("test2 passed, 223450 invalid")
-} else {
-    print("test2 failed")
-}
-if !isValid(123789) {
-    print("test3 passed, 123789 invalid")
-} else {
-    print("test3 failed")
-}
+testPart1(num: 111111, valid: true)
+testPart1(num: 223450, valid: false)
+testPart1(num: 123789, valid: false)
 
 if let range = getRange(input: input) {
     let possibilities = findPossibilities(in: range)
@@ -148,46 +144,36 @@ func isValid2(_ numIn: Int) -> Bool {
         return false
     }
 
-    var satisfiesAdjacentRule = false
-
     var previousDigit: Int? = nil
-    var sameCount = 0
+    var counts: [Int:Int] = [:]
     for digit in digits.reversed() {
         if let prev = previousDigit {
             if digit < prev {
                 return false
             }
-            if (digit != prev) {
-                if !satisfiesAdjacentRule, sameCount == 2 {
-                    satisfiesAdjacentRule = true
-                }
-                sameCount = 0
-            }
         }
 
+        counts[digit] = (counts[digit] ?? 0) + 1
         previousDigit = digit
-        sameCount += 1
     }
 
-    // have to check to see if the least sig digit satisifies too
-    if !satisfiesAdjacentRule, sameCount == 2 {
-        satisfiesAdjacentRule = true
+    return counts.contains { (_, value) -> Bool in
+        value == 2
     }
-
-    return satisfiesAdjacentRule
 }
 
-func testPart2(num: Int, isValid: Bool) {
-    guard isValid2(num) == isValid else {
+func testPart2(num: Int, valid: Bool) {
+    guard isValid2(num) == valid else {
         print("testing part 2 for \(num) FAILED")
         return
     }
     print("testing part 2 for \(num) PASSED")
 }
 
-testPart2(num: 112233, isValid: true)
-testPart2(num: 123444, isValid: false)
-testPart2(num: 111122, isValid: true)
+// Tests
+testPart2(num: 112233, valid: true)
+testPart2(num: 123444, valid: false)
+testPart2(num: 111122, valid: true)
 
 func findPossibilities2(in range: ClosedRange<Int>) -> Set<Int> {
     guard countDigits(in: range.lowerBound) == 6, countDigits(in: range.upperBound) == 6 else {
