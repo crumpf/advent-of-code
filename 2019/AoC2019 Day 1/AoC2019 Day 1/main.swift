@@ -1,15 +1,16 @@
-import UIKit
-
 // https://adventofcode.com/2019/day/1
+
+import Foundation
 
 var str = "Advent of Code 2019, Day 1"
 print(str)
 
-let fileURL = Bundle.main.url(forResource: "input", withExtension: "txt")
-let input = try String(contentsOf: fileURL!, encoding: String.Encoding.utf8)
-let masses = input.components(separatedBy: "\n").compactMap { Int($0) }
+let fileURL = URL(fileURLWithPath: "input.txt", relativeTo: URL(fileURLWithPath: FileManager.default.currentDirectoryPath))
+let fileInput = try String(contentsOf: fileURL, encoding: .utf8)
 
 print("PART 1")
+
+let masses = fileInput.components(separatedBy: "\n").compactMap { Int($0) }
 print("calculating the fuel requirments for \(masses.count) modules")
 
 func fuelRequired(forMass mass: Int) -> Int {
@@ -17,15 +18,22 @@ func fuelRequired(forMass mass: Int) -> Int {
     return mass / 3 - 2
 }
 
-fuelRequired(forMass: 12)
-fuelRequired(forMass: 14)
-fuelRequired(forMass: 1969)
-fuelRequired(forMass: 100756)
+func testFuelRequired(mass: Int, correctFuel: Int) {
+    guard fuelRequired(forMass: mass) == correctFuel else {
+        print("Testing that mass \(mass) needs \(correctFuel) FAILED")
+        return
+    }
+    print("Testing that mass \(mass) needs \(correctFuel) PASSED")
+}
+
+testFuelRequired(mass: 12, correctFuel: 2)
+testFuelRequired(mass: 14, correctFuel: 2)
+testFuelRequired(mass: 1969, correctFuel: 654)
+testFuelRequired(mass: 100756, correctFuel: 33583)
 
 let sum = masses.reduce(0, { $0 + fuelRequired(forMass: $1) })
 
 print("sum of the fuel requirements: \(sum)")
-// correct answer is 3232358
 
 // https://adventofcode.com/2019/day/1#part2
 print("\nPART 2")
@@ -44,11 +52,18 @@ func totalFuelRequired(forMass mass: Int) -> Int {
     return 0
 }
 
-totalFuelRequired(forMass: 14)
-totalFuelRequired(forMass: 1969)
-totalFuelRequired(forMass: 100756)
+func testTotalFuelRequired(mass: Int, correctFuel: Int) {
+    guard totalFuelRequired(forMass: mass) == correctFuel else {
+        print("Testing that mass \(mass) needs total \(correctFuel) FAILED")
+        return
+    }
+    print("Testing that mass \(mass) needs total \(correctFuel) PASSED")
+}
+
+testTotalFuelRequired(mass: 14, correctFuel: 2)
+testTotalFuelRequired(mass: 1969, correctFuel: 966)
+testTotalFuelRequired(mass: 100756, correctFuel: 50346)
 
 let totalSum = masses.reduce(0, {$0 + totalFuelRequired(forMass: $1)})
 
 print("total sum of the fuel requirements: \(totalSum)")
-// correct answer is 4845669
