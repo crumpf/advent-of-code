@@ -101,7 +101,7 @@ func findPossibilities(in range: ClosedRange<Int>) -> Set<Int> {
 
     print("there are \(range.upperBound - range.lowerBound + 1) candidates in range")
 
-    var candidates = Set<Int>(minimumCapacity: 1000)
+    var candidates = Set<Int>()
 
     for i in range {
         if isValid(i) {
@@ -131,64 +131,63 @@ if !isValid(123789) {
 
 if let range = getRange(input: input) {
     let possibilities = findPossibilities(in: range)
-    print("Part 1: Found \(possibilities.count) possibilities")
+    print("Found \(possibilities.count) possibilities")
     // answer is 1748
 } else {
-    print("Part 1: Error getting range to evaluate")
+    print("Error getting range to evaluate")
 }
 
-/*
- --- Part Two ---
+print("\nPART 2")
 
- An Elf just remembered one more important detail: the two adjacent matching digits are not part of a larger group of matching digits.
-
- Given this additional criterion, but still ignoring the range rule, the following are now true:
-
- 112233 meets these criteria because the digits never decrease and all repeated digits are exactly two digits long.
- 123444 no longer meets the criteria (the repeated 44 is part of a larger group of 444).
- 111122 meets the criteria (even though 1 is repeated more than twice, it still contains a double 22).
- How many different passwords within the range given in your puzzle input meet all of the criteria?
- */
-
-print("\nPART 2\n")
+// An Elf just remembered one more important detail: the two adjacent matching digits are not part of a larger group of matching digits.
 
 func isValid2(_ numIn: Int) -> Bool {
     let digits = getDigitsArray(from: numIn)
     guard digits.count == 6 else {
-        print("Error number \(numIn) doesn't have 6 digits")
+        print("Error number doesn't have 6 digits")
         return false
     }
 
     var satisfiesAdjacentRule = false
 
-    var previous = (value: -1, count: 0)
+    var previousDigit: Int? = nil
+    var sameCount = 0
     for digit in digits.reversed() {
-        if previous.value < 0 {
-            previous = (value: digit, count: 1)
-            continue
-        }
-
-        guard digit >= previous.value else {
-            return false
-        }
-
-        if digit == previous.value {
-            previous.count += 1
-        } else {
-            if !satisfiesAdjacentRule, previous.count == 2 {
-                satisfiesAdjacentRule = true
+        if let prev = previousDigit {
+            if digit < prev {
+                return false
             }
-            previous = (value: digit, count: 1)
+            if (digit != prev) {
+                if !satisfiesAdjacentRule, sameCount == 2 {
+                    satisfiesAdjacentRule = true
+                }
+                sameCount = 0
+            }
         }
+
+        previousDigit = digit
+        sameCount += 1
     }
 
-    // make sure to account for checking the last, least significant digit seen
-    if !satisfiesAdjacentRule, previous.count == 2 {
+    // have to check to see if the least sig digit satisifies too
+    if !satisfiesAdjacentRule, sameCount == 2 {
         satisfiesAdjacentRule = true
     }
 
     return satisfiesAdjacentRule
 }
+
+func testPart2(num: Int, isValid: Bool) {
+    guard isValid2(num) == isValid else {
+        print("testing part 2 for \(num) FAILED")
+        return
+    }
+    print("testing part 2 for \(num) PASSED")
+}
+
+testPart2(num: 112233, isValid: true)
+testPart2(num: 123444, isValid: false)
+testPart2(num: 111122, isValid: true)
 
 func findPossibilities2(in range: ClosedRange<Int>) -> Set<Int> {
     guard countDigits(in: range.lowerBound) == 6, countDigits(in: range.upperBound) == 6 else {
@@ -198,7 +197,7 @@ func findPossibilities2(in range: ClosedRange<Int>) -> Set<Int> {
 
     print("there are \(range.upperBound - range.lowerBound + 1) candidates in range")
 
-    var candidates = Set<Int>(minimumCapacity: 1000)
+    var candidates = Set<Int>()
 
     for i in range {
         if isValid2(i) {
@@ -209,32 +208,10 @@ func findPossibilities2(in range: ClosedRange<Int>) -> Set<Int> {
     return candidates
 }
 
-// Tests
-if isValid2(112233) {
-    print("test1 passed, 112233 valid")
-} else {
-    print("test1 failed")
-}
-if !isValid2(123444) {
-    print("test2 passed, 123444 invalid")
-} else {
-    print("test2 failed")
-}
-if isValid2(111122) {
-    print("test3 passed, 111122 valid")
-} else {
-    print("test3 failed")
-}
-if !isValid2(111220) {
-    print("test3 passed, 111220 valid")
-} else {
-    print("test3 failed")
-}
-
 if let range = getRange(input: input) {
     let possibilities = findPossibilities2(in: range)
-    print("Part 2: Found \(possibilities.count) possibilities")
+    print("Found \(possibilities.count) possibilities")
     // answer is 1180
 } else {
-    print("Part 2: Error getting range to evaluate")
+    print("Error getting range to evaluate")
 }
