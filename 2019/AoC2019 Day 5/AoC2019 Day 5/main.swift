@@ -18,7 +18,7 @@ let fileInput = try String(contentsOf: fileURL, encoding: .utf8)
 
 let computer = IntcodeComputer()
 do {
-    let input = fileInput.components(separatedBy: ",").compactMap { Int($0) }
+    let input = fileInput.components(separatedBy: "\n")[0].components(separatedBy: ",").compactMap { Int($0) }
     let result = try computer.process(input)
     print(result)
 } catch {
