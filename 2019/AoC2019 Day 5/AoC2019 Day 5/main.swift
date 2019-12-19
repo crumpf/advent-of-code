@@ -24,25 +24,3 @@ do {
 } catch {
     print(error.localizedDescription)
 }
-
-//func run(_ input: String) -> [Int] {
-//    if let computer = IntcodeComputer(input: input) {
-//        if let executedProgram = try? computer.process() {
-//            return executedProgram
-//        }
-//    }
-//    return []
-//}
-//
-///*
-// init?(input: String) {
-//     inputs = input.components(separatedBy: ",")
-//     inputs.compactMap { Int($0) }
-//     guard inputs.count == program.count else {
-//         print("Error: invalid input, cannot construct IntcodeComputer")
-//         return nil
-//     }
-// }
-// */
-//
-//print(run(fileInput.components(separatedBy: "\n")[0]))
