@@ -1,6 +1,6 @@
 //
 //  IntcodeComputer.swift
-//  AoC2019 Day 5
+//  AoC2019 Day 7
 //
 //  Created by Chris Rumpf on 12/15/19.
 //  Copyright © 2019 Chris Rumpf. All rights reserved.
@@ -52,23 +52,54 @@ enum IntcodeError: Error {
     case invalidOpcode
     case invalidParameterMode
     case notFound
+    case alreadyRunning
 }
 
 protocol InputDelegate: AnyObject {
     func input() -> Int
-    func output(_ value: Int)
 }
 
 class IntcodeComputer {
-    weak var inputDelegate: InputDelegate?
-    var buffer: [Int] = []
+    enum State {
+        case ready
+        case running
+        case waitingForInput
+        case halted
+    }
+
     var output: [Int] = []
 
-    func process(_ input: [Int]) throws -> [Int] {
-        buffer = input
-        output = []
+    private var buffer: [Int] = []
+    private let program: [Int]
+    private(set) var state: State = .ready
+    private var instructionPointer = 0
+    private var inputValue: Int?
+    private var input: [Int] = []
 
-        var instructionPointer = 0
+    init(program: [Int]) {
+        self.program = program
+        reset()
+    }
+
+    func reset() {
+        instructionPointer = 0
+        buffer = program
+        output = []
+        state = .ready
+    }
+
+    /**
+     Reset the computer and run.
+     */
+    func run(input: [Int]) {
+        reset()
+        state = .running
+        return resume(input: input)
+    }
+
+    func resume(input: [Int]) {
+        self.input.append(contentsOf: input)
+
         while instructionPointer < buffer.count {
             do {
                 let codes = try parseValue(buffer[instructionPointer])
@@ -88,27 +119,16 @@ class IntcodeComputer {
                     let product = p1 * p2
                     buffer[p3] = product
                 case .input:
+                    guard !self.input.isEmpty else {
+                        state = .waitingForInput
+                        return
+                    }
+                    state = .running
                     // Parameters that an instruction writes to will never be in immediate mode.
                     let p1 = buffer[instructionPointer + 1]
-                    var suppliedInput = 0
-                    if let inputDelegate = inputDelegate {
-                        suppliedInput = inputDelegate.input()
-                    } else {
-                        print("Enter input: ")
-                        guard let read = readLine(), let toInt = Int(read) else {
-                            print("Error with user input")
-                            return []
-                        }
-                        suppliedInput = toInt
-                    }
-                    buffer[p1] = suppliedInput
+                    buffer[p1] = self.input.removeFirst()
                 case .output:
                     let p1 = value(at: instructionPointer + 1, mode: codes.parameterModes[0])
-                    if let inputDelegate = inputDelegate {
-                        inputDelegate.output(p1)
-                    } else {
-                        print("execution output: \(p1)")
-                    }
                     output.append(p1)
                 case .jumpIfTrue:
                     let p1 = value(at: instructionPointer + 1, mode: codes.parameterModes[0])
@@ -137,16 +157,15 @@ class IntcodeComputer {
                     let p3 = buffer[instructionPointer + 3]
                     buffer[p3] = p1 == p2 ? 1 : 0
                 case .halt:
-                    return output
+                    state = .halted
+                    return
                 }
                 instructionPointer += codes.parameterModes.count + 1
             } catch {
                 print("Exception found at instruction pointer \(instructionPointer), value \(buffer[instructionPointer]):\n\(error)")
-                return []
+                return
             }
         }
-
-        return output
     }
 
     func parseValue(_ value: Int) throws -> (opcode: Opcode, parameterModes: [ParameterMode]) {
