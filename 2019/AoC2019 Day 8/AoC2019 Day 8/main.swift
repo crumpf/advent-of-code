@@ -54,6 +54,18 @@ class ElfBitmap {
             }
         }
     }
+
+    func decode() -> [[Int]] {
+        layers.reduce(into: Array(repeating: Array(repeating: 2, count: width), count: height)) { (result, layer) in
+            for row in 0..<height {
+                for col in 0..<width {
+                    if result[row][col] == 2 {
+                        result[row][col] = layer[row][col]
+                    }
+                }
+            }
+        }
+    }
 }
 
 if let part1 = ElfBitmap(width: 25, height: 6, input: imageData) {
@@ -94,4 +106,9 @@ if let part1 = ElfBitmap(width: 25, height: 6, input: imageData) {
     }
 
     print("the number of 1 digits multiplied by the number of 2 digits = \(onesCount * twosCount)")
+}
+
+if let part2 = ElfBitmap(width: 25, height: 6, input: imageData) {
+    let decodedImage = part2.decode()
+    printLayer(decodedImage)
 }
