@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		8C6E6F8623B3CEFB00CD65A4 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C6E6F8523B3CEFB00CD65A4 /* main.swift */; };
 		8C6E6F8D23B3CF2A00CD65A4 /* input.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C6E6F8C23B3CF1F00CD65A4 /* input.txt */; };
+		8C6E6F8F23B463A700CD65A4 /* IntcodeComputer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C6E6F8E23B463A700CD65A4 /* IntcodeComputer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -28,6 +29,7 @@
 		8C6E6F8223B3CEFB00CD65A4 /* AoC2019 Day 9 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "AoC2019 Day 9"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C6E6F8523B3CEFB00CD65A4 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		8C6E6F8C23B3CF1F00CD65A4 /* input.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = input.txt; sourceTree = "<group>"; };
+		8C6E6F8E23B463A700CD65A4 /* IntcodeComputer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntcodeComputer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +62,7 @@
 		8C6E6F8423B3CEFB00CD65A4 /* AoC2019 Day 9 */ = {
 			isa = PBXGroup;
 			children = (
+				8C6E6F8E23B463A700CD65A4 /* IntcodeComputer.swift */,
 				8C6E6F8C23B3CF1F00CD65A4 /* input.txt */,
 				8C6E6F8523B3CEFB00CD65A4 /* main.swift */,
 			);
@@ -125,6 +128,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8C6E6F8623B3CEFB00CD65A4 /* main.swift in Sources */,
+				8C6E6F8F23B463A700CD65A4 /* IntcodeComputer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
