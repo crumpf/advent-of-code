@@ -48,7 +48,18 @@ func test3() -> Bool {
 
 print("test3 \(test3() ? "passed" : "failed")")
 
+func part1() {
+    let computer = IntcodeComputer(program: input)
+    computer.run(input: [1])
+    print("BOOST output:\n\(computer.output)")
+}
 
-let computer = IntcodeComputer(program: input)
-computer.run(input: [1])
-print("BOOST output:\n\(computer.output)")
+part1()
+
+func part2() {
+    let computer = IntcodeComputer(program: input)
+    computer.run(input: [2])
+    print("BOOST output:\n\(computer.output)")
+}
+
+part2()
