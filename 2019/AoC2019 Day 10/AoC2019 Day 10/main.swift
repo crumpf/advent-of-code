@@ -25,14 +25,6 @@ func asteroidLocations(input: [String]) -> [Cartesian] {
     }
 }
 
-extension Double {
-    func roundedPrecision(_ digits: Int) -> Double? {
-        let fmt = "%.\(digits)f"
-        let str = String(format: fmt, self)
-        return Double(str)
-    }
-}
-
 func findBestLocation(asteroids: [Cartesian]) -> (coord: Cartesian, count: Int) {
     var best = (Cartesian(x: 0, y: 0), 0)
     var most = Int.min
@@ -49,13 +41,74 @@ func findBestLocation(asteroids: [Cartesian]) -> (coord: Cartesian, count: Int) 
     return best
 }
 
-//let t1 = "......#.#.\n#..#.#....\n..#######.\n.#.#.###..\n.#..#.....\n..#....#.#\n#..#....#.\n.##.#..###\n##...#..#.\n.#....####"
-//let t1 = "#.#...#.#.\n.###....#.\n.#....#...\n##.#.#.#.#\n....#.#.#.\n.##..###.#\n..#...##..\n..##....##\n......#...\n.####.###."
-//let t1 = ".#..#..###\n####.###.#\n....###.#.\n..###.##.#\n##.##.#.#.\n....###..#\n..#.#..#.#\n#..#.#.###\n.##...##.#\n.....#.#.."
-//let a1 = asteroidLocations(input: t1.components(separatedBy: "\n"))
-//let b1 = findBestLocation(asteroids: a1)
-//print(b1)
-
 let asteroidCartesian = asteroidLocations(input: fileInput.components(separatedBy: "\n"))
 let best = findBestLocation(asteroids: asteroidCartesian)
 print(best)
+
+// Part 2
+
+// return the coordinate of the last vaporized asteroid (count)
+func vaporize(asteroids: [Cartesian], count: Int) -> Cartesian? {
+    let best = findBestLocation(asteroids: asteroids)
+    var polars = asteroids.compactMap {
+        best.coord.polar(to: $0)
+    }
+    var remaining = count
+    var visible = [Double:Polar]()
+    var last: Polar?
+
+    while remaining > 0 {
+        visible.removeAll()
+        for coord in polars {
+            guard !coord.theta.isNaN else {
+                continue
+            }
+            if let exist = visible[coord.theta], coord.r < exist.r {
+                continue
+            }
+            visible[coord.theta] = coord
+        }
+
+        let sorted = visible.values.sorted { (a, b) -> Bool in
+            // The laser starts by pointing up and always rotates clockwise, vaporizing any asteroid it hits
+            // note: since x increases left to right and y increases top to bottom, our laser sweep quadrants go
+            // clockwise instead of counterclockwise
+            // Q3 | Q4
+            // -------
+            // Q2 | Q1
+            if a.theta >= .pi * 3 / 2 {
+                if b.theta >= .pi * 3 / 2 {
+                    return a.theta < b.theta
+                } else {
+                    return true
+                }
+            } else if b.theta >= .pi * 3 / 2 {
+                return false
+            } else {
+                return a.theta < b.theta
+            }
+        }
+
+        if sorted.count < remaining {
+            last = sorted.last
+            polars = Array(Set(polars).subtracting(sorted))
+            remaining -= sorted.count
+            print(sorted.count)
+        } else {
+            last = sorted[remaining-1]
+            polars = Array(Set(polars).subtracting(sorted[0..<remaining]))
+            remaining = 0
+        }
+    }
+
+    if let last = last {
+        let c = last.cartesian(rounded: 0)
+        print(c)
+        return Cartesian(x:c.x + best.coord.x, y:c.y + best.coord.y)
+    }
+    return nil
+}
+
+if let lastVaporized = vaporize(asteroids: asteroidCartesian, count: 200) {
+    print("asteroid #200 vaporized at \(lastVaporized), result: \(lastVaporized.x * 100 + lastVaporized.y)")
+}

@@ -52,4 +52,30 @@ struct Cartesian {
 
 struct Polar {
     let r, theta: Double
+
+    func cartesian() -> Cartesian {
+        return Cartesian(x: r * cos(theta), y: r * sin(theta))
+    }
+
+    func cartesian(rounded: Int) -> Cartesian {
+        guard let x = (r * cos(theta)).roundedPrecision(rounded), let y = (r * sin(theta)).roundedPrecision(rounded) else {
+            return Cartesian(x: .nan, y: .nan)
+            }
+        return Cartesian(x: x, y: y)
+    }
+}
+
+extension Polar: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(r)
+        hasher.combine(theta)
+    }
+}
+
+extension Double {
+    func roundedPrecision(_ digits: Int) -> Double? {
+        let fmt = "%.\(digits)f"
+        let str = String(format: fmt, self)
+        return Double(str)
+    }
 }
