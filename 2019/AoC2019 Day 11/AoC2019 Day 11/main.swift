@@ -13,8 +13,6 @@ let fileInput = try String(contentsOf: fileURL, encoding: .utf8)
 
 let input = fileInput.components(separatedBy: "\n")[0].components(separatedBy: ",").compactMap { Int($0) }
 
-print(input)
-
 struct Point: Hashable {
     let x, y: Int
 
@@ -64,7 +62,7 @@ class Robot {
         computer = IntcodeComputer(program: program)
     }
 
-    func paint() {
+    func paint(startPanelColor: PaintColor) {
         computer.run(input: [])
         while computer.state != .halted {
             guard computer.state == .waitingForInput else {
@@ -72,7 +70,7 @@ class Robot {
                 return
             }
 
-            let currentColor = trail[location] ?? .black
+            let currentColor = outputPointer == 0 ? startPanelColor : (trail[location] ?? .black)
             computer.resume(input: [currentColor.rawValue])
 
             guard computer.output.count - outputPointer == 2 else {
@@ -117,6 +115,18 @@ class Robot {
 }
 
 let robot = Robot(program: input)
-robot.paint()
+robot.paint(startPanelColor: .white)
 
 print("number of panels painted: \(robot.trail.count)")
+
+var hull: [[String]] = Array(repeating: Array(repeating: ".", count: 100), count: 100)
+
+for t in robot.trail {
+    hull[50 - t.key.y][50 + t.key.x] = t.value == .black ? "." : "#"
+}
+
+for i in hull {
+    print(i.reduce("", { (r, s) -> String in
+        r + s
+    }))
+}
