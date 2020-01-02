@@ -32,6 +32,15 @@ let fileInput = try String(contentsOf: fileURL, encoding: .utf8)
 
 typealias Location = SIMD2<Int>
 
+extension Location {
+    func adjacents() -> [Location] {
+        return [self &+ Location(0, -1),
+                self &+ Location(1, 0),
+                self &+ Location(0, 1),
+                self &+ Location(-1, 0)]
+    }
+}
+
 enum MovementCommand: Int {
     case north = 1
     case south
@@ -99,11 +108,19 @@ class RepairDroid {
      Returns the x,y offset of the Oxygen Sensor from the robot's starting position.
      */
     func findOxygenSensor() -> Node? {
-        let goal = dfs(origin: Node(location: Location(0, 0)))
-        return goal
+        let result = dfs(origin: Node(location: Location(0, 0)))
+        return result.goal
     }
 
-    private func dfs(origin: Node) -> Node? {
+    func findOxygenSensorAndFullLocations() -> (Node?, Set<Location>) {
+        let result = dfs(origin: Node(location: Location(0, 0)), trackWholeMap: true)
+        return result
+    }
+
+    private func dfs(origin: Node, trackWholeMap: Bool = false) -> (goal: Node?, locations: Set<Location>) {
+        var goal: Node?
+        var mapLocations = Set<Location>()
+
         origin.state = .empty
         currentNode = origin
 
@@ -114,7 +131,7 @@ class RepairDroid {
         computer.reset()
         _ = computer.run(input: [])
 
-        while computer.state != .halted {
+        while computer.state != .halted && !stack.isEmpty {
             if computer.state == .waitingForInput {
                 if let node = stack.pop() {
                     if let command = node.commandToReach(from: currentNode.location) {
@@ -126,30 +143,35 @@ class RepairDroid {
                             case .moved:
                                 currentNode = node
                                 node.state = .empty
+                                mapLocations.insert(node.location)
                             case .foundOxygenSystem:
                                 currentNode = node
                                 node.state = .goal
-                                return node
+                                mapLocations.insert(node.location)
+                                goal = node
+                                if !trackWholeMap {
+                                    return (goal, mapLocations)
+                                }
                             }
                         }
                     } else if currentNode.location != origin.location {
-                        print("cannot reach node \(node.location) from current location \(currentNode.location), need to backtrack to \(node.previous!.location)")
+//                        print("cannot reach node \(node.location) from current location \(currentNode.location), need to backtrack to \(node.previous!.location)")
                         while currentNode.location != node.previous!.location {
                             guard let previous = currentNode.previous, let command = previous.commandToReach(from: currentNode.location) else {
                                 print("Error, cannot backtrack!")
-                                return nil
+                                return (nil, mapLocations)
                             }
                             if let response = computer.run(input: [command.rawValue]), let statusCode = StatusCode(rawValue: response) {
                                 guard statusCode == .moved else {
                                     print("Error, failure backtracking. status code = \(statusCode)")
-                                    return nil
+                                    return (nil, mapLocations)
                                 }
                                 currentNode = previous
                             }
                             _ = computer.run(input: []) // make sure the computer is waiting on input
                         }
                         stack.push(node)
-                        print("got back, let's go...")
+//                        print("got back, let's go...")
                         continue
                     }
 
@@ -165,7 +187,7 @@ class RepairDroid {
             }
         }
 
-        return nil
+        return (goal, mapLocations)
     }
 }
 
@@ -183,3 +205,44 @@ func part1() {
 }
 
 part1()
+
+func printMap(_ map: Set<Location>, goal: Location) {
+    var m = Array(repeating: Array(repeating: "#", count: 50), count: 50)
+    for i in map {
+        m[25 - i.y][25 - i.x] = "."
+    }
+    m[25 - goal.y][25 - goal.x] = "@"
+    for row in m {
+        print(row.reduce("", { (r, s) -> String in
+            r + s
+        }))
+    }
+}
+
+func part2() {
+    let program = fileInput.components(separatedBy: "\n")[0].components(separatedBy: ",").compactMap { Int($0) }
+    let droid = RepairDroid(program: program)
+    let result = droid.findOxygenSensorAndFullLocations()
+
+    printMap(result.1, goal: result.0!.location)
+
+    var minutes = 0
+    var map = result.1
+    var recentOxyLocs = [result.0!.location]
+    while !map.isEmpty && !recentOxyLocs.isEmpty {
+        var newOxyLocs = [Location]()
+        map.subtract(recentOxyLocs)
+        for loc in recentOxyLocs {
+            for neighbor in loc.adjacents() where map.contains(neighbor) {
+                newOxyLocs.append(neighbor)
+            }
+        }
+        recentOxyLocs = newOxyLocs
+        if !recentOxyLocs.isEmpty {
+            minutes += 1
+        }
+    }
+    print("number of minutes to fill map = \(minutes)")
+}
+
+part2()
