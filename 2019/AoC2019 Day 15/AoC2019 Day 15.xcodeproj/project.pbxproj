@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		8C6E703523BD5DFE00CD65A4 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C6E703423BD5DFE00CD65A4 /* main.swift */; };
 		8C6E703C23BD5E4400CD65A4 /* input.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C6E703B23BD5E3300CD65A4 /* input.txt */; };
+		8C6E705323BD5F3600CD65A4 /* IntcodeComputer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C6E705223BD5F3600CD65A4 /* IntcodeComputer.swift */; };
+		8C6E705523BD859A00CD65A4 /* Containers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C6E705423BD859A00CD65A4 /* Containers.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -28,6 +30,8 @@
 		8C6E703123BD5DFE00CD65A4 /* AoC2019 Day 15 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "AoC2019 Day 15"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C6E703423BD5DFE00CD65A4 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		8C6E703B23BD5E3300CD65A4 /* input.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = input.txt; sourceTree = "<group>"; };
+		8C6E705223BD5F3600CD65A4 /* IntcodeComputer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntcodeComputer.swift; sourceTree = "<group>"; };
+		8C6E705423BD859A00CD65A4 /* Containers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Containers.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,8 +64,10 @@
 		8C6E703323BD5DFE00CD65A4 /* AoC2019 Day 15 */ = {
 			isa = PBXGroup;
 			children = (
+				8C6E705223BD5F3600CD65A4 /* IntcodeComputer.swift */,
 				8C6E703B23BD5E3300CD65A4 /* input.txt */,
 				8C6E703423BD5DFE00CD65A4 /* main.swift */,
+				8C6E705423BD859A00CD65A4 /* Containers.swift */,
 			);
 			path = "AoC2019 Day 15";
 			sourceTree = "<group>";
@@ -125,6 +131,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				8C6E703523BD5DFE00CD65A4 /* main.swift in Sources */,
+				8C6E705323BD5F3600CD65A4 /* IntcodeComputer.swift in Sources */,
+				8C6E705523BD859A00CD65A4 /* Containers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
