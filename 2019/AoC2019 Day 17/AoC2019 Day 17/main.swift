@@ -54,9 +54,7 @@ func part1() -> [[String]] {
     }
 
     for row in map {
-        print(row.reduce("", { (result, s) -> String in
-            result + s
-        }))
+        print(row.joined())
     }
 
     print("Sum of alignment parameters:")
@@ -92,9 +90,7 @@ func part2() -> ([[String]], Int?) {
         }
     }
     for row in map {
-        print(row.reduce("", { (result, s) -> String in
-            result + s
-        }))
+        print(row.joined())
     }
 
     let fnMain = "A,B,A,C,B,C,B,C,A,B"

@@ -213,9 +213,7 @@ func printMap(_ map: Set<Location>, goal: Location) {
     }
     m[25 - goal.y][25 - goal.x] = "@"
     for row in m {
-        print(row.reduce("", { (r, s) -> String in
-            r + s
-        }))
+        print(row.joined())
     }
 }
 
