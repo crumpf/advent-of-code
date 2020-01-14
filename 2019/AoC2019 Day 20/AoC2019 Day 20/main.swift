@@ -27,19 +27,22 @@ extension CharacterSet {
     }
 }
 
-func letterRightOf(x: Int, y: Int) -> Character? {
-    guard y < map.count, x < map[y].count - 1, CharacterSet.uppercaseLetters.containsUnicodeScalars(of: map[y][x+1]) else { return nil }
-    return map[y][x+1]
+func letterAt(x: Int, y: Int) -> Character? {
+    guard map.indices.contains(y), map[y].indices.contains(x), CharacterSet.uppercaseLetters.containsUnicodeScalars(of: map[y][x]) else { return nil }
+    return map[y][x]
 }
 
-func letterBottomOf(x: Int, y: Int) -> Character? {
-    guard y < map.count - 1, x < map[y].count, CharacterSet.uppercaseLetters.containsUnicodeScalars(of: map[y+1][x]) else { return nil }
-    return map[y+1][x]
+func hasOpeningAt(x: Int, y: Int) -> Bool {
+    guard map.indices.contains(y), map[y].indices.contains(x) else { return false }
+    return ".".contains(map[y][x])
 }
 
 typealias XY = SIMD2<Int>
 
-var doors: [XY:String] = [:]
+struct Door {
+    let name: String
+    let loc: XY
+}
 
 // find magic doors
 for (y, row) in map.enumerated() {
@@ -47,16 +50,14 @@ for (y, row) in map.enumerated() {
     for (x, c) in row.enumerated() {
         guard x < row.count - 1 else { continue }
         if CharacterSet.uppercaseLetters.containsUnicodeScalars(of: c) {
-            if let right = letterRightOf(x: x, y: y) {
+            if let bottom = letterAt(x: x, y: y + 1) {
                 // found vertical door tag
-                let doorName = String([c, right])
-                doors[XY(x, y)] = doorName
-                doors[XY(x+1, y)] = doorName
-            } else if let bottom = letterBottomOf(x: x, y: y) {
+                let name = String([c, bottom])
+                let loc = hasOpeningAt(x: x, y: y - 1) ? XY(x, y-1) : XY(x, y+2)
+            } else if let right = letterAt(x: x + 1, y: y) {
                 // found horizontal door tag
-                let doorName = String([c, bottom])
-                doors[XY(x, y)] = doorName
-                doors[XY(x, y+1)] = doorName
+                let name = String([c, right])
+                let loc = hasOpeningAt(x: x - 1, y: y) ? XY(x-1, y) : XY(x+2, y)
             }
         }
     }
