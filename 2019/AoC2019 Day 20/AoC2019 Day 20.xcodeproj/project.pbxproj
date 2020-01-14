@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8C33E12E23CE4B2500935E69 /* Containers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C33E12D23CE4B2500935E69 /* Containers.swift */; };
 		8C9FD0C723C8CD7400CACC9D /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C9FD0C623C8CD7400CACC9D /* main.swift */; };
 		8C9FD0CE23C8CD9C00CACC9D /* input.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C9FD0CD23C8CD8F00CACC9D /* input.txt */; };
 /* End PBXBuildFile section */
@@ -25,6 +26,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		8C33E12D23CE4B2500935E69 /* Containers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Containers.swift; sourceTree = "<group>"; };
 		8C9FD0C323C8CD7400CACC9D /* AoC2019 Day 20 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "AoC2019 Day 20"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C9FD0C623C8CD7400CACC9D /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		8C9FD0CD23C8CD8F00CACC9D /* input.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = input.txt; sourceTree = "<group>"; };
@@ -60,6 +62,7 @@
 		8C9FD0C523C8CD7400CACC9D /* AoC2019 Day 20 */ = {
 			isa = PBXGroup;
 			children = (
+				8C33E12D23CE4B2500935E69 /* Containers.swift */,
 				8C9FD0CD23C8CD8F00CACC9D /* input.txt */,
 				8C9FD0C623C8CD7400CACC9D /* main.swift */,
 			);
@@ -125,6 +128,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8C9FD0C723C8CD7400CACC9D /* main.swift in Sources */,
+				8C33E12E23CE4B2500935E69 /* Containers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
