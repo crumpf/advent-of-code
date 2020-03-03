@@ -164,3 +164,12 @@ if let startDoor = startDoor {
     print(goal?.location ?? "Goal not found!")
     print("Shortest number of steps to reach goal: \(steps)")
 }
+
+// part 2
+
+// need to:
+// - create 2 maps, one for outer doors and one for inner doors
+// - location needs to be expanded to account for x y and z since we'll have levels that can be expressed along the z dimension
+// - special case for z0 outer doors that they are walls
+// - outer and inner doors move up or down levels
+
