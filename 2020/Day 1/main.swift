@@ -59,12 +59,14 @@ extension Array where Element == Int {
   
   func trios(havingSum sum: Int) -> [(Int, Int, Int)] {
     var trios: [(Int, Int, Int)] = []
-    for a in 0...(self.count-3) {
-      for b in (a+1)...(self.count-2) {
-        for c in (b+1)...(self.count-1) {
-          if self[a] + self[b] + self[c] == sum {
-            trios.append((self[a], self[b], self[c]))
-          }
+    guard count >= 3 else {
+      return trios
+    }
+    
+    for a in 0..<(self.count-2) {
+      for b in (a+1)..<(self.count-1) {
+        for c in (b+1)..<self.count where self[a] + self[b] + self[c] == sum {
+          trios.append((self[a], self[b], self[c]))
         }
       }
     }
