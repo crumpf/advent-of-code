@@ -23,6 +23,10 @@
 		8C149AFE2579E4D100F26473 /* input.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C149AFD2579E4C400F26473 /* input.txt */; };
 		8C149B032579E55A00F26473 /* Puzzle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C149AE42579D72D00F26473 /* Puzzle.swift */; };
 		8C149B082579E55D00F26473 /* FileInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C149ADD2579A10D00F26473 /* FileInput.swift */; };
+		8C149B0E257A814300F26473 /* String+Advent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C149B0D257A814300F26473 /* String+Advent.swift */; };
+		8C149B0F257A814300F26473 /* String+Advent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C149B0D257A814300F26473 /* String+Advent.swift */; };
+		8C149B10257A814300F26473 /* String+Advent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C149B0D257A814300F26473 /* String+Advent.swift */; };
+		8C149B11257A814300F26473 /* String+Advent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C149B0D257A814300F26473 /* String+Advent.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -83,6 +87,7 @@
 		8C149AF22579E48C00F26473 /* Day 4 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Day 4"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C149AF42579E48C00F26473 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		8C149AFD2579E4C400F26473 /* input.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = input.txt; sourceTree = "<group>"; };
+		8C149B0D257A814300F26473 /* String+Advent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Advent.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -172,6 +177,7 @@
 			children = (
 				8C149ADD2579A10D00F26473 /* FileInput.swift */,
 				8C149AE42579D72D00F26473 /* Puzzle.swift */,
+				8C149B0D257A814300F26473 /* String+Advent.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -307,6 +313,7 @@
 			files = (
 				8C149ADE2579A10D00F26473 /* FileInput.swift in Sources */,
 				8C149A9A25797E7800F26473 /* main.swift in Sources */,
+				8C149B0E257A814300F26473 /* String+Advent.swift in Sources */,
 				8C149AE52579D72D00F26473 /* Puzzle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -317,6 +324,7 @@
 			files = (
 				8C149ADF2579A10D00F26473 /* FileInput.swift in Sources */,
 				8C149AAA25797EB200F26473 /* main.swift in Sources */,
+				8C149B0F257A814300F26473 /* String+Advent.swift in Sources */,
 				8C149AE62579D72D00F26473 /* Puzzle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -327,6 +335,7 @@
 			files = (
 				8C149AE02579A10D00F26473 /* FileInput.swift in Sources */,
 				8C149AB725797EBE00F26473 /* main.swift in Sources */,
+				8C149B10257A814300F26473 /* String+Advent.swift in Sources */,
 				8C149AE72579D72D00F26473 /* Puzzle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -337,6 +346,7 @@
 			files = (
 				8C149B082579E55D00F26473 /* FileInput.swift in Sources */,
 				8C149AF52579E48C00F26473 /* main.swift in Sources */,
+				8C149B11257A814300F26473 /* String+Advent.swift in Sources */,
 				8C149B032579E55A00F26473 /* Puzzle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

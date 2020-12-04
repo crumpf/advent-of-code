@@ -33,25 +33,19 @@ extension Array where Element == Int {
 }
 
 class Day1 {
-  
-  private func parseInput(_ input: [String]) -> [Int] {
-    input.compactMap { Int($0) }
+  private func entries(fromInput input: String) -> [Int] {
+    input.lines().compactMap { Int($0) }
   }
-  
 }
 
 extension Day1: Puzzle {
-  func part1(withInput: [String]) -> String {
-    let input = parseInput(withInput)
-    let pairs = input.pairs(havingSum: 2020)
-    
+  func part1(withInput input: String) -> String {
+    let pairs = entries(fromInput: input).pairs(havingSum: 2020)
     return String(describing: pairs.map { $0.0 * $0.1 })
   }
   
-  func part2(withInput: [String]) -> String {
-    let input = parseInput(withInput)
-    let trios = input.trios(havingSum: 2020)
-    
+  func part2(withInput input: String) -> String {
+    let trios = entries(fromInput: input).trios(havingSum: 2020)
     return String(describing: trios.map { $0.0 * $0.1 * $0.2 })
   }
 }
@@ -61,9 +55,9 @@ guard let fileInput = FileInput(pathRelativeToCurrentDirectory: "input.txt") els
 let day = Day1()
 
 print("====Part 1====")
-let part1 = day.part1(withInput: fileInput.lines)
+let part1 = day.part1(withInput: fileInput.raw)
 print(part1)
 
 print("====Part 2====")
-let part2 = day.part2(withInput: fileInput.lines)
+let part2 = day.part2(withInput: fileInput.raw)
 print(part2)

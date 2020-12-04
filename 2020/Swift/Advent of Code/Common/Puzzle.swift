@@ -6,6 +6,6 @@
 //
 
 protocol Puzzle {
-  func part1(withInput: [String]) -> String
-  func part2(withInput: [String]) -> String
+  func part1(withInput: String) -> String
+  func part2(withInput: String) -> String
 }

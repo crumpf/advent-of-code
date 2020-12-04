@@ -8,12 +8,12 @@
 import Foundation
 
 struct FileInput {
-  let lines: [String]
+  let raw: String
   
   init?(pathRelativeToCurrentDirectory: String) {
     let fileURL = URL(fileURLWithPath: pathRelativeToCurrentDirectory, relativeTo: URL(fileURLWithPath: FileManager.default.currentDirectoryPath))
     do {
-      lines = try String(contentsOf: fileURL, encoding: .utf8).trimmingCharacters(in: .whitespacesAndNewlines).components(separatedBy: .newlines)
+      raw = try String(contentsOf: fileURL, encoding: .utf8)
     } catch {
       return nil
     }

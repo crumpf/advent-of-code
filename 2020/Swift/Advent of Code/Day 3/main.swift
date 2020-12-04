@@ -5,8 +5,8 @@ struct Slope { let right, down: Int }
 
 class Day3 {
   
-  private func parseInput(_ input: [String]) -> [[Character]] {
-    input.map { Array($0) }
+  private func grid(fromInput input: String) -> [[Character]] {
+    input.lines().map { Array($0) }
   }
   
   private func treesInPath(map: [[Character]], start: Cartesian, slope: Slope) -> Int {
@@ -29,8 +29,8 @@ class Day3 {
 }
 
 extension Day3: Puzzle {
-  func part1(withInput: [String]) -> String {
-    let map = parseInput(withInput)
+  func part1(withInput input: String) -> String {
+    let map = grid(fromInput: input)
     let start = Cartesian(x: 0, y: 0)
     let slope = Slope(right: 3, down: 1)
     let treeCount = treesInPath(map: map, start: start, slope: slope)
@@ -38,8 +38,8 @@ extension Day3: Puzzle {
     return String(describing: treeCount)
   }
   
-  func part2(withInput: [String]) -> String {
-    let map = parseInput(withInput)
+  func part2(withInput input: String) -> String {
+    let map = grid(fromInput: input)
     let start = Cartesian(x: 0, y: 0)
     let slopes = [
       Slope(right: 1, down: 1),
@@ -63,9 +63,9 @@ guard let fileInput = FileInput(pathRelativeToCurrentDirectory: "input.txt") els
 let day = Day3()
 
 print("====Part 1====")
-let part1 = day.part1(withInput: fileInput.lines)
+let part1 = day.part1(withInput: fileInput.raw)
 print(part1)
 
 print("====Part 2====")
-let part2 = day.part2(withInput: fileInput.lines)
+let part2 = day.part2(withInput: fileInput.raw)
 print(part2)
