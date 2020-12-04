@@ -9,11 +9,44 @@ import Foundation
 
 typealias Passport = [String:String]
 
+extension Passport where Key == String, Value == String {
+  func isValidPassport() -> Bool {
+    if count == 8 { return true }
+    if count == 7 && self["cid"] == nil { return true }
+    return false
+  }
+  
+  func isStrictlyValidPassport() -> Bool {
+    guard let byr = self["byr"],
+          let iyr = self["iyr"],
+          let eyr = self["eyr"],
+          let hgt = self["hgt"],
+          let hcl = self["hcl"],
+          let ecl = self["ecl"],
+          let pid = self["pid"] else { return false }
+    
+    guard (1920...2002).contains(Int(byr)!) else { return false }
+    guard (2010...2020).contains(Int(iyr)!) else { return false }
+    guard (2020...2030).contains(Int(eyr)!) else { return false }
+    if hgt.hasSuffix("cm") {
+      guard let ht = Int(hgt.dropLast(2)), (150...193).contains(ht) else { return false }
+    } else if hgt.hasSuffix("in") {
+      guard let ht = Int(hgt.dropLast(2)), (59...76).contains(ht) else { return false }
+    } else {
+      return false
+    }
+    guard hcl.range(of: #"^#[0-9a-fA-F]{6}$"#, options: .regularExpression) != nil else { return false }
+    guard ecl.range(of: #"^(amb|blu|brn|gry|grn|hzl|oth)$"#, options: .regularExpression) != nil else { return false }
+    guard pid.range(of: #"^[0-9]{9}$"#, options: .regularExpression) != nil else { return false }
+    return true
+  }
+}
+
 class Day4 {
-  private func passportsFromInput(_ input: [String]) -> [Passport] {
+  private func passportsFromInput(_ input: String) -> [Passport] {
     var passports: [Passport] = []
     var passport: Passport = [:]
-    for line in input {
+    for line in input.lines() {
       if line.isEmpty {
         if !passport.isEmpty {
           passports.append(passport)
@@ -34,67 +67,19 @@ class Day4 {
     if !passport.isEmpty { passports.append(passport) }
     return passports
   }
-  
-  private func countValidPassports(_ passports: [Passport]) -> Int {
-    var count = 0
-    for passport in passports {
-      count += validatePassport(passport) ? 1 : 0
-    }
-    return count
-  }
-  
-  private func validatePassport(_ passport: Passport) -> Bool {
-    if passport.count == 8 { return true }
-    if passport.count == 7 && passport["cid"] == nil { return true }
-    return false
-  }
-  
-  private func countStrictlyValidPassports(_ passports: [Passport]) -> Int {
-    var count = 0
-    for passport in passports {
-      count += strictlyValidatePassport(passport) ? 1 : 0
-    }
-    return count
-  }
-  
-  private func strictlyValidatePassport(_ passport: Passport) -> Bool {
-    guard let byr = passport["byr"],
-          let iyr = passport["iyr"],
-          let eyr = passport["eyr"],
-          let hgt = passport["hgt"],
-          let hcl = passport["hcl"],
-          let ecl = passport["ecl"],
-          let pid = passport["pid"] else { return false }
-    
-    guard (1920...2002).contains(Int(byr)!) else { return false }
-    guard (2010...2020).contains(Int(iyr)!) else { return false }
-    guard (2020...2030).contains(Int(eyr)!) else { return false }
-    if hgt.hasSuffix("cm") {
-      guard let ht = Int(hgt.dropLast(2)), (150...193).contains(ht) else { return false }
-    } else if hgt.hasSuffix("in") {
-      guard let ht = Int(hgt.dropLast(2)), (59...76).contains(ht) else { return false }
-    } else {
-      return false
-    }
-    guard hcl.range(of: #"^#[0-9a-fA-F]{6}$"#, options: .regularExpression) != nil else { return false }
-    guard ecl.range(of: #"^(amb|blu|brn|gry|grn|hzl|oth)$"#, options: .regularExpression) != nil else { return false }
-    guard pid.range(of: #"^[0-9]{9}$"#, options: .regularExpression) != nil else { return false }
-    return true
-  }
-  
 }
 
 extension Day4: Puzzle {
-  func part1(withInput input: [String]) -> String {
+  func part1(withInput input: String) -> String {
     let passports = passportsFromInput(input)
-    let numValid = countValidPassports(passports)
-    return String(describing: numValid)
+    let validCount = passports.filter { $0.isValidPassport() }.count
+    return String(describing: validCount)
   }
   
-  func part2(withInput input: [String]) -> String {
+  func part2(withInput input: String) -> String {
     let passports = passportsFromInput(input)
-    let numValid = countStrictlyValidPassports(passports)
-    return String(describing: numValid)
+    let validCount = passports.filter { $0.isStrictlyValidPassport() }.count
+    return String(describing: validCount)
   }
 }
 
@@ -112,7 +97,7 @@ hgt:179cm
 
 hcl:#cfa07d eyr:2025 pid:166559648
 iyr:2011 ecl:brn hgt:59in
-""".components(separatedBy: .newlines)
+"""
 
 let test2InvalidInput = """
 eyr:1972 cid:100
@@ -128,7 +113,7 @@ ecl:brn hgt:182cm pid:021572410 eyr:2020 byr:1992 cid:277
 hgt:59cm ecl:zzz
 eyr:2038 hcl:74454a iyr:2023
 pid:3556412378 byr:2007
-""".components(separatedBy: .newlines)
+"""
 
 let test2ValidInput = """
 pid:087499704 hgt:74in ecl:grn iyr:2012 eyr:2030 byr:1980
@@ -143,7 +128,7 @@ pid:545766238 ecl:hzl
 eyr:2022
 
 iyr:2010 hgt:158cm hcl:#b6652a ecl:blu byr:1944 eyr:2021 pid:093154719
-""".components(separatedBy: .newlines)
+"""
 
 guard let fileInput = FileInput(pathRelativeToCurrentDirectory: "input.txt") else { abort() }
 
@@ -161,9 +146,9 @@ let test2valid = day.part2(withInput: test2ValidInput)
 print(test2valid == "4" ? "pass" : "fail")
 
 print("====Part 1====")
-let part1 = day.part1(withInput: fileInput.lines)
+let part1 = day.part1(withInput: fileInput.raw)
 print(part1)
 
 print("====Part 2====")
-let part2 = day.part2(withInput: fileInput.lines)
+let part2 = day.part2(withInput: fileInput.raw)
 print(part2)
