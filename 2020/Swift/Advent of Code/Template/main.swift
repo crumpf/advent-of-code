@@ -12,11 +12,11 @@ class Day {
 }
 
 extension Day: Puzzle {
-  func part1(withInput: [String]) -> String {
+  func part1(withInput: String) -> String {
     return "Not implemented"
   }
   
-  func part2(withInput: [String]) -> String {
+  func part2(withInput: String) -> String {
     return "Not implemented"
   }
 }
@@ -26,9 +26,9 @@ guard let fileInput = FileInput(pathRelativeToCurrentDirectory: "input.txt") els
 let day = Day()
 
 print("====Part 1====")
-let part1 = day.part1(withInput: fileInput.lines)
+let part1 = day.part1(withInput: fileInput.raw)
 print(part1)
 
 print("====Part 2====")
-let part2 = day.part2(withInput: fileInput.lines)
+let part2 = day.part2(withInput: fileInput.raw)
 print(part2)

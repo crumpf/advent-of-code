@@ -1,11 +1,34 @@
 //
 //  main.swift
-//  Day 5
+//  Day Puzzle Template
 //
-//  Created by Christopher Rumpf on 12/4/20.
+//  Created by Christopher Rumpf on 12/3/20.
 //
 
 import Foundation
 
-print("Hello, World!")
+class Day {
+  
+}
 
+extension Day: Puzzle {
+  func part1(withInput: String) -> String {
+    return "Not implemented"
+  }
+  
+  func part2(withInput: String) -> String {
+    return "Not implemented"
+  }
+}
+
+guard let fileInput = FileInput(pathRelativeToCurrentDirectory: "input.txt") else { abort() }
+
+let day = Day()
+
+print("====Part 1====")
+let part1 = day.part1(withInput: fileInput.raw)
+print(part1)
+
+print("====Part 2====")
+let part2 = day.part2(withInput: fileInput.raw)
+print(part2)
