@@ -13,6 +13,16 @@
 		8C149AC42579806C00F26473 /* input.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C149ABE25797F2700F26473 /* input.txt */; };
 		8C149ACE257980D900F26473 /* input.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C149ABF25797F3600F26473 /* input.txt */; };
 		8C149AD52579810D00F26473 /* input.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C149AC025797F4200F26473 /* input.txt */; };
+		8C149ADE2579A10D00F26473 /* FileInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C149ADD2579A10D00F26473 /* FileInput.swift */; };
+		8C149ADF2579A10D00F26473 /* FileInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C149ADD2579A10D00F26473 /* FileInput.swift */; };
+		8C149AE02579A10D00F26473 /* FileInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C149ADD2579A10D00F26473 /* FileInput.swift */; };
+		8C149AE52579D72D00F26473 /* Puzzle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C149AE42579D72D00F26473 /* Puzzle.swift */; };
+		8C149AE62579D72D00F26473 /* Puzzle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C149AE42579D72D00F26473 /* Puzzle.swift */; };
+		8C149AE72579D72D00F26473 /* Puzzle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C149AE42579D72D00F26473 /* Puzzle.swift */; };
+		8C149AF52579E48C00F26473 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C149AF42579E48C00F26473 /* main.swift */; };
+		8C149AFE2579E4D100F26473 /* input.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C149AFD2579E4C400F26473 /* input.txt */; };
+		8C149B032579E55A00F26473 /* Puzzle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C149AE42579D72D00F26473 /* Puzzle.swift */; };
+		8C149B082579E55D00F26473 /* FileInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C149ADD2579A10D00F26473 /* FileInput.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -46,6 +56,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8C149AF02579E48C00F26473 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 12;
+			dstPath = "";
+			dstSubfolderSpec = 6;
+			files = (
+				8C149AFE2579E4D100F26473 /* input.txt in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -58,6 +78,11 @@
 		8C149ABE25797F2700F26473 /* input.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = input.txt; sourceTree = "<group>"; };
 		8C149ABF25797F3600F26473 /* input.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = input.txt; sourceTree = "<group>"; };
 		8C149AC025797F4200F26473 /* input.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = input.txt; sourceTree = "<group>"; };
+		8C149ADD2579A10D00F26473 /* FileInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileInput.swift; sourceTree = "<group>"; };
+		8C149AE42579D72D00F26473 /* Puzzle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Puzzle.swift; sourceTree = "<group>"; };
+		8C149AF22579E48C00F26473 /* Day 4 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Day 4"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8C149AF42579E48C00F26473 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		8C149AFD2579E4C400F26473 /* input.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = input.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,15 +107,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8C149AEF2579E48C00F26473 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		8C149A6A2578477800F26473 = {
 			isa = PBXGroup;
 			children = (
+				8C149ADC2579A0D900F26473 /* Common */,
 				8C149A9825797E7800F26473 /* Day 1 */,
 				8C149AA825797EB200F26473 /* Day 2 */,
 				8C149AB525797EBE00F26473 /* Day 3 */,
+				8C149AF32579E48C00F26473 /* Day 4 */,
 				8C149A742578477800F26473 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -101,6 +135,7 @@
 				8C149A9725797E7800F26473 /* Day 1 */,
 				8C149AA725797EB200F26473 /* Day 2 */,
 				8C149AB425797EBE00F26473 /* Day 3 */,
+				8C149AF22579E48C00F26473 /* Day 4 */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -130,6 +165,24 @@
 				8C149AB625797EBE00F26473 /* main.swift */,
 			);
 			path = "Day 3";
+			sourceTree = "<group>";
+		};
+		8C149ADC2579A0D900F26473 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				8C149ADD2579A10D00F26473 /* FileInput.swift */,
+				8C149AE42579D72D00F26473 /* Puzzle.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		8C149AF32579E48C00F26473 /* Day 4 */ = {
+			isa = PBXGroup;
+			children = (
+				8C149AFD2579E4C400F26473 /* input.txt */,
+				8C149AF42579E48C00F26473 /* main.swift */,
+			);
+			path = "Day 4";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -186,6 +239,23 @@
 			productReference = 8C149AB425797EBE00F26473 /* Day 3 */;
 			productType = "com.apple.product-type.tool";
 		};
+		8C149AF12579E48C00F26473 /* Day 4 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8C149AF62579E48C00F26473 /* Build configuration list for PBXNativeTarget "Day 4" */;
+			buildPhases = (
+				8C149AEE2579E48C00F26473 /* Sources */,
+				8C149AEF2579E48C00F26473 /* Frameworks */,
+				8C149AF02579E48C00F26473 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Day 4";
+			productName = "Day 4";
+			productReference = 8C149AF22579E48C00F26473 /* Day 4 */;
+			productType = "com.apple.product-type.tool";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -202,6 +272,9 @@
 						CreatedOnToolsVersion = 12.2;
 					};
 					8C149AB325797EBE00F26473 = {
+						CreatedOnToolsVersion = 12.2;
+					};
+					8C149AF12579E48C00F26473 = {
 						CreatedOnToolsVersion = 12.2;
 					};
 				};
@@ -222,6 +295,7 @@
 				8C149A9625797E7800F26473 /* Day 1 */,
 				8C149AA625797EB200F26473 /* Day 2 */,
 				8C149AB325797EBE00F26473 /* Day 3 */,
+				8C149AF12579E48C00F26473 /* Day 4 */,
 			);
 		};
 /* End PBXProject section */
@@ -231,7 +305,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C149ADE2579A10D00F26473 /* FileInput.swift in Sources */,
 				8C149A9A25797E7800F26473 /* main.swift in Sources */,
+				8C149AE52579D72D00F26473 /* Puzzle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -239,7 +315,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C149ADF2579A10D00F26473 /* FileInput.swift in Sources */,
 				8C149AAA25797EB200F26473 /* main.swift in Sources */,
+				8C149AE62579D72D00F26473 /* Puzzle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -247,7 +325,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C149AE02579A10D00F26473 /* FileInput.swift in Sources */,
 				8C149AB725797EBE00F26473 /* main.swift in Sources */,
+				8C149AE72579D72D00F26473 /* Puzzle.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8C149AEE2579E48C00F26473 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8C149B082579E55D00F26473 /* FileInput.swift in Sources */,
+				8C149AF52579E48C00F26473 /* main.swift in Sources */,
+				8C149B032579E55A00F26473 /* Puzzle.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -435,6 +525,28 @@
 			};
 			name = Release;
 		};
+		8C149AF72579E48C00F26473 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = SZ7J2MX6JT;
+				ENABLE_HARDENED_RUNTIME = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		8C149AF82579E48C00F26473 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = SZ7J2MX6JT;
+				ENABLE_HARDENED_RUNTIME = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -470,6 +582,15 @@
 			buildConfigurations = (
 				8C149AB925797EBE00F26473 /* Debug */,
 				8C149ABA25797EBE00F26473 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8C149AF62579E48C00F26473 /* Build configuration list for PBXNativeTarget "Day 4" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8C149AF72579E48C00F26473 /* Debug */,
+				8C149AF82579E48C00F26473 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
