@@ -50,7 +50,7 @@ extension Day5: Puzzle {
   }
   
   func part2(withInput input: String) -> String {
-    let boardingPasses = self.makeBoardingPasses(input: input).sorted { $0.seatID < $1.seatID }
+    let boardingPasses = makeBoardingPasses(input: input).sorted { $0.seatID < $1.seatID }
     
     var mySeatID = -1
     for (index, pass) in boardingPasses.enumerated() {
