@@ -1,6 +1,6 @@
 //
 //  main.swift
-//  Day Puzzle Template
+//  Day 6
 //
 //  Created by Christopher Rumpf on 12/3/20.
 //
