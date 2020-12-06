@@ -24,10 +24,9 @@ extension Day6: Puzzle {
   }
   
   func part2(withInput input: String) -> String {
-    
     let answer = input.trimmingCharacters(in: .whitespacesAndNewlines)
       .components(separatedBy: "\n\n")
-      .map { $0.split(separator: "\n").map { Set($0)} }
+      .map { $0.split(separator: "\n").map { Set($0) } }
       .map { answers -> Int in
         let common = answers.reduce(answers.first!) { (result, set) in
           result.intersection(set)
