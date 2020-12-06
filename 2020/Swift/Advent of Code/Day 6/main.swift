@@ -63,11 +63,11 @@ let day = Day6()
 
 print("====Test 1====")
 let test1 = day.part1(withInput: testInput)
-print(test1)
+print(Int(test1) == 11)
 
 print("====Test 2====")
 let test2 = day.part2(withInput: testInput)
-print(test2)
+print(Int(test2) == 6)
 
 print("====Part 1====")
 let part1 = day.part1(withInput: fileInput.raw)
