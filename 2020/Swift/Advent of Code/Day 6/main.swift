@@ -12,6 +12,8 @@ class Day6 {
 }
 
 extension Day6: Puzzle {
+  // This approach just concatenates the answers in a group by tossing out the newline and then makes a set.
+  // Could also have used the approach I did in part 2 but used a union instead of an intersection.
   func part1(withInput input: String) -> String {
     String(
       input.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -28,10 +30,8 @@ extension Day6: Puzzle {
       .components(separatedBy: "\n\n")
       .map { $0.split(separator: "\n").map { Set($0) } }
       .map { answers -> Int in
-        let common = answers.reduce(answers.first!) { (result, set) in
-          result.intersection(set)
-        }
-        return common.count
+        guard let first = answers.first else { return 0 }
+        return answers.reduce(first) { $0.intersection($1) }.count
       }
       .reduce(0) { $0 + $1 }
     
