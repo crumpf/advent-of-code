@@ -91,7 +91,7 @@ class Day5Redux: Puzzle {
     input.replacingOccurrences(of: "F|L", with: "0", options: .regularExpression)
       .replacingOccurrences(of: "B|R", with: "1", options: .regularExpression)
       .lines()
-      .map { Int($0, radix: 2) ?? -1 }
+      .compactMap { Int($0, radix: 2) }
   }
   
   func part1(withInput input: String) -> String {
