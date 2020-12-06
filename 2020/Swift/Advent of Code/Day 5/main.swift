@@ -46,7 +46,7 @@ class Day5 {
 
 extension Day5: Puzzle {
   func part1(withInput input: String) -> String {
-    String(describing: makeBoardingPasses(input: input).map { $0.seatID }.max())
+    String(makeBoardingPasses(input: input).map { $0.seatID }.max()!)
   }
   
   func part2(withInput input: String) -> String {
@@ -81,3 +81,38 @@ print(part1)
 print("====Part 2====")
 let part2 = day.part2(withInput: fileInput.raw)
 print(part2)
+
+// ------------------------
+// Doing a little redux on Day 5 solution now that I've had more time to ruminate on it.
+// ------------------------
+
+class Day5Redux: Puzzle {
+  private func makeSeatIDs(input: String) -> [Int] {
+    input.replacingOccurrences(of: "F|L", with: "0", options: .regularExpression)
+      .replacingOccurrences(of: "B|R", with: "1", options: .regularExpression)
+      .lines()
+      .map { Int($0, radix: 2) ?? -1 }
+  }
+  
+  func part1(withInput input: String) -> String {
+    String(
+      makeSeatIDs(input: input).max()!
+    )
+  }
+  
+  func part2(withInput input: String) -> String {
+    let seatIDs = makeSeatIDs(input: input)
+    return String(
+      (seatIDs.min()!...seatIDs.max()!).first { !seatIDs.contains($0) }!
+    )
+  }
+}
+
+let redux = Day5Redux()
+print("====Redux Part 1====")
+let reduxPart1 = redux.part1(withInput: fileInput.raw)
+print(reduxPart1)
+
+print("====Redux Part 2====")
+let reduxPart2 = redux.part2(withInput: fileInput.raw)
+print(reduxPart2)
