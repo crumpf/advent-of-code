@@ -28,10 +28,9 @@ class Day7 {
     let contents = components[1]
       .split(separator: ",")
       .reduce(into: [Content]()) { (result, content) in
-        guard !content.contains("no other") else { return }
-        let count = Int(content.trimmingCharacters(in: .whitespaces).split(separator: " ")[0])
+        guard let count = Int(content.trimmingCharacters(in: .whitespaces).split(separator: " ")[0]) else { return }
         let color = content.components(separatedBy: "bag")[0].filter { !$0.isNumber }.trimmingCharacters(in: .whitespaces)
-        result.append(Content(quantity: count!, color: color))
+        result.append(Content(quantity: count, color: color))
       }
     return (ruleColor, contents)
   }
