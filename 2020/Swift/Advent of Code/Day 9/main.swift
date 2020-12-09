@@ -8,9 +8,9 @@
 import Foundation
 
 class Day9 {
-  func hasPair(in set: Array<Int>, withSum sum: Int) -> Bool {
-    let first = set.first { x in
-      nil != set.first { y in
+  func hasPair(in list: Array<Int>, withSum sum: Int) -> Bool {
+    let first = list.first { x in
+      nil != list.first { y in
         guard x != y else { return false }
         return x + y == sum
       }
