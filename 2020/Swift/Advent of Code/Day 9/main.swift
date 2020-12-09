@@ -8,16 +8,55 @@
 import Foundation
 
 class Day9 {
-  
+  func hasPair(in set: Array<Int>, withSum sum: Int) -> Bool {
+    let first = set.first { x in
+      nil != set.first { y in
+        guard x != y else { return false }
+        return x + y == sum
+      }
+    }
+    return first != nil
+  }
 }
 
 extension Day9: Puzzle {
+  // find the first number in the list (after the preamble) which is not the sum of two of the 25 numbers before it.
   func part1(withInput input: String) -> String {
-    return "Not implemented"
+    let numbers = input.lines().compactMap { Int($0) }
+    let preambleCount = 25
+    for i in (preambleCount..<numbers.count) {
+      let preamble = Array(numbers[(i-preambleCount)..<i])
+      if !hasPair(in: preamble, withSum: numbers[i]) {
+        return String(numbers[i])
+      }
+    }
+    
+    return "Not found :("
   }
   
   func part2(withInput input: String) -> String {
-    return "Not implemented"
+    let numbers = input.lines().compactMap { Int($0) }
+    let preambleCount = 25
+    for i in (preambleCount..<numbers.count) {
+      let preamble = Array(numbers[(i-preambleCount)..<i])
+      if !hasPair(in: preamble, withSum: numbers[i]) {
+        // i is the index of the invalid number
+        let invalidNumber = numbers[i]
+        for upper in stride(from: i-1, through: 0, by: -1) {
+          var sum = 0
+          for lower in stride(from: upper, through: 0, by: -1) {
+            sum += numbers[lower]
+            if invalidNumber == sum {
+              // found our range
+              let weakNumbers = Array(numbers[(lower...upper)])
+              return String(weakNumbers.min()! + weakNumbers.max()!)
+            }
+          }
+        }
+      }
+    }
+    
+    return "Not found :("
   }
 }
 

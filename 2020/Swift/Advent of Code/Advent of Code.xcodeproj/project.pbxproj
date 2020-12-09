@@ -48,10 +48,10 @@
 		8CD4B8D7257EB0D30035644F /* Puzzle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C149AE42579D72D00F26473 /* Puzzle.swift */; };
 		8CD4B8D8257EB0D30035644F /* String+Advent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C149B0D257A814300F26473 /* String+Advent.swift */; };
 		8CD4B8E8257F50370035644F /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CD4B8E7257F50370035644F /* main.swift */; };
-		8CD4B8F6257F505D0035644F /* input.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CD4B8F5257F50570035644F /* input.txt */; };
 		8CD4B900257F50690035644F /* FileInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C149ADD2579A10D00F26473 /* FileInput.swift */; };
 		8CD4B901257F50690035644F /* String+Advent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C149B0D257A814300F26473 /* String+Advent.swift */; };
 		8CD4B902257F50690035644F /* Puzzle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C149AE42579D72D00F26473 /* Puzzle.swift */; };
+		8CD4B915258094B90035644F /* input.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CD4B8F5257F50570035644F /* input.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -137,13 +137,13 @@
 		};
 		8CD4B8E3257F50370035644F /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			dstPath = "";
 			dstSubfolderSpec = 6;
 			files = (
-				8CD4B8F6257F505D0035644F /* input.txt in CopyFiles */,
+				8CD4B915258094B90035644F /* input.txt in CopyFiles */,
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
