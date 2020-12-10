@@ -1,3 +1,10 @@
+//
+//  main.swift
+//  Day 1
+//
+//  Created by Christopher Rumpf on 12/1/20.
+//
+
 import Foundation
 
 extension Array where Element == Int {

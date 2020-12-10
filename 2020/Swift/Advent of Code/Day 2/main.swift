@@ -1,3 +1,10 @@
+//
+//  main.swift
+//  Day 2
+//
+//  Created by Christopher Rumpf on 12/2/20.
+//
+
 import Foundation
 
 struct Policy {

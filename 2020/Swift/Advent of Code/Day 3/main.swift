@@ -1,3 +1,10 @@
+//
+//  main.swift
+//  Day 3
+//
+//  Created by Christopher Rumpf on 12/3/20.
+//
+
 import Foundation
 
 struct Cartesian { var x, y: Int }

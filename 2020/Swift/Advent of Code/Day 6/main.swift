@@ -2,7 +2,7 @@
 //  main.swift
 //  Day 6
 //
-//  Created by Christopher Rumpf on 12/3/20.
+//  Created by Christopher Rumpf on 12/6/20.
 //
 
 import Foundation
