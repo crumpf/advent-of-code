@@ -10,20 +10,22 @@ import Foundation
 typealias Location = SIMD2<Int>
 
 extension Array where Element == [Character] {
-  func applyingAdjacentRules(withSeatsAt seats: [Location]) -> [[Character]] {
+  func applyingAdjacentRules() -> [[Character]] {
     var changedLayout = self
-    seats.forEach { (loc) in
-      switch self[loc.y][loc.x] {
-      case "L":
-        if self.countAdjacentOccupied(to: loc) == 0 {
-          changedLayout[loc.y][loc.x] = "#"
+    for (y, row) in self.enumerated() {
+      for (x, value) in row.enumerated() {
+        switch value {
+        case "L":
+          if self.countAdjacentOccupied(to: Location(x, y)) == 0 {
+            changedLayout[y][x] = "#"
+          }
+        case "#":
+          if self.countAdjacentOccupied(to: Location(x, y)) >= 4 {
+            changedLayout[y][x] = "L"
+          }
+        default:
+          break
         }
-      case "#":
-        if self.countAdjacentOccupied(to: loc) >= 4 {
-          changedLayout[loc.y][loc.x] = "L"
-        }
-      default:
-        break
       }
     }
     return changedLayout
@@ -43,20 +45,22 @@ extension Array where Element == [Character] {
       .reduce(0) { $0 + (self[$1.y][$1.x] == "#" ? 1 : 0) }
   }
   
-  func applyingVisibleRules(withSeatsAt seats: [Location]) -> [[Character]] {
+  func applyingVisibleRules() -> [[Character]] {
     var changedLayout = self
-    seats.forEach { (loc) in
-      switch self[loc.y][loc.x] {
-      case "L":
-        if self.countVisibleOccupied(from: loc) == 0 {
-          changedLayout[loc.y][loc.x] = "#"
+    for (y, row) in self.enumerated() {
+      for (x, value) in row.enumerated() {
+        switch value {
+        case "L":
+          if self.countVisibleOccupied(from: Location(x, y)) == 0 {
+            changedLayout[y][x] = "#"
+          }
+        case "#":
+          if self.countVisibleOccupied(from: Location(x, y)) >= 5 {
+            changedLayout[y][x] = "L"
+          }
+        default:
+          break
         }
-      case "#":
-        if self.countVisibleOccupied(from: loc) >= 5 {
-          changedLayout[loc.y][loc.x] = "L"
-        }
-      default:
-        break
       }
     }
     return changedLayout
@@ -100,10 +104,9 @@ extension Day11: Puzzle {
   /// Simulate your seating area by applying the seating rules repeatedly until no seats change state. How many seats end up occupied?
   func part1(withInput input: String) -> String {
     var layout = input.lines().map { Array($0) }
-    let seatLocs = makeSeatLocations(layout: layout)
     
     while true {
-      let iteratedLayout = layout.applyingAdjacentRules(withSeatsAt: seatLocs)
+      let iteratedLayout = layout.applyingAdjacentRules()
       if layout == iteratedLayout {
         break
       }
@@ -116,10 +119,9 @@ extension Day11: Puzzle {
   /// Given the new visibility method and the rule change for occupied seats becoming empty, once equilibrium is reached, how many seats end up occupied?
   func part2(withInput input: String) -> String {
     var layout = input.lines().map { Array($0) }
-    let seatLocs = makeSeatLocations(layout: layout)
     
     while true {
-      let iteratedLayout = layout.applyingVisibleRules(withSeatsAt: seatLocs)
+      let iteratedLayout = layout.applyingVisibleRules()
       if layout == iteratedLayout {
         break
       }
