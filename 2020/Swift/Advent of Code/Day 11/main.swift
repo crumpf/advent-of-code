@@ -10,44 +10,46 @@ import Foundation
 typealias Location = SIMD2<Int>
 
 class Day11 {
+  func makeSeatLocations(layout: [[Character]]) -> [Location] {
+    var seatLocs = [Location]()
+    for (y, row) in layout.enumerated() {
+      for (x, value) in row.enumerated() {
+        if value != "." {
+          seatLocs.append(Location(x,y))
+        }
+      }
+    }
+    return seatLocs
+  }
   
-  func adjacentLocations(to loc: Location, in layout: [[Character]]) -> [Location] {
-    return [loc &+ Location(-1, -1),
+  func numAdjacentOccupied(to loc: Location, layout: [[Character]]) -> Int {
+    let adjacents = [loc &+ Location(-1, -1),
             loc &+ Location(0, -1),
             loc &+ Location(1, -1),
             loc &+ Location(-1, 0),
             loc &+ Location(1, 0),
             loc &+ Location(-1, 1),
             loc &+ Location(0, 1),
-            loc &+ Location(1, 1)].filter {
-              layout.indices.contains($0.y) && layout[$0.y].indices.contains($0.x)
-            }
+            loc &+ Location(1, 1)]
+    return adjacents
+      .filter { layout.indices.contains($0.y) && layout[$0.y].indices.contains($0.x) }
+      .reduce(0) { $0 + (layout[$1.y][$1.x] == "#" ? 1 : 0) }
   }
   
-  func numAdjacentOccupied(to loc: Location, layout: [[Character]]) -> Int {
-    adjacentLocations(to: loc, in: layout).reduce(0) {
-      $0 + (layout[$1.y][$1.x] == "#" ? 1 : 0)
-    }
-  }
-  
-  func applyRules(to layout: [[Character]]) -> [[Character]] {
+  func applyRules(to layout: [[Character]], seatLocations: [Location]) -> [[Character]] {
     var changedLayout = layout
-    
-    for (y, row) in layout.enumerated() {
-      for (x, value) in row.enumerated() {
-        switch value {
-        case "L":
-          if numAdjacentOccupied(to: Location(x, y), layout: layout) == 0 {
-            changedLayout[y][x] = "#"
-          }
-        case "#":
-          if numAdjacentOccupied(to: Location(x, y), layout: layout) >= 4 {
-            changedLayout[y][x] = "L"
-          }
-          break
-        default:
-          continue
+    seatLocations.forEach { (loc) in
+      switch layout[loc.y][loc.x] {
+      case "L":
+        if numAdjacentOccupied(to: loc, layout: layout) == 0 {
+          changedLayout[loc.y][loc.x] = "#"
         }
+      case "#":
+        if numAdjacentOccupied(to: loc, layout: layout) >= 4 {
+          changedLayout[loc.y][loc.x] = "L"
+        }
+      default:
+        break
       }
     }
     
@@ -56,50 +58,41 @@ class Day11 {
   
   // part 2 related methods
   
-  func visibleSeatLocations(to loc: Location, in layout: [[Character]]) -> [Location] {
-    var locations: [Location] = []
+  func numVisibleOccupied(to loc: Location, layout: [[Character]]) -> Int {
+    var visibleSeatLocations: [Location] = []
     let vectors = [Location(-1,-1),Location(0,-1),Location(1,-1),Location(-1,0),Location(1,0),Location(-1,1),Location(0,1),Location(1,1)]
     for vector in vectors {
       var possibleLocation = loc &+ vector
       while layout.indices.contains(possibleLocation.y) && layout[possibleLocation.y].indices.contains(possibleLocation.x) {
         if layout[possibleLocation.y][possibleLocation.x] != "." {
-          locations.append(possibleLocation)
+          visibleSeatLocations.append(possibleLocation)
           break
         }
         possibleLocation = possibleLocation &+ vector
       }
-
     }
-    return locations
-  }
-  
-  func numVisibleOccupied(to loc: Location, layout: [[Character]]) -> Int {
-    visibleSeatLocations(to: loc, in: layout).reduce(0) {
+    
+    return visibleSeatLocations.reduce(0) {
       $0 + (layout[$1.y][$1.x] == "#" ? 1 : 0)
     }
   }
   
-  func applyNewRules(to layout: [[Character]]) -> [[Character]] {
+  func applyNewRules(to layout: [[Character]], seatLocations: [Location]) -> [[Character]] {
     var changedLayout = layout
-    
-    for (y, row) in layout.enumerated() {
-      for (x, value) in row.enumerated() {
-        switch value {
-        case "L":
-          if numVisibleOccupied(to: Location(x, y), layout: layout) == 0 {
-            changedLayout[y][x] = "#"
-          }
-        case "#":
-          if numVisibleOccupied(to: Location(x, y), layout: layout) >= 5 {
-            changedLayout[y][x] = "L"
-          }
-          break
-        default:
-          continue
+    seatLocations.forEach { (loc) in
+      switch layout[loc.y][loc.x] {
+      case "L":
+        if numVisibleOccupied(to: loc, layout: layout) == 0 {
+          changedLayout[loc.y][loc.x] = "#"
         }
+      case "#":
+        if numVisibleOccupied(to: loc, layout: layout) >= 5 {
+          changedLayout[loc.y][loc.x] = "L"
+        }
+      default:
+        break
       }
     }
-    
     return changedLayout
   }
 }
@@ -107,8 +100,10 @@ class Day11 {
 extension Day11: Puzzle {
   func part1(withInput input: String) -> String {
     var layout = input.lines().map { Array($0) }
+    let seatLocs = makeSeatLocations(layout: layout)
+    
     while true {
-      let changedLayout = applyRules(to: layout)
+      let changedLayout = applyRules(to: layout, seatLocations: seatLocs)
       if layout == changedLayout {
         break
       }
@@ -120,8 +115,10 @@ extension Day11: Puzzle {
   
   func part2(withInput input: String) -> String {
     var layout = input.lines().map { Array($0) }
+    let seatLocs = makeSeatLocations(layout: layout)
+    
     while true {
-      let changedLayout = applyNewRules(to: layout)
+      let changedLayout = applyNewRules(to: layout, seatLocations: seatLocs)
       if layout == changedLayout {
         break
       }
