@@ -9,6 +9,79 @@ import Foundation
 
 typealias Location = SIMD2<Int>
 
+extension Array where Element == [Character] {
+  func applyingAdjacentRules(withSeatsAt seats: [Location]) -> [[Character]] {
+    var changedLayout = self
+    seats.forEach { (loc) in
+      switch self[loc.y][loc.x] {
+      case "L":
+        if self.countAdjacentOccupied(to: loc) == 0 {
+          changedLayout[loc.y][loc.x] = "#"
+        }
+      case "#":
+        if self.countAdjacentOccupied(to: loc) >= 4 {
+          changedLayout[loc.y][loc.x] = "L"
+        }
+      default:
+        break
+      }
+    }
+    return changedLayout
+  }
+  
+  func countAdjacentOccupied(to loc: Location) -> Int {
+    let adjacents = [loc &+ Location(-1, -1),
+            loc &+ Location(0, -1),
+            loc &+ Location(1, -1),
+            loc &+ Location(-1, 0),
+            loc &+ Location(1, 0),
+            loc &+ Location(-1, 1),
+            loc &+ Location(0, 1),
+            loc &+ Location(1, 1)]
+    return adjacents
+      .filter { self.indices.contains($0.y) && self[$0.y].indices.contains($0.x) }
+      .reduce(0) { $0 + (self[$1.y][$1.x] == "#" ? 1 : 0) }
+  }
+  
+  func applyingVisibleRules(withSeatsAt seats: [Location]) -> [[Character]] {
+    var changedLayout = self
+    seats.forEach { (loc) in
+      switch self[loc.y][loc.x] {
+      case "L":
+        if self.countVisibleOccupied(from: loc) == 0 {
+          changedLayout[loc.y][loc.x] = "#"
+        }
+      case "#":
+        if self.countVisibleOccupied(from: loc) >= 5 {
+          changedLayout[loc.y][loc.x] = "L"
+        }
+      default:
+        break
+      }
+    }
+    return changedLayout
+  }
+  
+  func countVisibleOccupied(from loc: Location) -> Int {
+    var visibleSeatLocations: [Location] = []
+    let vectors = [Location(-1,-1), Location(0,-1), Location(1,-1), Location(-1,0), Location(1,0), Location(-1,1), Location(0,1), Location(1,1)]
+    for vector in vectors {
+      var possibleLocation = loc &+ vector
+      while self.indices.contains(possibleLocation.y) && self[possibleLocation.y].indices.contains(possibleLocation.x) {
+        if self[possibleLocation.y][possibleLocation.x] != "." {
+          visibleSeatLocations.append(possibleLocation)
+          break
+        }
+        possibleLocation = possibleLocation &+ vector
+      }
+    }
+    
+    return visibleSeatLocations.reduce(0) {
+      $0 + (self[$1.y][$1.x] == "#" ? 1 : 0)
+    }
+  }
+}
+
 class Day11 {
   func makeSeatLocations(layout: [[Character]]) -> [Location] {
     var seatLocs = [Location]()
@@ -21,108 +94,36 @@ class Day11 {
     }
     return seatLocs
   }
-  
-  func numAdjacentOccupied(to loc: Location, layout: [[Character]]) -> Int {
-    let adjacents = [loc &+ Location(-1, -1),
-            loc &+ Location(0, -1),
-            loc &+ Location(1, -1),
-            loc &+ Location(-1, 0),
-            loc &+ Location(1, 0),
-            loc &+ Location(-1, 1),
-            loc &+ Location(0, 1),
-            loc &+ Location(1, 1)]
-    return adjacents
-      .filter { layout.indices.contains($0.y) && layout[$0.y].indices.contains($0.x) }
-      .reduce(0) { $0 + (layout[$1.y][$1.x] == "#" ? 1 : 0) }
-  }
-  
-  func applyRules(to layout: [[Character]], seatLocations: [Location]) -> [[Character]] {
-    var changedLayout = layout
-    seatLocations.forEach { (loc) in
-      switch layout[loc.y][loc.x] {
-      case "L":
-        if numAdjacentOccupied(to: loc, layout: layout) == 0 {
-          changedLayout[loc.y][loc.x] = "#"
-        }
-      case "#":
-        if numAdjacentOccupied(to: loc, layout: layout) >= 4 {
-          changedLayout[loc.y][loc.x] = "L"
-        }
-      default:
-        break
-      }
-    }
-    
-    return changedLayout
-  }
-  
-  // part 2 related methods
-  
-  func numVisibleOccupied(to loc: Location, layout: [[Character]]) -> Int {
-    var visibleSeatLocations: [Location] = []
-    let vectors = [Location(-1,-1),Location(0,-1),Location(1,-1),Location(-1,0),Location(1,0),Location(-1,1),Location(0,1),Location(1,1)]
-    for vector in vectors {
-      var possibleLocation = loc &+ vector
-      while layout.indices.contains(possibleLocation.y) && layout[possibleLocation.y].indices.contains(possibleLocation.x) {
-        if layout[possibleLocation.y][possibleLocation.x] != "." {
-          visibleSeatLocations.append(possibleLocation)
-          break
-        }
-        possibleLocation = possibleLocation &+ vector
-      }
-    }
-    
-    return visibleSeatLocations.reduce(0) {
-      $0 + (layout[$1.y][$1.x] == "#" ? 1 : 0)
-    }
-  }
-  
-  func applyNewRules(to layout: [[Character]], seatLocations: [Location]) -> [[Character]] {
-    var changedLayout = layout
-    seatLocations.forEach { (loc) in
-      switch layout[loc.y][loc.x] {
-      case "L":
-        if numVisibleOccupied(to: loc, layout: layout) == 0 {
-          changedLayout[loc.y][loc.x] = "#"
-        }
-      case "#":
-        if numVisibleOccupied(to: loc, layout: layout) >= 5 {
-          changedLayout[loc.y][loc.x] = "L"
-        }
-      default:
-        break
-      }
-    }
-    return changedLayout
-  }
 }
 
 extension Day11: Puzzle {
+  /// Simulate your seating area by applying the seating rules repeatedly until no seats change state. How many seats end up occupied?
   func part1(withInput input: String) -> String {
     var layout = input.lines().map { Array($0) }
     let seatLocs = makeSeatLocations(layout: layout)
     
     while true {
-      let changedLayout = applyRules(to: layout, seatLocations: seatLocs)
-      if layout == changedLayout {
+      let iteratedLayout = layout.applyingAdjacentRules(withSeatsAt: seatLocs)
+      if layout == iteratedLayout {
         break
       }
-      layout = changedLayout
+      layout = iteratedLayout
     }
     
     return String(layout.joined().filter { $0 == "#" }.count)
   }
   
+  /// Given the new visibility method and the rule change for occupied seats becoming empty, once equilibrium is reached, how many seats end up occupied?
   func part2(withInput input: String) -> String {
     var layout = input.lines().map { Array($0) }
     let seatLocs = makeSeatLocations(layout: layout)
     
     while true {
-      let changedLayout = applyNewRules(to: layout, seatLocations: seatLocs)
-      if layout == changedLayout {
+      let iteratedLayout = layout.applyingVisibleRules(withSeatsAt: seatLocs)
+      if layout == iteratedLayout {
         break
       }
-      layout = changedLayout
+      layout = iteratedLayout
     }
     
     return String(layout.joined().filter { $0 == "#" }.count)
