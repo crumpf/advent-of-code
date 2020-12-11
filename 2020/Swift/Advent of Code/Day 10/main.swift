@@ -1,6 +1,6 @@
 //
 //  main.swift
-//  Day Puzzle Template
+//  Day 10
 //
 //  Created by Christopher Rumpf on 12/10/20.
 //

@@ -1,6 +1,6 @@
 //
 //  main.swift
-//  Day Puzzle Template
+//  Day 8
 //
 //  Created by Christopher Rumpf on 12/8/20.
 //
