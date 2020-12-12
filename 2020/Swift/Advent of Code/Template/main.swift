@@ -1,34 +1,23 @@
 //
 //  main.swift
-//  Day Puzzle Template
+//  Day X 
 //
-//  Created by Christopher Rumpf on 12/3/20.
+//  Created by Christopher Rumpf on 12/12/20.
 //
 
 import Foundation
 
-class Day {
-  
-}
-
-extension Day: Puzzle {
-  func part1(withInput input: String) -> String {
-    return "Not implemented"
-  }
-  
-  func part2(withInput input: String) -> String {
-    return "Not implemented"
-  }
-}
-
 guard let fileInput = FileInput(pathRelativeToCurrentDirectory: "input.txt") else { abort() }
-
-let day = Day()
+var startTime = 0.0
+let day = Day(input: fileInput.raw)
 
 print("====Part 1====")
-let part1 = day.part1(withInput: fileInput.raw)
-print(part1)
+startTime = CFAbsoluteTimeGetCurrent()
+let part1 = day.part1()
+print("result: \(part1), duration: \((CFAbsoluteTimeGetCurrent()-startTime)*1000)ms")
 
 print("====Part 2====")
-let part2 = day.part2(withInput: fileInput.raw)
-print(part2)
+startTime = CFAbsoluteTimeGetCurrent()
+let part2 = day.part2()
+print("result: \(part2), duration: \((CFAbsoluteTimeGetCurrent()-startTime)*1000)ms")
+
