@@ -34,7 +34,7 @@ class Day13: Day {
     
     var t = 0
     var stride = 1
-    var foundMatches = 0
+    var matchesSoFar = 0
 
     // starting at time 0, all the buses leave
     // check the list of buses to find the first N that satisfy their departure based on their index
@@ -46,10 +46,11 @@ class Day13: Day {
       let matches = busesMatchPositon(forTime: t, schedule: schedule)
       if matches == schedule.count {
         return String(t)
-      }
-      if matches != foundMatches {
-        foundMatches = matches
+      } else if matches > matchesSoFar {
+        matchesSoFar = matches
         stride = schedule[0..<matches].reduce(1) { lcm($0, $1.1) }
+      } else if matches < matchesSoFar {
+        return "Error. Something went wrong. We should never find less matches than we're already iterating on."
       }
       t += stride
     }
