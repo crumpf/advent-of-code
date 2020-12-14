@@ -68,6 +68,7 @@
 		8CA2BCF2258797E60044102D /* FileInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C149ADD2579A10D00F26473 /* FileInput.swift */; };
 		8CA2BCF3258797E60044102D /* String+Advent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C149B0D257A814300F26473 /* String+Advent.swift */; };
 		8CA2BCF4258797E60044102D /* Puzzle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C149AE42579D72D00F26473 /* Puzzle.swift */; };
+		8CA2BD0425879B440044102D /* input.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CA2BCB1258797C50044102D /* input.txt */; };
 		8CD4B833257AC1060035644F /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CD4B832257AC1060035644F /* main.swift */; };
 		8CD4B83D257AC1AC0035644F /* input.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CD4B83C257AC19E0035644F /* input.txt */; };
 		8CD4B848257AC1DA0035644F /* FileInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C149ADD2579A10D00F26473 /* FileInput.swift */; };
@@ -163,12 +164,13 @@
 		};
 		8CA2BC992587976A0044102D /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
+			buildActionMask = 12;
+			dstPath = "";
+			dstSubfolderSpec = 6;
 			files = (
+				8CA2BD0425879B440044102D /* input.txt in CopyFiles */,
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 		8CD4B82E257AC1050035644F /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
