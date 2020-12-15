@@ -18,33 +18,35 @@ class Day15: Day {
     String(numberSpoken(onTurn: 30000000))
   }
   
-  func numberSpoken(onTurn turn: Int) -> Int {
-    var lastSpoken: [Int: Int] = [:] // key: number, value: turn last spoken
+  func numberSpoken(onTurn stop: Int) -> Int {
+    var whenLastSpoken: [Int: Int] = [:] // key: number, value: turn last spoken
     var t = 0
-    var last = 0
+    var last = 0 /// the last number that was spoken
     input.lines().first!.components(separatedBy: ",").compactMap { Int($0) }.forEach {
       t += 1
       last = $0
-      lastSpoken[last] = t
+      whenLastSpoken[last] = t
     }
-    var previouslySpoken: [Int: Int] = [:]
+    var whenPreviouslySpoken: [Int: Int] = [:]
     
     repeat {
       t += 1
-      guard let lastTurn = lastSpoken[last] else { return -1 }
-      if previouslySpoken[last] == nil {
+      guard let lastTurn = whenLastSpoken[last] else { return -1 /* error */ }
+      if whenPreviouslySpoken[last] == nil {
+        // If that was the first time the number has been spoken, the current player says 0.
         last = 0
-        previouslySpoken[last] = lastSpoken[last]
-        lastSpoken[last] = t
-      } else if let previousTurn = previouslySpoken[last] {
+        whenPreviouslySpoken[last] = whenLastSpoken[last]
+        whenLastSpoken[last] = t
+      } else if let previousTurn = whenPreviouslySpoken[last] {
+        // Otherwise, the number had been spoken before; the current player announces how many turns apart the number is from when it was previously spoken.
         last = lastTurn - previousTurn
-        previouslySpoken[last] = lastSpoken[last]
-        lastSpoken[last] = t
+        whenPreviouslySpoken[last] = whenLastSpoken[last]
+        whenLastSpoken[last] = t
       } else {
-        return -2
+        return -2  // error
       }
       
-    } while t < turn
+    } while t < stop
     
     return last
   }
