@@ -43,6 +43,10 @@ extension SIMD4 where Scalar == Int {
   }
 }
 
+struct Region<T> {
+  let min, max: T
+}
+
 class Day17: Day {
   /// Starting with your given initial configuration, simulate six cycles. How many cubes are left in the active state after the sixth cycle?
   func part1() -> String {
@@ -54,13 +58,12 @@ class Day17: Day {
       }
     }
     
-    var min = SIMD3(0, 0, 0)
-    var max = SIMD3(lines[0].count-1, lines[0].count-1, 0)
+    var region = Region(min: SIMD3.zero, max: SIMD3(lines[0].count-1, lines[0].count-1, 0))
     
     (1...6).forEach { _ in
-      min = min &- SIMD3(1, 1, 1)
-      max = max &+ SIMD3(1, 1, 1)
-      cubes = cycle(cubes: cubes, min: min, max: max)
+      region = Region(min: region.min &- SIMD3.one,
+                      max: region.max &+ SIMD3.one)
+      cubes = cycle(cubes: cubes, in: region)
     }
     
     return String(cubes.filter { $0.value == "#" }.count)
@@ -76,13 +79,12 @@ class Day17: Day {
       }
     }
     
-    var min = SIMD4(0, 0, 0, 0)
-    var max = SIMD4(lines[0].count-1, lines[0].count-1, 0, 0)
+    var region = Region(min: SIMD4.zero, max: SIMD4(lines[0].count-1, lines[0].count-1, 0, 0))
     
     (1...6).forEach { _ in
-      min = min &- SIMD4(1, 1, 1, 1)
-      max = max &+ SIMD4(1, 1, 1, 1)
-      cubes = cycle(cubes4d: cubes, min: min, max: max)
+      region = Region(min: region.min &- SIMD4.one,
+                      max: region.max &+ SIMD4.one)
+      cubes = cycle(cubes: cubes, in: region)
     }
     
     return String(cubes.filter { $0.value == "#" }.count)
@@ -94,18 +96,18 @@ class Day17: Day {
    - If a cube is active and exactly 2 or 3 of its neighbors are also active, the cube remains active. Otherwise, the cube becomes inactive.
    - If a cube is inactive but exactly 3 of its neighbors are active, the cube becomes active. Otherwise, the cube remains inactive.
    */
-  private func cycle(cubes: [SIMD3<Int>: Character], min: SIMD3<Int>, max: SIMD3<Int>) -> [SIMD3<Int>: Character] {
+  private func cycle(cubes: [SIMD3<Int>: Character], in region: Region<SIMD3<Int>>) -> [SIMD3<Int>: Character] {
     var newCubes = cubes
-    (min.z...max.z).forEach { z in
-      (min.y...max.y).forEach { y in
-        (min.x...max.x).forEach { x in
-          let xyz = SIMD3(x, y, z)
-          let status = cubes[xyz] ?? "."
-          let neighborActiveCount = xyz.neighborsActive(cubes: cubes)
+    (region.min.z...region.max.z).forEach { z in
+      (region.min.y...region.max.y).forEach { y in
+        (region.min.x...region.max.x).forEach { x in
+          let coordinate = SIMD3(x, y, z)
+          let status = cubes[coordinate] ?? "."
+          let neighborActiveCount = coordinate.neighborsActive(cubes: cubes)
           if status == "#" && !(2...3).contains(neighborActiveCount) {
-            newCubes[xyz] = "."
+            newCubes[coordinate] = "."
           } else if status == "." && neighborActiveCount == 3 {
-            newCubes[xyz] = "#"
+            newCubes[coordinate] = "#"
           }
         }
       }
@@ -113,19 +115,19 @@ class Day17: Day {
     return newCubes
   }
   
-  private func cycle(cubes4d: [SIMD4<Int>: Character], min: SIMD4<Int>, max: SIMD4<Int>) -> [SIMD4<Int>: Character] {
-    var newCubes = cubes4d
-    (min.w...max.w).forEach { w in
-      (min.z...max.z).forEach { z in
-        (min.y...max.y).forEach { y in
-          (min.x...max.x).forEach { x in
-            let xyz = SIMD4(x, y, z, w)
-            let status = cubes4d[xyz] ?? "."
-            let neighborActiveCount = xyz.neighborsActive(cubes: cubes4d)
+  private func cycle(cubes: [SIMD4<Int>: Character], in region: Region<SIMD4<Int>>) -> [SIMD4<Int>: Character] {
+    var newCubes = cubes
+    (region.min.w...region.max.w).forEach { w in
+      (region.min.z...region.max.z).forEach { z in
+        (region.min.y...region.max.y).forEach { y in
+          (region.min.x...region.max.x).forEach { x in
+            let coordinate = SIMD4(x, y, z, w)
+            let status = cubes[coordinate] ?? "."
+            let neighborActiveCount = coordinate.neighborsActive(cubes: cubes)
             if status == "#" && !(2...3).contains(neighborActiveCount) {
-              newCubes[xyz] = "."
+              newCubes[coordinate] = "."
             } else if status == "." && neighborActiveCount == 3 {
-              newCubes[xyz] = "#"
+              newCubes[coordinate] = "#"
             }
           }
         }
