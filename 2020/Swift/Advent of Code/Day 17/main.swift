@@ -9,6 +9,12 @@ import Foundation
 
 guard let fileInput = FileInput(pathRelativeToCurrentDirectory: "input.txt") else { abort() }
 var startTime = 0.0
+
+let test = """
+.#.
+..#
+###
+"""
 let day = Day17(input: fileInput.raw)
 
 print("====Part 1====")
