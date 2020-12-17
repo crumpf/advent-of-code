@@ -8,13 +8,13 @@
 import Foundation
 
 extension SIMD3 where Scalar == Int {
-  func neighborsActive(cubes: [SIMD3<Int>: Character]) -> Int {
+  func neighborsActive(inCubeMap: [SIMD3<Int>: Character]) -> Int {
     var count = 0
     ((z-1)...(z+1)).forEach { z in
       ((y-1)...(y+1)).forEach { y in
         ((x-1)...(x+1)).forEach { x in
-          let xyz = SIMD3(x, y, z)
-          if xyz != self, let status = cubes[xyz], status == "#" {
+          let coordinate = SIMD3(x, y, z)
+          if coordinate != self, let status = inCubeMap[coordinate], status == "#" {
             count += 1
           }
         }
@@ -25,14 +25,14 @@ extension SIMD3 where Scalar == Int {
 }
 
 extension SIMD4 where Scalar == Int {
-  func neighborsActive(cubes: [SIMD4<Int>: Character]) -> Int {
+  func neighborsActive(inCubeMap: [SIMD4<Int>: Character]) -> Int {
     var count = 0
     ((w-1)...(w+1)).forEach { w in
       ((z-1)...(z+1)).forEach { z in
         ((y-1)...(y+1)).forEach { y in
           ((x-1)...(x+1)).forEach { x in
-            let loc = SIMD4(x, y, z, w)
-            if loc != self, let status = cubes[loc], status == "#" {
+            let coordinate = SIMD4(x, y, z, w)
+            if coordinate != self, let status = inCubeMap[coordinate], status == "#" {
               count += 1
             }
           }
@@ -103,7 +103,7 @@ class Day17: Day {
         (region.min.x...region.max.x).forEach { x in
           let coordinate = SIMD3(x, y, z)
           let status = cubes[coordinate] ?? "."
-          let neighborActiveCount = coordinate.neighborsActive(cubes: cubes)
+          let neighborActiveCount = coordinate.neighborsActive(inCubeMap: cubes)
           if status == "#" && !(2...3).contains(neighborActiveCount) {
             newCubes[coordinate] = "."
           } else if status == "." && neighborActiveCount == 3 {
@@ -123,7 +123,7 @@ class Day17: Day {
           (region.min.x...region.max.x).forEach { x in
             let coordinate = SIMD4(x, y, z, w)
             let status = cubes[coordinate] ?? "."
-            let neighborActiveCount = coordinate.neighborsActive(cubes: cubes)
+            let neighborActiveCount = coordinate.neighborsActive(inCubeMap: cubes)
             if status == "#" && !(2...3).contains(neighborActiveCount) {
               newCubes[coordinate] = "."
             } else if status == "." && neighborActiveCount == 3 {
