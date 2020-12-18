@@ -18,6 +18,7 @@ class Day18: Day {
                     .reduce(0, +))
   }
   
+  /// What do you get if you add up the results of evaluating the homework problems using these new rules?
   func part2() -> String {
     return String(input
                     .replacingOccurrences(of: " ", with: "")
@@ -26,6 +27,7 @@ class Day18: Day {
                     .reduce(0, +))
   }
   
+  /// operators have the same precedence, and are evaluated left-to-right
   private func solveExpression(_ expression: String) -> Int {
     guard let leftOperandString = firstOperand(in: expression) else { return 0 }
     var leftOperand = Int(leftOperandString) ?? solveExpression(String(leftOperandString.dropFirst().dropLast()))
@@ -71,6 +73,7 @@ class Day18: Day {
     return String(firstChar)
   }
   
+  /// addition is evaluated before multiplication
   private func solveWithPrecedence(expression: String) -> Int {
     guard let leftOperandString = firstOperand(in: expression) else { return 0 }
     var leftOperand = Int(leftOperandString) ?? solveWithPrecedence(expression: String(leftOperandString.dropFirst().dropLast()))
