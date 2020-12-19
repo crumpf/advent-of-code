@@ -17,12 +17,6 @@ struct PasswordRecord {
   let password: String
 }
 
-extension StringProtocol {
-  subscript(offset: Int) -> Character {
-    self[index(startIndex, offsetBy: offset)]
-  }
-}
-
 class Day2: Day {
   /// How many passwords are valid according to their policies?
   func part1() -> String {
