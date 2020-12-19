@@ -32,6 +32,7 @@
 		8C07DF1A258DC0920098D3C4 /* Day19.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C07DF18258DC0920098D3C4 /* Day19.swift */; };
 		8C07DF1B258DC0920098D3C4 /* Day19.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C07DF18258DC0920098D3C4 /* Day19.swift */; };
 		8C07DF58258DC0CB0098D3C4 /* input.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C07DF17258DC0920098D3C4 /* input.txt */; };
+		8C07E022258E49670098D3C4 /* String+Subscripts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C07DE56258D59B80098D3C4 /* String+Subscripts.swift */; };
 		8C149A9A25797E7800F26473 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C149A9925797E7800F26473 /* main.swift */; };
 		8C149AAA25797EB200F26473 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C149AA925797EB200F26473 /* main.swift */; };
 		8C149AB725797EBE00F26473 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C149AB625797EBE00F26473 /* main.swift */; };
@@ -1333,6 +1334,7 @@
 				8C07DF14258DC0830098D3C4 /* String+Advent.swift in Sources */,
 				8C07DF16258DC0830098D3C4 /* FileInput.swift in Sources */,
 				8C07DF1B258DC0920098D3C4 /* Day19.swift in Sources */,
+				8C07E022258E49670098D3C4 /* String+Subscripts.swift in Sources */,
 				8C07DEFC258DC0280098D3C4 /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
