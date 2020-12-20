@@ -21,3 +21,7 @@ startTime = CFAbsoluteTimeGetCurrent()
 let part2 = day.part2()
 print("result: \(part2), duration: \((CFAbsoluteTimeGetCurrent()-startTime)*1000)ms")
 
+print("====Part 2 v2====")
+startTime = CFAbsoluteTimeGetCurrent()
+let part2v2 = day.part2v2()
+print("result: \(part2v2), duration: \((CFAbsoluteTimeGetCurrent()-startTime)*1000)ms")
