@@ -27,6 +27,7 @@ class Day21: Day {
   
   let foods: [Food]
   
+  /// Determine which ingredients cannot possibly contain any of the allergens in your list. How many times do any of those ingredients appear?
   func part1() -> String {
     var allergenPossibilities: [String: [Set<String>]] = [:] // map of allergen name to different sets of ingredients it could possibly be in
     foods.forEach { food in
@@ -52,7 +53,6 @@ class Day21: Day {
         // look for a single ingredient containing the allergen that we haven't already identified
         let unknownIngredients = commonIngredients.subtracting(allergensFound.values)
         if unknownIngredients.count == 1 {
-          print(unknownIngredients)
           allergensFound[allergen] = unknownIngredients.first!
           break
         }
@@ -66,8 +66,38 @@ class Day21: Day {
     return String(appearingCount)
   }
   
+  /// Arrange the ingredients alphabetically by their allergen and separate them by commas to produce your canonical dangerous ingredient list.
   func part2() -> String {
-    "Not Implemented"
+    var allergenPossibilities: [String: [Set<String>]] = [:] // map of allergen name to different sets of ingredients it could possibly be in
+    foods.forEach { food in
+      food.allergens.forEach { allergen in
+        if nil == allergenPossibilities[allergen] {
+          allergenPossibilities[allergen] = [food.ingredients]
+        } else {
+          allergenPossibilities[allergen]?.append(food.ingredients)
+        }
+      }
+    }
+    
+    var allergensFound: [String: String] = [:] // Each allergen is found in exactly one ingredient
+    
+    while allergenPossibilities.count != allergensFound.count {
+      
+      for (allergen, possibilities) in allergenPossibilities {
+        if allergensFound[allergen] != nil {
+          continue
+        }
+        let commonIngredients = possibilities.reduce(possibilities.first!) { $0.intersection($1) }
+        // look for a single ingredient containing the allergen that we haven't already identified
+        let unknownIngredients = commonIngredients.subtracting(allergensFound.values)
+        if unknownIngredients.count == 1 {
+          allergensFound[allergen] = unknownIngredients.first!
+          break
+        }
+      }
+      
+    }
+    
+    return (allergensFound.keys.sorted().compactMap { allergensFound[$0] }.joined(separator: ","))
   }
 }
-
