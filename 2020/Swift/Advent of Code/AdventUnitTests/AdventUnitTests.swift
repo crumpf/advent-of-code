@@ -462,4 +462,15 @@ class AdventUnitTests: XCTestCase {
     XCTAssertEqual(dayPt2.part2(), "12")
     XCTAssertEqual(dayPt2.part2v2(), "12")
   }
+  
+  func testDay21() throws {
+    let test = """
+    mxmxvkd kfcds sqjhc nhms (contains dairy, fish)
+    trh fvjkl sbzzf mxmxvkd (contains dairy)
+    sqjhc fvjkl (contains soy)
+    sqjhc mxmxvkd sbzzf (contains fish)
+    """
+    let day = Day21(input: test)
+    XCTAssertEqual(day.part1(), "5")
+  }
 }
