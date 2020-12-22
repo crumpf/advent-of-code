@@ -41,26 +41,26 @@ class Day21: Day {
     }
     
     let allIngredients = foods.reduce(Set<String>()) { $0.union($1.ingredients) }
-    var allergensFound: [String: String] = [:] // Each allergen is found in exactly one ingredient
+    var ingredientMappedByAllergen: [String: String] = [:] // Each allergen is found in exactly one ingredient
     
-    while allergenPossibilities.count != allergensFound.count {
+    while allergenPossibilities.count != ingredientMappedByAllergen.count {
       
       for (allergen, possibilities) in allergenPossibilities {
-        if allergensFound[allergen] != nil {
+        if ingredientMappedByAllergen[allergen] != nil {
           continue
         }
         let commonIngredients = possibilities.reduce(possibilities.first!) { $0.intersection($1) }
         // look for a single ingredient containing the allergen that we haven't already identified
-        let unknownIngredients = commonIngredients.subtracting(allergensFound.values)
+        let unknownIngredients = commonIngredients.subtracting(ingredientMappedByAllergen.values)
         if unknownIngredients.count == 1 {
-          allergensFound[allergen] = unknownIngredients.first!
+          ingredientMappedByAllergen[allergen] = unknownIngredients.first!
           break
         }
       }
       
     }
     
-    let safeIngredients = allIngredients.subtracting(allergensFound.values)
+    let safeIngredients = allIngredients.subtracting(ingredientMappedByAllergen.values)
     let appearingCount = foods.reduce(0) { $0 + $1.ingredients.intersection(safeIngredients).count }
       
     return String(appearingCount)
@@ -79,25 +79,25 @@ class Day21: Day {
       }
     }
     
-    var allergensFound: [String: String] = [:] // Each allergen is found in exactly one ingredient
+    var ingredientMappedByAllergen: [String: String] = [:] // Each allergen is found in exactly one ingredient
     
-    while allergenPossibilities.count != allergensFound.count {
+    while allergenPossibilities.count != ingredientMappedByAllergen.count {
       
       for (allergen, possibilities) in allergenPossibilities {
-        if allergensFound[allergen] != nil {
+        if ingredientMappedByAllergen[allergen] != nil {
           continue
         }
         let commonIngredients = possibilities.reduce(possibilities.first!) { $0.intersection($1) }
         // look for a single ingredient containing the allergen that we haven't already identified
-        let unknownIngredients = commonIngredients.subtracting(allergensFound.values)
+        let unknownIngredients = commonIngredients.subtracting(ingredientMappedByAllergen.values)
         if unknownIngredients.count == 1 {
-          allergensFound[allergen] = unknownIngredients.first!
+          ingredientMappedByAllergen[allergen] = unknownIngredients.first!
           break
         }
       }
       
     }
     
-    return (allergensFound.keys.sorted().compactMap { allergensFound[$0] }.joined(separator: ","))
+    return (ingredientMappedByAllergen.keys.sorted().compactMap { ingredientMappedByAllergen[$0] }.joined(separator: ","))
   }
 }
