@@ -7,6 +7,9 @@
 
 import Foundation
 
+let test = Day23(input: "389125467")
+print(test.part1())
+
 guard let fileInput = FileInput(pathRelativeToCurrentDirectory: "input.txt") else { abort() }
 var startTime = 0.0
 let day = Day23(input: fileInput.raw)
