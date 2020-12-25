@@ -495,4 +495,15 @@ class AdventUnitTests: XCTestCase {
     XCTAssertEqual(day.part1(), "306")
     XCTAssertEqual(day.part2(), "291")
   }
+  
+  func testDay25() throws {
+    let test = """
+    5764801
+    17807724
+    """
+    
+    let day = Day25(input: test)
+    XCTAssertEqual(day.part1(), "14897079")
+  }
+  
 }
