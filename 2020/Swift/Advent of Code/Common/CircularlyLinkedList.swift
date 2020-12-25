@@ -9,10 +9,11 @@ import Foundation
 
 // MARK: CircularLinkedList
 
-struct CircularlyLinkedList<Element> {
+struct CircularlyLinkedList<Element> where Element: Hashable {
   private(set) var head: Node<Element>?
+  private var lookup: [Element: Node<Element>] = [:] // use a map to avoid scanning the list when inserting by an element instead of index offset
   
-  var isEmpty: Bool { head == nil }
+  var isEmpty: Bool { count == 0 }
   
   /// Count of Nodes in the list: O(1)
   private(set) var count: Int = 0
@@ -21,6 +22,7 @@ struct CircularlyLinkedList<Element> {
     head?.previous?.next = nil
     head = nil
     count = 0
+    lookup.removeAll()
   }
 
   /// Moves the head by the specified distance.
@@ -47,7 +49,7 @@ struct CircularlyLinkedList<Element> {
   
   /// Inserts a new element at the specified index (offset from head).
   mutating func insert(_ element: Element, at index: Int) {
-    let node = Node<Element>(element: element)
+    let node = Node(element: element)
     insert(node, at: index)
   }
   
@@ -59,13 +61,28 @@ struct CircularlyLinkedList<Element> {
   }
   
   mutating func insert(_ element: Element, after index: Int) {
-    let node = Node<Element>(element: element)
+    let node = Node(element: element)
     insert(node, after: index)
   }
   
   mutating func insert(_ elements: [Element], after index: Int) {
     elements.reversed().forEach { element in
       insert(element, after: index)
+    }
+  }
+  
+  mutating func insert(_ element: Element, afterElement: Element) {
+    guard let currentNode = lookup[afterElement] else { return }
+    let node = Node(element: element, previous: currentNode, next: currentNode.next)
+    currentNode.next?.previous = node
+    currentNode.next = node
+    lookup[node.element] = node
+    count += 1
+  }
+  
+  mutating func insert(_ elements: [Element], afterElement: Element) {
+    elements.reversed().forEach { element in
+      insert(element, afterElement: afterElement)
     }
   }
   
@@ -82,6 +99,7 @@ struct CircularlyLinkedList<Element> {
     currentNode.next?.previous = currentNode.previous
     currentNode.previous = nil
     currentNode.next = nil
+    lookup[currentNode.element] = nil
     count -= 1
     return currentNode.element
   }
@@ -94,14 +112,15 @@ struct CircularlyLinkedList<Element> {
       head = node
     } else {
       guard let currentNode = self.node(at: index) else { return }
-      currentNode.previous?.next = node
-      node.previous = currentNode.previous
       node.next = currentNode
+      node.previous = currentNode.previous
+      currentNode.previous?.next = node
       currentNode.previous = node
       if index == 0 {
         head = node
       }
     }
+    lookup[node.element] = node
     count += 1
   }
   
@@ -110,16 +129,18 @@ struct CircularlyLinkedList<Element> {
       return
     } else {
       guard let currentNode = self.node(at: index) else { return }
-      currentNode.next?.previous = node
       node.next = currentNode.next
-      currentNode.next = node
       node.previous = currentNode
+      currentNode.next?.previous = node
+      currentNode.next = node
     }
+    lookup[node.element] = node
     count += 1
   }
   
   private func node(at index: Int) -> Node<Element>? {
     guard !isEmpty, index < count else { return nil }
+    guard index != 0 else { return head }
     
     var node = head
     for _ in (0..<index) {
@@ -172,8 +193,10 @@ extension CircularlyLinkedList {
     var next: Node<Element>?
     weak var previous: Node<Element>?
     
-    init(element: Element) {
+    init(element: Element, previous: Node<Element>? = nil, next: Node<Element>? = nil) {
       self.element = element
+      self.previous = previous
+      self.next = next
     }
   }
   
