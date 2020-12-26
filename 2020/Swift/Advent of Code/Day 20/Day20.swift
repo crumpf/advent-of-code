@@ -150,7 +150,9 @@ class Day20: Day {
             else if t1.border.bottom == t2.border.top { matches += 1 }
           }
           if matches > mostMatchesFound { mostMatchesFound = matches }
+          if mostMatchesFound > 2 { break }
         }
+        if mostMatchesFound > 2 { break }
       }
       if mostMatchesFound == 2 {
         corners.append(t1)
