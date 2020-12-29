@@ -46,10 +46,6 @@ class Day23: Day {
       print("destination: \(destinationCup)")
 
       // The crab places the cups it just picked up so that they are immediately clockwise of the destination cup. They keep the same order as when they were picked up.
-//      guard let destinationIndex = cups.firstIndex(of: destinationCup) else {
-//        return "Error: Destination index not found for cup \(destinationCup)."
-//      }
-//      cups.insert(pickUp, after: destinationIndex)
       cups.insert(pickUp, afterElement: destinationCup)
       
       // The crab selects a new current cup: the cup which is immediately clockwise of the current cup.

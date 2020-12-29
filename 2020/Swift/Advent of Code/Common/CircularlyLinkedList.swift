@@ -13,15 +13,12 @@ struct CircularlyLinkedList<Element> where Element: Hashable {
   private(set) var head: Node<Element>?
   private var lookup: [Element: Node<Element>] = [:] // use a map to avoid scanning the list when inserting by an element instead of index offset
   
-  var isEmpty: Bool { count == 0 }
-  
-  /// Count of Nodes in the list: O(1)
-  private(set) var count: Int = 0
+  var isEmpty: Bool { lookup.isEmpty }
+  var count: Int { lookup.count }
   
   mutating func removeAll() {
     head?.previous?.next = nil
     head = nil
-    count = 0
     lookup.removeAll()
   }
 
@@ -77,7 +74,6 @@ struct CircularlyLinkedList<Element> where Element: Hashable {
     currentNode.next?.previous = node
     currentNode.next = node
     lookup[node.element] = node
-    count += 1
   }
   
   mutating func insert(_ elements: [Element], afterElement: Element) {
@@ -100,7 +96,6 @@ struct CircularlyLinkedList<Element> where Element: Hashable {
     currentNode.previous = nil
     currentNode.next = nil
     lookup[currentNode.element] = nil
-    count -= 1
     return currentNode.element
   }
   
@@ -121,7 +116,6 @@ struct CircularlyLinkedList<Element> where Element: Hashable {
       }
     }
     lookup[node.element] = node
-    count += 1
   }
   
   private mutating func insert(_ node: Node<Element>, after index: Int) {
@@ -135,7 +129,6 @@ struct CircularlyLinkedList<Element> where Element: Hashable {
       currentNode.next = node
     }
     lookup[node.element] = node
-    count += 1
   }
   
   private func node(at index: Int) -> Node<Element>? {

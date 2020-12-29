@@ -7,9 +7,9 @@
 
 import Foundation
 
-let test = Day23(input: "389125467")
-print(test.part1())
-print(test.part2())
+//let test = Day23(input: "389125467")
+//print(test.part1())
+//print(test.part2())
 
 guard let fileInput = FileInput(pathRelativeToCurrentDirectory: "input.txt") else { abort() }
 var startTime = 0.0
