@@ -28,7 +28,7 @@ class Day2: Day {
     return "\(finalPos.h * finalPos.d)"
   }
   
-  /// How many passwords are valid according to the new interpretation of the policies?
+  /// Using new interpretation of commands accounting for aim, what do you get if you multiply your final horizontal position by your final depth?
   func part2() -> String {
     let finalPos = course.reduce(into: (h:0, d:0, a:0)) { res, step in
       switch step.0 {
