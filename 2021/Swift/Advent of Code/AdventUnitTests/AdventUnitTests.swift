@@ -19,21 +19,22 @@ class AdventUnitTests: XCTestCase {
   
   func testDay1() throws {
     let input = """
-    199
-    200
-    208
-    210
-    200
-    207
-    240
-    269
-    260
-    263
-    """
+      199
+      200
+      208
+      210
+      200
+      207
+      240
+      269
+      260
+      263
+      """
     let day = Day1(input: input)
     
     XCTAssertEqual(day.part1(), "7", "Part 1 Failed")
     XCTAssertEqual(day.part2(), "5", "Part 2 Failed")
+    XCTAssertEqual(day.part2(windowSize: 3), "5", "Part 2 with windowSize param Failed")
   }
   
 }

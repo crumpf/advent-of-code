@@ -24,6 +24,22 @@ class Day1: Day {
     return String(changes.filter { $0 > 0 }.count)
   }
   
+  /// Another implementation of Part2 using iteration over the measurements and taking and parameterized sliding window size, because why not?
+  func part2(windowSize: Int) -> String {
+    guard measurements.indices.contains(windowSize) else {
+      return "Not enough measurements."
+    }
+    var count = 0
+    for idx in windowSize..<measurements.endIndex {
+      let firstSum = measurements[(idx-windowSize)..<idx].reduce(0, +)
+      let secondSum = measurements[(idx-windowSize+1)...idx].reduce(0, +)
+      if secondSum - firstSum > 0 {
+        count += 1
+      }
+    }
+    return String(count)
+  }
+  
   private(set) lazy var measurements = input.lines().compactMap { Int($0) }
   
 }

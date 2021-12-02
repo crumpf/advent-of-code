@@ -15,3 +15,6 @@ print(day.part1())
 
 print("====Part 2====")
 print(day.part2())
+
+print("====Part 2 alt with windowSize=3 ====")
+print(day.part2(windowSize: 3))
