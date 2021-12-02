@@ -37,4 +37,18 @@ class AdventUnitTests: XCTestCase {
     XCTAssertEqual(day.part2(windowSize: 3), "5", "Part 2 with windowSize param Failed")
   }
   
+  func testDay2() throws {
+    let input = """
+      forward 5
+      down 5
+      forward 8
+      up 3
+      down 8
+      forward 2
+      """
+    let day = Day2(input: input)
+    XCTAssertEqual(day.part1(), "150", "Part 1 Failed")
+    XCTAssertEqual(day.part2(), "Not Implemented", "Part 2 Failed")
+  }
+  
 }
