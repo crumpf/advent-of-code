@@ -12,7 +12,7 @@ class Day1: Day {
   
   /// How many measurements are larger than the previous measurement?
   func part1() -> String {
-    let changes = zip(measurements.dropFirst(), measurements).map { $0 - $1 }
+    let changes = zip(measurements.dropFirst(), measurements).map(-)
     return String(changes.filter { $0 > 0 }.count)
   }
 
@@ -20,7 +20,7 @@ class Day1: Day {
   func part2() -> String {
     let slidingSums = zip(measurements.dropFirst(2), zip(measurements.dropFirst(), measurements))
       .map { $0 + $1.0 + $1.1 }
-    let changes = zip(slidingSums.dropFirst(), slidingSums).map { $0 - $1 }
+    let changes = zip(slidingSums.dropFirst(), slidingSums).map(-)
     return String(changes.filter { $0 > 0 }.count)
   }
   
