@@ -4,6 +4,7 @@
 //
 //  Created by Christopher Rumpf on 12/01/21.
 //
+//  https://adventofcode.com/2021/day/2
 
 import Foundation
 
@@ -11,25 +12,39 @@ class Day2: Day {
 
   /// What do you get if you multiply your final horizontal position by your final depth?
   func part1() -> String {
-    let finalPos = course.reduce(into: (0, 0)) { res, step in
+    let finalPos = course.reduce(into: (h:0, d:0)) { res, step in
       switch step.0 {
       case "forward":
-        res.0 += step.1
+        res.h += step.1
       case "down":
-        res.1 += step.1
+        res.d += step.1
       case "up":
-        res.1 -= step.1
+        res.d -= step.1
       default:
-        abort()
+        fatalError("Invalid course instruction: \(step)")
       }
     }
     print("Final position: \(finalPos)")
-    return "\(finalPos.0 * finalPos.1)"
+    return "\(finalPos.h * finalPos.d)"
   }
   
   /// How many passwords are valid according to the new interpretation of the policies?
   func part2() -> String {
-    "Not Implemented"
+    let finalPos = course.reduce(into: (h:0, d:0, a:0)) { res, step in
+      switch step.0 {
+      case "down":
+        res.a += step.1
+      case "up":
+        res.a -= step.1
+      case "forward":
+        res.h += step.1
+        res.d += res.a * step.1
+      default:
+        fatalError("Invalid course instruction: \(step)")
+      }
+    }
+    print("Final position: \(finalPos)")
+    return "\(finalPos.h * finalPos.d)"
   }
   
   private(set) lazy var course: [(String, Int)] = input.lines()
