@@ -16,7 +16,7 @@ class Day1: Day {
     return String(changes.filter { $0 > 0 }.count)
   }
 
-  /// ?
+  /// Consider sums of a three-measurement sliding window. How many sums are larger than the previous sum?
   func part2() -> String {
     let slidingSums = zip(measurements.dropFirst(2), zip(measurements.dropFirst(), measurements))
       .map { $0 + $1.0 + $1.1 }
