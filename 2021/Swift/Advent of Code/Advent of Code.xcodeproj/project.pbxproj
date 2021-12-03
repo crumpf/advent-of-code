@@ -94,6 +94,7 @@
 		8C149B0F257A814300F26473 /* String+Advent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C149B0D257A814300F26473 /* String+Advent.swift */; };
 		8C149B10257A814300F26473 /* String+Advent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C149B0D257A814300F26473 /* String+Advent.swift */; };
 		8C149B11257A814300F26473 /* String+Advent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C149B0D257A814300F26473 /* String+Advent.swift */; };
+		8C1ED8CF275A56C400628D5D /* Day3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CA2BB30258443B00044102D /* Day3.swift */; };
 		8C88D3A82587E3AB00E75BBD /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C88D3A72587E3AB00E75BBD /* main.swift */; };
 		8C88D3BE2587E42200E75BBD /* Day15.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C88D3BC2587E42200E75BBD /* Day15.swift */; };
 		8C88D3E02587E43D00E75BBD /* input.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C88D3BD2587E42200E75BBD /* input.txt */; };
@@ -1854,6 +1855,7 @@
 				8C07DE93258D73D90098D3C4 /* StringSubscriptsTests.swift in Sources */,
 				8C0590E1275867E500C293E5 /* Day2.swift in Sources */,
 				8CA2BAEB258442910044102D /* Day1.swift in Sources */,
+				8C1ED8CF275A56C400628D5D /* Day3.swift in Sources */,
 				8C07DEE1258D74420098D3C4 /* String+Subscripts.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
