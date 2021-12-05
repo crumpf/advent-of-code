@@ -126,10 +126,10 @@ struct Bingo {
 
 extension BingoBoard {
   func locate(_ num: Int) -> (row: Int, col: Int)? {
-    for (row, numbers) in self.enumerated() {
-      for (col, s) in numbers.enumerated() {
-        if s.num == num {
-          return (row: row, col: col)
+    for row in self.enumerated() {
+      for col in row.element.enumerated() {
+        if col.element.num == num {
+          return (row: row.offset, col: col.offset)
         }
       }
     }
