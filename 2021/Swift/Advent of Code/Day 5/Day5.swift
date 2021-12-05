@@ -48,7 +48,7 @@ class Day5: Day {
           delta.x == 0 ? 0 : (delta.x > 0 ? 1 : -1),
           delta.y == 0 ? 0 : (delta.y > 0 ? 1 : -1)
         )
-        let λMax = line.0.x == line.1.x ? abs(line.0.y - line.1.y) : abs(line.0.x - line.1.x)
+        let λMax = max(abs(line.0.x - line.1.x), abs(line.0.y - line.1.y))
         for λ in 0...λMax {
           let pt = line.0 &+ (λ &* direction)
           res[pt] = 1 + (res[pt] ?? 0)
