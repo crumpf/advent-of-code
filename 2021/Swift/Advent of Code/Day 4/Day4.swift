@@ -12,15 +12,19 @@ class Day4: Day {
   /// Final score for the winning board.
   func part1() -> String {
     var bingo = Bingo(input: input)
-    guard let result = try? bingo.play() else {
+    guard let result = try? bingo.play1() else {
       return "No result"
     }
     return "\(result)"
   }
   
-  ///
+  /// Let the giant squid win.
   func part2() -> String {
-    return ""
+    var bingo = Bingo(input: input)
+    guard let result = try? bingo.play2() else {
+      return "No result"
+    }
+    return "\(result)"
   }
 }
 
@@ -50,16 +54,16 @@ struct Bingo {
   }
   
   // plays a game based on Part 1 conditions
-  mutating func play() throws -> Int {
+  mutating func play1() throws -> Int {
     guard numbersDrawn == 0 else {
       throw BingoError.alreadyPlayed
     }
     
     var score: Int = -1
     var winningBoard: Int?
-    drawOrder.forEach { drawn in
+    for drawn in drawOrder {
       guard winningBoard == nil else {
-        return
+        break
       }
       numbersDrawn += 1
       // mark boards and check for winner
@@ -80,6 +84,41 @@ struct Bingo {
     }
     
     print("winningBoard: \(winningBoard), score: \(score)")
+    
+    return score
+  }
+  
+  // plays a game based on Part 2 conditions
+  mutating func play2() throws -> Int {
+    guard numbersDrawn == 0 else {
+      throw BingoError.alreadyPlayed
+    }
+    
+    var score: Int = -1
+    var winningBoards: [Int] = []
+    for drawn in drawOrder {
+      numbersDrawn += 1
+      // mark boards and check for winner
+      boards.indices.forEach { boardIndex in
+        if let found = boards[boardIndex].locate(drawn) {
+          boards[boardIndex][found.row][found.col].marked = true
+          if boards[boardIndex].isWinner() {
+            winningBoards.append(boardIndex)
+            score = boards[boardIndex].sumOfUnmarked() * drawn
+          }
+        }
+      }
+      if !winningBoards.isEmpty {
+        winningBoards.sorted(by: >).forEach {
+          boards.remove(at: $0)
+        }
+        if boards.isEmpty {
+          break
+        } else {
+          winningBoards.removeAll()
+        }
+      }
+    }
     
     return score
   }
