@@ -37,9 +37,25 @@ class Day5: Day {
     return "\(overlap)"
   }
   
-  ///
+  /// Consider all of the lines. At how many points do at least two lines overlap?
   func part2() -> String {
-    ""
+    // ventPoints = points where vents are mapped to their overlap count
+    let ventPoints: [Point: Int] = lines
+      .reduce(into: [Point: Int]()) { res, line in
+        // it's known that lines are orthoganal or diagonal
+        let delta = line.1 &- line.0
+        let direction = Point(
+          delta.x == 0 ? 0 : (delta.x > 0 ? 1 : -1),
+          delta.y == 0 ? 0 : (delta.y > 0 ? 1 : -1)
+        )
+        let λMax = line.0.x == line.1.x ? abs(line.0.y - line.1.y) : abs(line.0.x - line.1.x)
+        for λ in 0...λMax {
+          let pt = line.0 &+ (λ &* direction)
+          res[pt] = 1 + (res[pt] ?? 0)
+        }
+      }
+    let overlap = ventPoints.filter { $0.value >= 2 }.count
+    return "\(overlap)"
   }
   
   private(set) lazy var lines: [(Point, Point)] = input
@@ -66,5 +82,5 @@ class Day5: Day {
     }
     return Point(x, y)
   }
-      
+  
 }

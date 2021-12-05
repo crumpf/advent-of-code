@@ -114,7 +114,7 @@ class AdventUnitTests: XCTestCase {
       """
     let day = Day5(input: input)
     XCTAssertEqual(day.part1(), "5", "Part 1 Failed")
-    XCTAssertEqual(day.part2(), "", "Part 2 Failed")
+    XCTAssertEqual(day.part2(), "12", "Part 2 Failed")
   }
 
 }
