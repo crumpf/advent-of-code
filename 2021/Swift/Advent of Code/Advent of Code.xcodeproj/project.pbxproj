@@ -90,6 +90,7 @@
 		8C1ED8D0275A832000628D5D /* String+Subscripts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C07DE56258D59B80098D3C4 /* String+Subscripts.swift */; };
 		8C1ED8D2275BB67300628D5D /* Day4.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CA2BB40258460A60044102D /* Day4.swift */; };
 		8C1ED8D3275CA00200628D5D /* Day5.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CA2BB502584650F0044102D /* Day5.swift */; };
+		8C1ED8D4275DDB9D00628D5D /* Day6.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CA2BB602584692A0044102D /* Day6.swift */; };
 		8C88D3A82587E3AB00E75BBD /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C88D3A72587E3AB00E75BBD /* main.swift */; };
 		8C88D3BE2587E42200E75BBD /* Day15.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C88D3BC2587E42200E75BBD /* Day15.swift */; };
 		8C88D3E02587E43D00E75BBD /* input.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C88D3BD2587E42200E75BBD /* input.txt */; };
@@ -1837,6 +1838,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8CA2BAB025843EC00044102D /* String+Advent.swift in Sources */,
+				8C1ED8D4275DDB9D00628D5D /* Day6.swift in Sources */,
 				8C1ED8D2275BB67300628D5D /* Day4.swift in Sources */,
 				8C1ED8D3275CA00200628D5D /* Day5.swift in Sources */,
 				8CA2BA6725843C9D0044102D /* AdventUnitTests.swift in Sources */,
