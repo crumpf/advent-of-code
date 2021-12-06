@@ -11,23 +11,29 @@ import Foundation
 class Day6: Day {
   /// Find a way to simulate lanternfish. How many lanternfish would there be after 80 days?
   func part1() -> String {
-    var fish = initialAges.reduce(into: Array(repeating: 0, count: 9), { res, time in
-      res[time] += 1
-    })
-    for d in 1...80 {
-      let spawn = fish.removeFirst()
-      fish[6] += spawn
-      fish.append(spawn)
-    }
-    
-    return "\(fish.reduce(0, +))"
+    let count = countAfterSpawning(days: 80)
+    return "\(count)"
   }
   
   /// How many lanternfish would there be after 256 days?
   func part2() -> String {
-    return ""
+    let count = countAfterSpawning(days: 256)
+    return "\(count)"
   }
   
   private(set) lazy var initialAges = input.lines().first!.split(separator: ",").compactMap { Int($0) }
+  
+  func countAfterSpawning(days: Int) -> Int {
+    var fish = initialAges.reduce(into: Array(repeating: 0, count: 9), { res, time in
+      res[time] += 1
+    })
+    for _ in 1...days {
+      let spawn = fish.removeFirst()
+      fish[6] += spawn
+      fish.append(spawn)
+    }
+    return fish.reduce(0, +)
+  }
+  
 }
 
