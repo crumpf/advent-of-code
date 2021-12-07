@@ -40,7 +40,8 @@ class Day7: Day {
     for pos in min...max {
       let fuel = crabPositions.reduce(0) { r, crab in
         let absDist = abs(crab - pos)
-        let fuel = (0...absDist).reduce(0, +)
+        // it's a triangular number sequence, so the fuel cost is half of rectangle sized n by (n + 1)
+        let fuel = (absDist * (absDist + 1)) >> 1
         return r + fuel
       }
       if fuel < cheapest.fuel {
