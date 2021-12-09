@@ -149,11 +149,11 @@ class AdventUnitTests: XCTestCase {
       bdfegc cbegaf gecbf dfcage bdacg ed bedf ced adcbefg gebcd | ed bcgafe cdgba cbgef
       egadfb cdbfeg cegd fecab cgb gbdefca cg fgcdab egfdb bfceg | gbdfcae bgc cg cgb
       gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce
-      
+
       """
     let day = Day8(input: input)
     XCTAssertEqual(day.part1(), "26", "Part 1 Failed")
-    XCTAssertEqual(day.part2(), "Not Implemented", "Part 2 Failed")
+    XCTAssertEqual(day.part2(), "61229", "Part 2 Failed")
   }
 
 }
