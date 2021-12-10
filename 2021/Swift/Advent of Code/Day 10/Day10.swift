@@ -11,15 +11,24 @@ class Day10: Day {
   func part1() -> String {
     let scanner = Scanner()
     let response = scanner.scanNavigationSubsystem(input.lines())
-    let result = response.0.reduce(0) { $0 + (scoreMap[$1.found] ?? 0) }
+    let result = response.0.reduce(0) { $0 + (part1ScoreMap[$1.found] ?? 0) }
     return "\(result)"
   }
   
   func part2() -> String {
-    return ""
+    let scanner = Scanner()
+    let response = scanner.scanNavigationSubsystem(input.lines())
+    let scores = response.1.map {
+      $0.completion.reduce(0) {
+        $0 * 5 + (part2ScoreMap[$1] ?? 0)
+      }
+    }
+    let result = scores.sorted(by: >)[scores.count>>1]
+    return "\(result)"
   }
   
-  let scoreMap: [Character: Int] = [")": 3, "]": 57, "}": 1197, ">": 25137]
+  let part1ScoreMap: [Character: Int] = [")": 3, "]": 57, "}": 1197, ">": 25137]
+  let part2ScoreMap: [Character: Int] = [")": 1, "]": 2, "}": 3, ">": 4]
 }
 
 struct CorruptedLine {
@@ -31,6 +40,7 @@ struct CorruptedLine {
 
 struct IncompleteLine {
   let lineNumber: Int
+  let completion: [Character]
 }
 
 struct Scanner {
@@ -40,10 +50,6 @@ struct Scanner {
   
   init() {
     pairs = zip(openers, closers)
-    
-    for (o, c) in pairs {
-      print("\(o): \(c)")
-    }
   }
   
   func scanNavigationSubsystem(_ subsystem: [String]) -> ([CorruptedLine], [IncompleteLine]) {
@@ -59,10 +65,15 @@ struct Scanner {
                   let expected = pairs.first(where: { $0.0 == opener}),
                   c.element != expected.1 {
           corrupted.append(CorruptedLine(lineNumber: n, index: c.offset, expected: expected.1, found: c.element))
+          stack.removeAll()
+          break
         }
       }
       if !stack.isEmpty {
-        incomplete.append(IncompleteLine(lineNumber: n))
+        let completion = stack.reversed().compactMap { opener in
+          pairs.first(where: { $0.0 == opener })?.1
+        }
+        incomplete.append(IncompleteLine(lineNumber: n, completion: completion))
       }
     }
     
