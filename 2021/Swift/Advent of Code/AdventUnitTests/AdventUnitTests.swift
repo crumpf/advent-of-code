@@ -168,5 +168,23 @@ class AdventUnitTests: XCTestCase {
     XCTAssertEqual(day.part1(), "15", "Part 1 Failed")
     XCTAssertEqual(day.part2(), "1134", "Part 2 Failed")
   }
+  
+  func testDay10() throws {
+    let input = """
+    [({(<(())[]>[[{[]{<()<>>
+    [(()[<>])]({[<{<<[]>>(
+    {([(<{}[<>[]}>{[]{[(<()>
+    (((({<>}<{<{<>}{[]{[]{}
+    [[<[([]))<([[{}[[()]]]
+    [{[{({}]{}}([{[{{{}}([]
+    {<[[]]>}<{[{[{[]{()[[[]
+    [<(<(<(<{}))><([]([]()
+    <{([([[(<>()){}]>(<<{{
+    <{([{{}}[<[[[<>{}]]]>[]]
+    """
+    let day = Day10(input: input)
+    XCTAssertEqual(day.part1(), "26397", "Part 1 Failed")
+    XCTAssertEqual(day.part2(), "", "Part 2 Failed")
+  }
 
 }
