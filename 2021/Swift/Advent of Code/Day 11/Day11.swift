@@ -25,7 +25,13 @@ class Day11: Day {
   }
   
   func part2() -> String {
-    return "Not Implemented"
+    var energies = makeOctopusEnergyMap()
+    for x in 1... {
+      if energies.step().count == energies.count * energies[0].count {
+        return "\(x)"
+      }
+    }
+    return ""
   }
   
   func makeOctopusEnergyMap() -> OctopusEnergyMap {
