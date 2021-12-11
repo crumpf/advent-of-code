@@ -9,54 +9,54 @@
 import Foundation
 import AppKit
 
-typealias OctopusEnergyMap = [[Int]]
-
 class Day11: Day {
   func part1() -> String {
-    var energies = makeOctopusEnergyMap()
+    var octoEnergy = makeOctopusEnergy()
     var sumFlashes = 0
     for _ in 1...100 {
-      sumFlashes += energies.step().count
+      sumFlashes += octoEnergy.step().count
     }
     print("After 100 Steps")
-    energies.printMap()
+    octoEnergy.printMap()
     
     return "\(sumFlashes)"
   }
   
   func part2() -> String {
-    var energies = makeOctopusEnergyMap()
+    var octoEnergy = makeOctopusEnergy()
     for x in 1... {
-      if energies.step().count == energies.count * energies[0].count {
+      if octoEnergy.step().count == octoEnergy.map.count * octoEnergy.map[0].count {
         return "\(x)"
       }
     }
     return ""
   }
   
-  func makeOctopusEnergyMap() -> OctopusEnergyMap {
-    input.lines().map { $0.compactMap { Int(String($0)) } }
+  func makeOctopusEnergy() -> OctopusEnergy {
+    OctopusEnergy(map: input.lines().map { $0.compactMap { Int(String($0)) } })
   }
   
 }
 
-extension OctopusEnergyMap {
+struct OctopusEnergy {
+  var map: [[Int]]
+
   // returns locations that flashed
   mutating func step() -> [GridLocation] {
-    for (row, rowEnergies) in self.enumerated() {
+    for (row, rowEnergies) in map.enumerated() {
       for col in rowEnergies.indices {
-        self[row][col] += 1
-        if self[row][col] == 10 {
+        map[row][col] += 1
+        if map[row][col] == 10 {
           flash(GridLocation(row: row, col: col))
         }
       }
     }
     var flashLocations: [GridLocation] = []
-    for (row, rowEnergies) in self.enumerated() {
+    for (row, rowEnergies) in map.enumerated() {
       for col in rowEnergies.indices {
-        if self[row][col] > 9 {
+        if map[row][col] > 9 {
           flashLocations.append(GridLocation(row: row, col: col))
-          self[row][col] = 0
+          map[row][col] = 0
         }
       }
     }
@@ -65,9 +65,9 @@ extension OctopusEnergyMap {
   
   private mutating func flash(_ loc: GridLocation) {
     for adjLoc in loc.surrounding() {
-      if self.indices.contains(adjLoc.row) && self[adjLoc.row].indices.contains(adjLoc.col) {
-        self[adjLoc.row][adjLoc.col] += 1
-        if self[adjLoc.row][adjLoc.col] == 10 {
+      if map.indices.contains(adjLoc.row) && map[adjLoc.row].indices.contains(adjLoc.col) {
+        map[adjLoc.row][adjLoc.col] += 1
+        if map[adjLoc.row][adjLoc.col] == 10 {
           flash(adjLoc)
         }
       }
@@ -75,7 +75,7 @@ extension OctopusEnergyMap {
   }
   
   func printMap() {
-    for row in self {
+    for row in map {
       print(row.reduce("") { $0 + String($1) })
     }
   }
