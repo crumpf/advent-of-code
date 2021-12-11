@@ -11,7 +11,7 @@ typealias HeightMap = [[Int]]
 
 class Day9: Day {
   func part1() -> String {
-    let lowPoints: [Location] = heightmap.lowPoints()
+    let lowPoints: [GridLocation] = heightmap.lowPoints()
     let risk = lowPoints.reduce(0) { $0 + (heightmap[$1.row][$1.col] + 1) }
     return "\(risk)"
   }
@@ -28,36 +28,24 @@ class Day9: Day {
   private(set) lazy var heightmap: HeightMap = input.lines().map { $0.compactMap { Int(String($0)) } }
 }
 
-struct Location: Hashable {
-  let row: Int
-  let col: Int
-  
-  func adjacents() -> [Location] {
-    [Location(row: row-1, col: col),
-     Location(row: row,   col: col+1),
-     Location(row: row+1, col: col),
-     Location(row: row,   col: col-1)]
-  }
-}
-
 struct Basin {
-  let lowPoint: Location
-  let locations: Set<Location>
+  let lowPoint: GridLocation
+  let locations: Set<GridLocation>
 }
 
 extension HeightMap {
-  func lowPoints() -> [Location] {
-    var lowPoints: [Location] = []
+  func lowPoints() -> [GridLocation] {
+    var lowPoints: [GridLocation] = []
     self.enumerated().forEach { row in
       row.element.enumerated().forEach { col in
-        let adjacentIndexes = Location(row: row.offset, col: col.offset).adjacents()
+        let adjacentIndexes = GridLocation(row: row.offset, col: col.offset).orthogonal()
         let isLowest = nil == adjacentIndexes.first {
           self.indices.contains($0.row)
           && row.element.indices.contains($0.col)
           && self[$0.row][$0.col] <= col.element
         }
         if isLowest {
-          lowPoints.append(Location(row: row.offset, col: col.offset))
+          lowPoints.append(GridLocation(row: row.offset, col: col.offset))
         }
       }
     }
@@ -68,21 +56,21 @@ extension HeightMap {
     var basins: [Basin] = []
     let lows = lowPoints()
     lows.forEach { lowPt in
-      var basinPts: Set<Location> = []
+      var basinPts: Set<GridLocation> = []
       growBasin(from: lowPt, basinPoints: &basinPts)
       basins.append(Basin(lowPoint: lowPt, locations: basinPts))
     }
     return basins
   }
   
-  private func growBasin(from loc: Location, basinPoints: inout Set<Location>) {
+  private func growBasin(from loc: GridLocation, basinPoints: inout Set<GridLocation>) {
     if !basinPoints.contains(loc) && isBasinLocation(loc)  {
       basinPoints.insert(loc)
-      loc.adjacents().forEach { growBasin(from: $0, basinPoints: &basinPoints) }
+      loc.orthogonal().forEach { growBasin(from: $0, basinPoints: &basinPoints) }
     }
   }
   
-  private func isBasinLocation(_ loc: Location) -> Bool {
+  private func isBasinLocation(_ loc: GridLocation) -> Bool {
     self.indices.contains(loc.row)
     && self[loc.row].indices.contains(loc.col)
     && self[loc.row][loc.col] < 9

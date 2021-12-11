@@ -102,6 +102,8 @@
 		8C88D4312588FF8300E75BBD /* String+Advent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C149B0D257A814300F26473 /* String+Advent.swift */; };
 		8C88D4322588FF8300E75BBD /* FileInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C149ADD2579A10D00F26473 /* FileInput.swift */; };
 		8C88D4482588FF9300E75BBD /* Day16.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C88D4452588FF9300E75BBD /* Day16.swift */; };
+		8C9FBF702764F0250027DDEC /* GridLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C9FBF6F2764F0250027DDEC /* GridLocation.swift */; };
+		8C9FBF712764F0250027DDEC /* GridLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C9FBF6F2764F0250027DDEC /* GridLocation.swift */; };
 		8CA2BA6725843C9D0044102D /* AdventUnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CA2BA6625843C9D0044102D /* AdventUnitTests.swift */; };
 		8CA2BAAF25843EC00044102D /* Puzzle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C149AE42579D72D00F26473 /* Puzzle.swift */; };
 		8CA2BAB025843EC00044102D /* String+Advent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C149B0D257A814300F26473 /* String+Advent.swift */; };
@@ -509,6 +511,7 @@
 		8C88D4182588FF4500E75BBD /* Day 16 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Day 16"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C88D41A2588FF4500E75BBD /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		8C88D4452588FF9300E75BBD /* Day16.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Day16.swift; sourceTree = "<group>"; };
+		8C9FBF6F2764F0250027DDEC /* GridLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridLocation.swift; sourceTree = "<group>"; };
 		8CA2BA6425843C9D0044102D /* AdventUnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AdventUnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8CA2BA6625843C9D0044102D /* AdventUnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdventUnitTests.swift; sourceTree = "<group>"; };
 		8CA2BA6825843C9D0044102D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -866,7 +869,9 @@
 				8C07E464259615630098D3C4 /* Day 25 */,
 				8C149A742578477800F26473 /* Products */,
 			);
+			indentWidth = 2;
 			sourceTree = "<group>";
+			tabWidth = 2;
 		};
 		8C149A742578477800F26473 /* Products */ = {
 			isa = PBXGroup;
@@ -939,6 +944,7 @@
 				8C149B0D257A814300F26473 /* String+Advent.swift */,
 				8C07DE56258D59B80098D3C4 /* String+Subscripts.swift */,
 				8C07E36A25938F990098D3C4 /* CircularlyLinkedList.swift */,
+				8C9FBF6F2764F0250027DDEC /* GridLocation.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1886,6 +1892,7 @@
 				8CA2BAEB258442910044102D /* Day1.swift in Sources */,
 				8CF35B21275F0EF100646306 /* Day8.swift in Sources */,
 				8C1ED8CF275A56C400628D5D /* Day3.swift in Sources */,
+				8C9FBF712764F0250027DDEC /* GridLocation.swift in Sources */,
 				8C07DEE1258D74420098D3C4 /* String+Subscripts.swift in Sources */,
 				8CF35B17275F0D4700646306 /* Day18.swift in Sources */,
 				8CF35B1B275F0DEC00646306 /* Day14.swift in Sources */,
@@ -1994,6 +2001,7 @@
 			files = (
 				8CD4B9C22582EA1B0035644F /* Puzzle.swift in Sources */,
 				8CA2BBBE258470C30044102D /* Day11.swift in Sources */,
+				8C9FBF702764F0250027DDEC /* GridLocation.swift in Sources */,
 				8CD4B9C12582EA1B0035644F /* FileInput.swift in Sources */,
 				8CD4B9C32582EA1B0035644F /* String+Advent.swift in Sources */,
 				8CD4B99A2582E9130035644F /* main.swift in Sources */,
@@ -2509,7 +2517,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = SZ7J2MX6JT;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = AdventUnitTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2529,7 +2537,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = SZ7J2MX6JT;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = AdventUnitTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
