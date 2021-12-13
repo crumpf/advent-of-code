@@ -15,7 +15,9 @@ class Day12: Day {
   }
   
   func part2() -> String {
-    return ""
+    let caveConnections = makeCaveConnections()
+    let paths = findPaths(in: caveConnections, canVisitSmallTwice: true)
+    return "\(paths.count)"
   }
   
   func makeCaveConnections() -> [String: Set<String>] {
@@ -36,17 +38,25 @@ class Day12: Day {
     return connections
   }
   
-  func findPaths(in connections: [String: Set<String>]) -> [[String]] {
-    let paths = explore(cave: "start", connections: connections, visited: [])
+  func findPaths(in connections: [String: Set<String>], canVisitSmallTwice: Bool = false) -> [[String]] {
+    let paths = explore(cave: "start", connections: connections, visited: [], canVisitSmallTwice: canVisitSmallTwice)
     return paths
   }
   
-  func explore(cave: String, connections: [String: Set<String>], visited: [String]) -> [[String]] {
+  func explore(cave: String, connections: [String: Set<String>], visited: [String], canVisitSmallTwice: Bool = false) -> [[String]] {
     guard let caves = connections[cave] else {
       return []
     }
-    if (cave.lowercased() == cave) && visited.contains(cave) {
+    if cave == "start" && visited.contains(cave) {
       return []
+    }
+    var smallVisitAgain = canVisitSmallTwice
+    if cave.lowercased() == cave && visited.contains(cave) {
+      if smallVisitAgain {
+        smallVisitAgain = false
+      } else {
+        return []
+      }
     }
     if cave == "end" {
       return [[cave]]
@@ -54,7 +64,7 @@ class Day12: Day {
     
     var explored: [[String]] = []
     for c in caves {
-      explored += explore(cave: c, connections: connections, visited: visited + [cave])
+      explored += explore(cave: c, connections: connections, visited: visited + [cave], canVisitSmallTwice: smallVisitAgain)
     }
     return explored.map { [cave] + $0 }
   }
