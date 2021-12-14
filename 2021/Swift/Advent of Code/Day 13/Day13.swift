@@ -17,8 +17,7 @@ class Day13: Day {
   func part2() -> String {
     let paper = TransparentPaper(input: input)
     let result = paper.execute()
-    printDots(result)
-    return ""
+    return printableCodeString(havingDots: result)
   }
 }
 
@@ -66,24 +65,22 @@ struct TransparentPaper {
         }
       }
       foldedDots = foldedDotsForInstruction
-      
-//      print(inst)
-//      printDots(foldedDots)
     }
     return foldedDots
   }
 }
 
-func printDots(_ dots: Set<SIMD2<Int>>) {
+func printableCodeString(havingDots dots: Set<SIMD2<Int>>) -> String {
   let sortedX = dots.sorted { $0.x < $1.x }
   let sortedY = dots.sorted { $0.y < $1.y }
   let rangeX = sortedX.first!.x...sortedX.last!.x
   let rangeY = sortedY.first!.y...sortedY.last!.y
+  var str = ""
   for y in rangeY {
-    var line = ""
     for x in rangeX {
-      line.append(dots.contains(SIMD2(x: x, y: y)) ? "#" : ".")
+      str.append(dots.contains(SIMD2(x: x, y: y)) ? "#" : ".")
     }
-    print(line)
+    str.append("\n")
   }
+  return str
 }
