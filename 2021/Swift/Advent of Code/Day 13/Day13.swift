@@ -10,14 +10,66 @@ import Foundation
 class Day13: Day {
   func part1() -> String {
     let paper = TransparentPaper(input: input)
-    let result = paper.execute(maxFolds: 1)
-    return "\(result.count)"
+    let foldedOnce = foldDots(paper.dots, instruction: paper.instructions.first!)
+    return "\(foldedOnce.count)"
   }
   
   func part2() -> String {
     let paper = TransparentPaper(input: input)
-    let result = paper.execute()
-    return printableCodeString(havingDots: result)
+    var folded: Set<SIMD2<Int>> = paper.dots
+    paper.instructions.forEach {
+      folded = foldDots(folded, instruction: $0)
+    }
+    return printableCodeString(havingDots: folded)
+  }
+  
+  func foldDots(_ dots: Set<SIMD2<Int>>, instruction: String) -> Set<SIMD2<Int>> {
+    let parts = instruction.components(separatedBy: "=")
+    let isUp = parts[0].last == "y"
+    guard let value = Int(parts[1]) else {
+      return []
+    }
+    
+    var foldedDots: Set<SIMD2<Int>> = []
+    if isUp {
+      for d in dots {
+        if d.y > value {
+          foldedDots.insert(SIMD2(x: d.x, y: value - (d.y - value)))
+        } else if d.y < value {
+          foldedDots.insert(d)
+        }
+      }
+    } else {
+      for d in dots {
+        if d.x > value {
+          foldedDots.insert(SIMD2(x: value - (d.x - value), y: d.y))
+        } else if d.x < value {
+          foldedDots.insert(d)
+        }
+      }
+    }
+    return foldedDots
+  }
+  
+  func printableCodeString(havingDots dots: Set<SIMD2<Int>>) -> String {
+    let sortedX = dots.sorted { $0.x < $1.x }
+    let sortedY = dots.sorted { $0.y < $1.y }
+    var str = ""
+    guard let firstX = sortedX.first?.x,
+          let lastX = sortedX.last?.x,
+          let firstY = sortedY.first?.y,
+          let lastY = sortedY.last?.y
+    else {
+      return str
+    }
+    
+    for y in firstY...lastY {
+      for x in firstX...lastX {
+        str.append(dots.contains(SIMD2(x: x, y: y)) ? "#" : ".")
+      }
+      str.append("\n")
+    }
+    return str
   }
 }
 
@@ -33,54 +85,4 @@ struct TransparentPaper {
     })
     instructions = parts[1].lines()
   }
-  
-  func execute(maxFolds: Int = Int.max) -> Set<SIMD2<Int>> {
-    var foldedDots: Set<SIMD2<Int>> = dots
-    var numberOfFolds = 0
-    for inst in instructions {
-      if numberOfFolds < maxFolds {
-        numberOfFolds += 1
-      } else {
-        break
-      }
-      let parts = inst.components(separatedBy: "=")
-      let isUp = parts[0].last == "y"
-      let value = Int(parts[1])!
-      var foldedDotsForInstruction: Set<SIMD2<Int>> = []
-      if isUp {
-        foldedDots.forEach { d in
-          if d.y > value {
-            foldedDotsForInstruction.insert(SIMD2(x: d.x, y: value - (d.y - value)))
-          } else if d.y < value {
-            foldedDotsForInstruction.insert(d)
-          }
-        }
-      } else {
-        foldedDots.forEach { d in
-          if d.x > value {
-            foldedDotsForInstruction.insert(SIMD2(x: value - (d.x - value), y: d.y))
-          } else if d.x < value {
-            foldedDotsForInstruction.insert(d)
-          }
-        }
-      }
-      foldedDots = foldedDotsForInstruction
-    }
-    return foldedDots
-  }
-}
-
-func printableCodeString(havingDots dots: Set<SIMD2<Int>>) -> String {
-  let sortedX = dots.sorted { $0.x < $1.x }
-  let sortedY = dots.sorted { $0.y < $1.y }
-  let rangeX = sortedX.first!.x...sortedX.last!.x
-  let rangeY = sortedY.first!.y...sortedY.last!.y
-  var str = ""
-  for y in rangeY {
-    for x in rangeX {
-      str.append(dots.contains(SIMD2(x: x, y: y)) ? "#" : ".")
-    }
-    str.append("\n")
-  }
-  return str
 }
