@@ -14,15 +14,15 @@ class Day14: Day {
     for _ in 1...10 {
       poly = polymer(forTemplate: poly, pairInsertions: instructions.pairInsertions)
     }
-    var elementCounts: [String: Int] = [:]
-    let elementSet = Set(instructions.pairInsertions.values)
-    for e in elementSet {
-      elementCounts[e] = poly.filter { String($0) == e }.count
-    }
-    let ordered = elementSet.sorted { first, second in
-      elementCounts[first]! > elementCounts[second]!
-    }
-    return "\(elementCounts[ordered.first!]! - elementCounts[ordered.last!]!)"
+    
+    let ordered = poly
+      .reduce(into: [String: Int]()) { partialResult, c in
+        let element = String(c)
+        partialResult[element] = 1 + (partialResult[element] ?? 0)
+      }
+      .sorted { $0.value > $1.value }
+    
+    return "\(ordered.first!.value - ordered.last!.value)"
   }
   
   // The polymer length grows exponentially and quickly grows too large for my full polymer
