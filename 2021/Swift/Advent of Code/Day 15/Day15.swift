@@ -4,6 +4,7 @@
 //
 //  Created by Christopher Rumpf on 12/6/21.
 //
+//  https://adventofcode.com/2021/day/15
 
 import Foundation
 
@@ -14,11 +15,32 @@ class Day15: Day {
   }
   
   func part2() -> String {
-    return ""
+    let lowestRiskTotal = lowestTotalRiskOfAnyPath(in: makeBigRiskMap())
+    return "\(lowestRiskTotal ?? -1)"
   }
   
   func makeRiskMap() -> [[Int]] {
     input.lines().map { $0.compactMap { Int(String($0)) } }
+  }
+  
+  func makeBigRiskMap() -> [[Int]] {
+    let map = makeRiskMap()
+    var bigmap = map
+    for n in map.indices {
+      for inc in 1...4 {
+        bigmap[n] += map[n].map {
+          $0 + inc < 10 ? $0 + inc : ($0 + inc) % 9
+        }
+      }
+    }
+    for inc in 1...4 {
+      for n in map.indices {
+        bigmap.append(bigmap[n].map {
+          $0 + inc < 10 ? $0 + inc : ($0 + inc) % 9
+        })
+      }
+    }
+    return bigmap
   }
   
   typealias Vertex2D = SIMD2<Int>
