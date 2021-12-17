@@ -318,39 +318,26 @@ class AdventUnitTests: XCTestCase {
   func testDay16() throws {
     var day = Day16(input: "D2FE28")
     var msg = day.makeBinaryMessage()
-    var pkt = msg.readPacket()
-    switch pkt {
-    case .literal(let header, let value):
-      XCTAssertEqual(header.version, 6)
-      XCTAssertEqual(header.typeID, 4)
-      XCTAssertEqual(value, 2021)
-    default:
-      XCTFail()
-    }
+    var pkt = msg.readPacket()!
+    XCTAssertEqual(pkt.header.version, 6)
+    XCTAssertEqual(pkt.header.type.rawValue, 4)
+    XCTAssertEqual(pkt.literalValue, 2021)
+    
     
     day = Day16(input: "38006F45291200")
     msg = day.makeBinaryMessage()
-    pkt = msg.readPacket()
-    switch pkt {
-    case .op(let header, let subPackets):
-      XCTAssertEqual(header.version, 1)
-      XCTAssertEqual(header.typeID, 6)
-      XCTAssertEqual(subPackets.count, 2)
-    default:
-      XCTFail()
-    }
+    pkt = msg.readPacket()!
+    XCTAssertEqual(pkt.header.version, 1)
+    XCTAssertEqual(pkt.header.type.rawValue, 6)
+    XCTAssertEqual(pkt.subPackets.count, 2)
+    
     
     day = Day16.init(input: "EE00D40C823060")
     msg = day.makeBinaryMessage()
-    pkt = msg.readPacket()
-    switch pkt {
-    case .op(let header, let subPackets):
-      XCTAssertEqual(header.version, 7)
-      XCTAssertEqual(header.typeID, 3)
-      XCTAssertEqual(subPackets.count, 3)
-    default:
-      XCTFail()
-    }
+    pkt = msg.readPacket()!
+    XCTAssertEqual(pkt.header.version, 7)
+    XCTAssertEqual(pkt.header.type.rawValue, 3)
+    XCTAssertEqual(pkt.subPackets.count, 3)
   }
 
 }

@@ -11,27 +11,25 @@ class Day16: Day {
   
   func part1() -> String {
     var message = makeBinaryMessage()
-    let pkt = message.readPacket()
+    let pkt = message.readPacket()!
     
-    return "\(totalVersion(packet: pkt!))"
+    return "\(totalVersion(packet: pkt))"
   }
   
   func part2() -> String {
-    return ""
+    var message = makeBinaryMessage()
+    let pkt = message.readPacket()!
+    
+    return "\(pkt.expressionValue())"
   }
   
   func totalVersion(packet: Packet) -> Int {
-    var version = 0
-    switch packet {
-    case .literal(let header, _):
-      version += header.version
-    case .op(let header, let subPkts):
-      version += header.version
-      for p in subPkts {
-        version += totalVersion(packet: p)
-      }
+    var total = 0
+    total += packet.header.version
+    for p in packet.subPackets {
+      total += totalVersion(packet: p)
     }
-    return version
+    return total
   }
   
   func makeBinaryMessage() -> BinaryMessage {
@@ -69,15 +67,16 @@ class Day16: Day {
     
     mutating func readPacket() -> Packet? {
       guard let version = Int(read(3), radix: 2),
-            let typeID = Int(read(3), radix: 2)
+            let typeID = Int(read(3), radix: 2),
+            let type = Packet.ExpressionType(rawValue: typeID)
       else {
         return nil
       }
       
-      let header = Packet.Header(version: version, typeID: typeID)
+      let header = Packet.Header(version: version, type: type)
       
-      switch header.typeID {
-      case 4: // literal value
+      switch header.type {
+      case .literal:
         var literal = ""
         var isLastGroup = false
         repeat {
@@ -87,7 +86,7 @@ class Day16: Day {
         guard let literalValue = Int(literal, radix: 2) else {
           return nil
         }
-        return Packet.literal(header, literalValue)
+        return Packet(header: header, literalValue: literalValue, subPackets: [])
         
       default: // operator
         let lengthTypeID = read(1)
@@ -108,27 +107,52 @@ class Day16: Day {
             }
           }
         }
-        return Packet.op(header, subPkts)
+        return Packet(header: header, literalValue: nil, subPackets: subPkts)
       }
     }
   }
   
-  enum Packet {
-    case literal(Header, Int)
-    case op(Header, [Packet])
+  struct Packet {
+    let header: Header
+    let literalValue: Int?
+    let subPackets: [Packet]
+    
+    func expressionValue() -> Int {
+      var result = 0
+      switch header.type {
+      case .sum:
+        result = subPackets.map { $0.expressionValue() }.reduce(0, +)
+      case .product:
+        result = subPackets.map { $0.expressionValue() }.reduce(1, *)
+      case .minimum:
+        if let min = subPackets.map({ $0.expressionValue() }).min() {
+          result = min
+        }
+      case .maximum:
+        if let max = subPackets.map({ $0.expressionValue() }).max() {
+          result = max
+        }
+      case .literal:
+        if let value = literalValue {
+          result = value
+        }
+      case .greaterThan:
+        result = subPackets[0].expressionValue() > subPackets[1].expressionValue() ? 1 : 0
+      case .lessThan:
+        result = subPackets[0].expressionValue() < subPackets[1].expressionValue() ? 1 : 0
+      case .equalTo:
+        result = subPackets[0].expressionValue() == subPackets[1].expressionValue() ? 1 : 0
+      }
+      return result
+    }
+    
+    enum ExpressionType: Int {
+      case sum = 0, product, minimum, maximum, literal, greaterThan, lessThan, equalTo
+    }
     
     struct Header {
       let version: Int
-      let typeID: Int
-    }
-    
-    func header() -> Header {
-      switch self {
-      case .literal(let header, _):
-        return header
-      case .op(let header, _):
-        return header
-      }
+      let type: ExpressionType
     }
   }
 
