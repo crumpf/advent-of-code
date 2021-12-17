@@ -314,5 +314,43 @@ class AdventUnitTests: XCTestCase {
     XCTAssertEqual(day.part1(), "40", "Part 1 Failed")
     XCTAssertEqual(day.part2(), "315", "Part 2 Failed")
   }
+  
+  func testDay16() throws {
+    var day = Day16(input: "D2FE28")
+    var msg = day.makeBinaryMessage()
+    var pkt = msg.readPacket()
+    switch pkt {
+    case .literal(let header, let value):
+      XCTAssertEqual(header.version, 6)
+      XCTAssertEqual(header.typeID, 4)
+      XCTAssertEqual(value, 2021)
+    default:
+      XCTFail()
+    }
+    
+    day = Day16(input: "38006F45291200")
+    msg = day.makeBinaryMessage()
+    pkt = msg.readPacket()
+    switch pkt {
+    case .op(let header, let subPackets):
+      XCTAssertEqual(header.version, 1)
+      XCTAssertEqual(header.typeID, 6)
+      XCTAssertEqual(subPackets.count, 2)
+    default:
+      XCTFail()
+    }
+    
+    day = Day16.init(input: "EE00D40C823060")
+    msg = day.makeBinaryMessage()
+    pkt = msg.readPacket()
+    switch pkt {
+    case .op(let header, let subPackets):
+      XCTAssertEqual(header.version, 7)
+      XCTAssertEqual(header.typeID, 3)
+      XCTAssertEqual(subPackets.count, 3)
+    default:
+      XCTFail()
+    }
+  }
 
 }
