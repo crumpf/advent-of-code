@@ -340,4 +340,9 @@ class AdventUnitTests: XCTestCase {
     XCTAssertEqual(pkt.subPackets.count, 3)
   }
 
+  func testDay17() throws {
+    let day = Day17(input: "target area: x=20..30, y=-10..-5")
+    XCTAssertEqual(day.part1(), "45", "Part 1 Failed")
+    XCTAssertEqual(day.part2(), "", "Part 2 Failed")
+  }
 }
