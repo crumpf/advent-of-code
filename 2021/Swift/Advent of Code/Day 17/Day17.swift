@@ -19,7 +19,9 @@ class Day17: Day {
   }
   
   func part2() -> String {
-    return ""
+    let target = makeTarget()
+    let velocities = initialVelocitiesThatHit(target)
+    return "\(velocities.count)"
   }
   
   func makeTarget() -> Target {
@@ -59,6 +61,24 @@ class Day17: Day {
       }
     }
     return highest
+  }
+  
+  func initialVelocitiesThatHit(_ target: Target) -> [SIMD2<Int>] {
+    var velocities: [SIMD2<Int>] = []
+    for x in 1...200 {
+      for y in -200...200 {
+        var probe = Probe(position: SIMD2.zero, velocity: SIMD2(x, y))
+        var relation = probe.relation(relativeTo: target)
+        while relation == .beforeTarget {
+          probe = probe.step()
+          relation = probe.relation(relativeTo: target)
+        }
+        if relation == .insideTarget {
+          velocities.append(SIMD2(x, y))
+        }
+      }
+    }
+    return velocities
   }
   
   struct Target {
