@@ -9,13 +9,11 @@ import Foundation
 
 class TreeNode<T> {
   private(set) var element: T
-  private(set) var children: [TreeNode]
-  private(set) weak var parent: TreeNode?
+  private(set) var children: [TreeNode] = []
+  private(set) weak var parent: TreeNode? = nil
   
-  init(element: T, children: [TreeNode] = [], parent: TreeNode? = nil) {
+  init(element: T) {
     self.element = element
-    self.children = children
-    self.parent = parent
   }
   
   func add(child: TreeNode) {
