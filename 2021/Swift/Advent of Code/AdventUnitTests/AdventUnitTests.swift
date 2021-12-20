@@ -403,6 +403,45 @@ class AdventUnitTests: XCTestCase {
       .forEach { $0.explode() }
     XCTAssertEqual(singleExplode, snailfishNumbers.reduce(into: "") { $0.append("\($1)\n") })
     
+    /*
+     [[[[4,3],4],4],[7,[[8,4],9]]] + [1,1]:
+
+     after addition: [[[[[4,3],4],4],[7,[[8,4],9]]],[1,1]]
+     after explode:  [[[[0,7],4],[7,[[8,4],9]]],[1,1]]
+     after explode:  [[[[0,7],4],[15,[0,13]]],[1,1]]
+     after split:    [[[[0,7],4],[[7,8],[0,13]]],[1,1]]
+     after split:    [[[[0,7],4],[[7,8],[0,[6,7]]]],[1,1]]
+     after explode:  [[[[0,7],4],[[7,8],[6,0]]],[8,1]]
+     */
+    input = """
+    [[[[4,3],4],4],[7,[[8,4],9]]]
+    [1,1]
+
+    """
+    day = Day18(input: input)
+    snailfishNumbers = day.makeSnailfishNumbers()
+    let a = snailfishNumbers[0] + snailfishNumbers[1]
+    XCTAssertEqual("[[[[[4,3],4],4],[7,[[8,4],9]]],[1,1]]", "\(a)")
+    a.reduce()
+    XCTAssertEqual("[[[[0,7],4],[[7,8],[6,0]]],[8,1]]", "\(a)")
+    
+    input = """
+    [[[0,[4,5]],[0,0]],[[[4,5],[2,6]],[9,5]]]
+    [7,[[[3,7],[4,3]],[[6,3],[8,8]]]]
+    [[2,[[0,8],[3,4]]],[[[6,7],1],[7,[1,6]]]]
+    [[[[2,4],7],[6,[0,5]]],[[[6,8],[2,8]],[[2,1],[4,5]]]]
+    [7,[5,[[3,8],[1,4]]]]
+    [[2,[2,2]],[8,[8,1]]]
+    [2,9]
+    [1,[[[9,3],9],[[9,0],[0,7]]]]
+    [[[5,[7,4]],7],1]
+    [[[[4,2],2],6],[8,7]]
+    
+    """
+    day = Day18(input: input)
+    let sum = day.addListOfSnailfishNumbers(day.makeSnailfishNumbers())
+    XCTAssertEqual("\(sum)", "[[[[8,7],[7,7]],[[8,6],[7,7]]],[[[0,7],[6,6]],[8,7]]]")
+    
     XCTAssertEqual(day.part1(), "", "Part 1 Failed")
     XCTAssertEqual(day.part2(), "", "Part 2 Failed")
   }

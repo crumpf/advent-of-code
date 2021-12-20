@@ -11,12 +11,22 @@ class Day18: Day {
   
   func part1() -> String {
     let nums = makeSnailfishNumbers()
+    let sum = addListOfSnailfishNumbers(nums)
     
     return ""
   }
   
   func part2() -> String {
     return ""
+  }
+  
+  func addListOfSnailfishNumbers(_ list: [SnailfishNumber]) -> SnailfishNumber {
+    var a = list[0]
+    for b in list.dropFirst() {
+      a = a + b
+      a.reduce()
+    }
+    return a
   }
   
   enum SnailfishError: Error {
@@ -91,6 +101,18 @@ class Day18: Day {
       }
     }
     
+    func add(_ elem: SnailfishElement, side: PairSide) {
+      if case .pair(let sfn) = elem {
+        sfn.parent = self
+      }
+      switch side {
+      case .left:
+        left = elem
+      case .right:
+        right = elem
+      }
+    }
+    
     // [1,2] + [[3,4],5] becomes [[1,2],[[3,4],5]]
     static func + (lhs: SnailfishNumber, rhs: SnailfishNumber) -> SnailfishNumber {
       SnailfishNumber(left: .pair(lhs), right: .pair(rhs))
@@ -102,8 +124,11 @@ class Day18: Day {
        - If any pair is nested inside four pairs, the leftmost such pair explodes.
        - If any regular number is 10 or greater, the leftmost such regular number splits.
        */
-      if let found = self.firstNestedInsideFourPairs() {
+      while let found = self.firstNestedInsideFourPairs() {
         found.explode()
+      }
+      if splitFirst10OrGreater() {
+        reduce()
       }
     }
     
@@ -132,6 +157,34 @@ class Day18: Day {
         found = rightPair.firstNestedInsideFourPairs()
       }
       return found
+    }
+    
+    func splitFirst10OrGreater() -> Bool {
+      if case let .regular(num) = left,
+         num >= 10 {
+        let sfn = SnailfishNumber(left: .regular((num/2)), right: .regular(num - num/2))
+        add(.pair(sfn), side: .left)
+        return true
+      }
+      
+      if case let .pair(p) = left,
+         p.splitFirst10OrGreater() {
+        return true
+      }
+          
+      if case let .regular(num) = right,
+         num >= 10 {
+        let sfn = SnailfishNumber(left: .regular((num/2)), right: .regular(num - num/2))
+        add(.pair(sfn), side: .right)
+        return true
+      }
+      
+      if case let .pair(p) = right,
+         p.splitFirst10OrGreater() {
+        return true
+      }
+      
+      return false
     }
     
 //    To explode a pair, the pair's left value is added to the first regular number to the left of the exploding pair (if any), and the pair's right value is added to the first regular number to the right of the exploding pair (if any). Exploding pairs will always consist of two regular numbers. Then, the entire exploding pair is replaced with the regular number 0.
@@ -163,24 +216,24 @@ class Day18: Day {
         if case let .regular(n) = left {
           left = .regular(n + value)
           return
+        } else if origin != left,
+                  case let .pair(p) = left {
+          p.addToFirstRegularNumberDownTree(side: .right, value: value)
+          return
         }
       case .right:
         if case let .regular(n) = right {
           right = .regular(n + value)
+          return
+        } else if origin != right,
+                  case let .pair(p) = right {
+          p.addToFirstRegularNumberDownTree(side: .left, value: value)
           return
         }
       }
       
       if let parent = parent {
         parent.addToFirstRegularNumberUpTree(side: side, value: value, origin: .pair(self))
-      } else {
-        if side == .left && origin == right,
-           case let .pair(p) = left {
-          p.addToFirstRegularNumberDownTree(side: .right, value: value)
-        } else if side == .right && origin == left,
-                  case let .pair(p) = right {
-          p.addToFirstRegularNumberDownTree(side: .left, value: value)
-        }
       }
     }
     
