@@ -12,8 +12,7 @@ class Day18: Day {
   func part1() -> String {
     let nums = makeSnailfishNumbers()
     let sum = addListOfSnailfishNumbers(nums)
-    
-    return ""
+    return "\(sum.magnitude())"
   }
   
   func part2() -> String {
@@ -116,6 +115,19 @@ class Day18: Day {
     // [1,2] + [[3,4],5] becomes [[1,2],[[3,4],5]]
     static func + (lhs: SnailfishNumber, rhs: SnailfishNumber) -> SnailfishNumber {
       SnailfishNumber(left: .pair(lhs), right: .pair(rhs))
+    }
+    
+    func magnitude() -> Int {
+      3 * magnitudeOfElement(left) + 2 * magnitudeOfElement(right)
+    }
+    
+    private func magnitudeOfElement(_ elem: SnailfishElement) -> Int {
+      switch elem {
+      case .regular(let value):
+        return value
+      case .pair(let p):
+        return p.magnitude()
+      }
     }
     
     func reduce() {

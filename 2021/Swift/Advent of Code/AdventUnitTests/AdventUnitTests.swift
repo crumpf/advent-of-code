@@ -442,7 +442,7 @@ class AdventUnitTests: XCTestCase {
     let sum = day.addListOfSnailfishNumbers(day.makeSnailfishNumbers())
     XCTAssertEqual("\(sum)", "[[[[8,7],[7,7]],[[8,6],[7,7]]],[[[0,7],[6,6]],[8,7]]]")
     
-    XCTAssertEqual(day.part1(), "", "Part 1 Failed")
+    XCTAssertEqual(day.part1(), "3488", "Part 1 Failed")
     XCTAssertEqual(day.part2(), "", "Part 2 Failed")
   }
 }
