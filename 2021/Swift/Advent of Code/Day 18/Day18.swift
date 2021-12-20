@@ -16,7 +16,9 @@ class Day18: Day {
   }
   
   func part2() -> String {
-    return ""
+    let nums = makeSnailfishNumbers()
+    let largest = largestMagnitudeFrom2SnailfishNumbersInList(nums)
+    return "\(largest)"
   }
   
   func addListOfSnailfishNumbers(_ list: [SnailfishNumber]) -> SnailfishNumber {
@@ -26,6 +28,23 @@ class Day18: Day {
       a.reduce()
     }
     return a
+  }
+  
+  func largestMagnitudeFrom2SnailfishNumbersInList(_ list: [SnailfishNumber]) -> Int {
+    var largest = Int.min
+    for a in list {
+      for b in list {
+        if "\(a)" != "\(b)" {
+          let c = try! snailfishNumber(from: "\(a + b)")
+          c.reduce()
+          let mag = c.magnitude()
+          if mag > largest {
+            largest = mag
+          }
+        }
+      }
+    }
+    return largest
   }
   
   enum SnailfishError: Error {
