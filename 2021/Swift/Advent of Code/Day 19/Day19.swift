@@ -9,11 +9,11 @@ import Foundation
 
 class Day19: Day {
   func part1() -> String {
-    "Not Implemented"
+    return ""
   }
   
   func part2() -> String {
-    "Not Implemented"
+    return ""
   }
 }
 

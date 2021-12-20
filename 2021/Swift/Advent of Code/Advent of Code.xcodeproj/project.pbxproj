@@ -67,6 +67,7 @@
 		8C07E4A4259615B30098D3C4 /* Puzzle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C149AE42579D72D00F26473 /* Puzzle.swift */; };
 		8C07E4BF259616370098D3C4 /* input.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C07E485259615A90098D3C4 /* input.txt */; };
 		8C08845E276CFC4100D378AB /* String+Subscripts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C07DE56258D59B80098D3C4 /* String+Subscripts.swift */; };
+		8C08845F2770E44500D378AB /* GridLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C9FBF6F2764F0250027DDEC /* GridLocation.swift */; };
 		8C149A9A25797E7800F26473 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C149A9925797E7800F26473 /* main.swift */; };
 		8C149AAA25797EB200F26473 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C149AA925797EB200F26473 /* main.swift */; };
 		8C149AB725797EBE00F26473 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C149AB625797EBE00F26473 /* main.swift */; };
@@ -1726,6 +1727,7 @@
 			files = (
 				8C07E0E7258F010B0098D3C4 /* String+Advent.swift in Sources */,
 				8C07E0E8258F010B0098D3C4 /* Puzzle.swift in Sources */,
+				8C08845F2770E44500D378AB /* GridLocation.swift in Sources */,
 				8C07E0D1258F00FD0098D3C4 /* Day20.swift in Sources */,
 				8C07E0B6258F00950098D3C4 /* main.swift in Sources */,
 				8C07E0E9258F010B0098D3C4 /* FileInput.swift in Sources */,
