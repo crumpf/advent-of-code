@@ -21,7 +21,6 @@ struct GridLocation: Hashable {
      GridLocation(row: row-1, col: col),
      GridLocation(row: row-1, col: col+1),
      GridLocation(row: row,   col: col-1),
-     GridLocation(row: row,   col: col),
      GridLocation(row: row,   col: col+1),
      GridLocation(row: row+1, col: col-1),
      GridLocation(row: row+1, col: col),
