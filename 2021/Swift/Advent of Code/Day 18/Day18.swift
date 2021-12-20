@@ -102,6 +102,9 @@ class Day18: Day {
        - If any pair is nested inside four pairs, the leftmost such pair explodes.
        - If any regular number is 10 or greater, the leftmost such regular number splits.
        */
+      if let found = self.firstNestedInsideFourPairs() {
+        found.explode()
+      }
     }
     
     func depth() -> Int {
@@ -117,7 +120,7 @@ class Day18: Day {
     func firstNestedInsideFourPairs() -> SnailfishNumber? {
       var found: SnailfishNumber? = nil
       if case (.regular(_), .regular(_)) = (left, right),
-         self.depth() >= 4  {
+         self.depth() == 4  {
         found = self
       }
       if found == nil,
@@ -130,11 +133,79 @@ class Day18: Day {
       }
       return found
     }
+    
+//    To explode a pair, the pair's left value is added to the first regular number to the left of the exploding pair (if any), and the pair's right value is added to the first regular number to the right of the exploding pair (if any). Exploding pairs will always consist of two regular numbers. Then, the entire exploding pair is replaced with the regular number 0.
+    func explode() {
+      parent?.explodeChildMatching(.pair(self))
+    }
+    
+    func explodeChildMatching(_ sfn: SnailfishElement) {
+      guard case let .pair(p) = sfn,
+            case let .regular(leftValue) = p.left,
+            case let .regular(rightValue) = p.right
+      else {
+        return
+      }
+      
+      addToFirstRegularNumberUpTree(side: .left, value: leftValue, origin: sfn)
+      addToFirstRegularNumberUpTree(side: .right, value: rightValue, origin: sfn)
+      if sfn == left {
+        left = .regular(0)
+      }
+      else if sfn == right {
+        right = .regular(0)
+      }
+    }
+    
+    func addToFirstRegularNumberUpTree(side: PairSide, value: Int, origin: SnailfishElement) {
+      switch side {
+      case .left:
+        if case let .regular(n) = left {
+          left = .regular(n + value)
+          return
+        }
+      case .right:
+        if case let .regular(n) = right {
+          right = .regular(n + value)
+          return
+        }
+      }
+      
+      if let parent = parent {
+        parent.addToFirstRegularNumberUpTree(side: side, value: value, origin: .pair(self))
+      } else {
+        if side == .left && origin == right,
+           case let .pair(p) = left {
+          p.addToFirstRegularNumberDownTree(side: .right, value: value)
+        } else if side == .right && origin == left,
+                  case let .pair(p) = right {
+          p.addToFirstRegularNumberDownTree(side: .left, value: value)
+        }
+      }
+    }
+    
+    func addToFirstRegularNumberDownTree(side: PairSide, value: Int) {
+      switch side == .left ? left : right {
+      case let .regular(n):
+        if side == .left {
+          left = .regular(n + value)
+        } else {
+          right = .regular(n + value)
+        }
+      case let .pair(p):
+        p.addToFirstRegularNumberDownTree(side: side, value: value)
+      }
+    }
+    
   }
   
   enum SnailfishElement {
     case regular(Int)
     case pair(SnailfishNumber)
+  }
+  
+  enum PairSide {
+    case left, right
   }
 
 }
@@ -152,6 +223,19 @@ extension Day18.SnailfishElement: CustomStringConvertible {
       return String(reg)
     case let.pair(sfn):
       return "\(sfn)"
+    }
+  }
+}
+
+extension Day18.SnailfishElement: Equatable {
+  static func == (lhs: Day18.SnailfishElement, rhs: Day18.SnailfishElement) -> Bool {
+    switch (lhs, rhs) {
+    case let (.regular(v1), .regular(v2)) where v1 == v2:
+      return true
+    case let (.pair(v1), .pair(v2)) where v1 === v2:
+      return true
+    default:
+      return false
     }
   }
 }

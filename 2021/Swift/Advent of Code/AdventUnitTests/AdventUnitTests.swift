@@ -390,6 +390,19 @@ class AdventUnitTests: XCTestCase {
     }
     XCTAssertEqual(firstAtDepth4, foundNesteds)
     
+    let singleExplode = """
+    [[[[0,9],2],3],4]
+    [7,[6,[5,[7,0]]]]
+    [[6,[5,[7,0]]],3]
+    [[3,[2,[8,0]]],[9,[5,[4,[3,2]]]]]
+    [[3,[2,[8,0]]],[9,[5,[7,0]]]]
+    [[[[0,7],4],[7,[[8,4],9]]],[1,1]]
+    
+    """
+    snailfishNumbers.compactMap { $0.firstNestedInsideFourPairs() }
+      .forEach { $0.explode() }
+    XCTAssertEqual(singleExplode, snailfishNumbers.reduce(into: "") { $0.append("\($1)\n") })
+    
     XCTAssertEqual(day.part1(), "", "Part 1 Failed")
     XCTAssertEqual(day.part2(), "", "Part 2 Failed")
   }
