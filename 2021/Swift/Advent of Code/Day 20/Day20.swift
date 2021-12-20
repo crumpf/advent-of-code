@@ -18,12 +18,18 @@ class Day20: Day {
     let result = e.inputImage.map { $0.reduce(0) { $0 + ($1 == .light ? 1 : 0) } }
       .reduce(0, +)
     return "\(result)"
-    
-    // bad answer 5438
   }
   
   func part2() -> String {
-    return ""
+    var e = enhancer
+    for _ in 1...50 {
+      e = ImageEnhancer(algorithm: e.algorithm, inputImage: e.enhance(), infinityPixel: e.enhancedInfinitePixel())
+    }
+    printMap(e.inputImage)
+    
+    let result = e.inputImage.map { $0.reduce(0) { $0 + ($1 == .light ? 1 : 0) } }
+      .reduce(0, +)
+    return "\(result)"
   }
   
   let enhancer: ImageEnhancer
