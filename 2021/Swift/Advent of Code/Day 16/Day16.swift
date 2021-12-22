@@ -58,7 +58,7 @@ class Day16: Day {
     
     mutating func read(_ length: Int) -> String {
       let range = offset..<(offset+length)
-      guard let max = range.max(), max < message.count else {
+      guard range.upperBound < message.count else {
         return ""
       }
       offset += length

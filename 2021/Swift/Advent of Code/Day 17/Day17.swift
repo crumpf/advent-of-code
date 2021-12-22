@@ -102,7 +102,7 @@ class Day17: Day {
     }
     
     func relation(relativeTo target: Target) -> ProbeRelation {
-      guard position.y >= target.yRange.min()! else {
+      guard position.y >= target.yRange.lowerBound else {
         return .beyondTarget
       }
       if target.xRange.contains(position.x) && target.yRange.contains(position.y) {
