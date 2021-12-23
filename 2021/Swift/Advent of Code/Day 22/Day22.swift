@@ -118,6 +118,9 @@ class Day22: Day {
     guard areRangesOverlapping(cuboid.range, region) else {
       return [cuboid]
     }
+    // Important to remember when creating the new cuboids that they cannot have edges that
+    // overlap with the region being checked against. Cuboids can't share edges or else the cubes
+    // being counted inside the cuboids would be counted more than once.
     var fragments: [Cuboid] = []
     if cuboid.range.z.upperBound > region.z.upperBound {
       let r = Range3D(cuboid.range.x, cuboid.range.y, (region.z.upperBound+1)...cuboid.range.z.upperBound)
