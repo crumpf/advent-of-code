@@ -16,8 +16,10 @@ class Day22: Day {
     return "\(result)"
   }
   
+  // Starting with all cubes off, run all of the reboot steps for all cubes in the reactor.
   func part2() -> String {
-    return ""
+    let result = executeRebootStepsAndFindAllOnCubes(rebootSteps: rebootInput)
+    return "\(result)"
   }
   
   let rebootInput: [Cuboid]
@@ -83,6 +85,81 @@ class Day22: Day {
     return onCubes.count
   }
   
+  func executeRebootStepsAndFindAllOnCubes(rebootSteps: [Cuboid]) -> Int {
+    var onCuboids: [Cuboid] = []
+    // everything starts in off state, so we can ignore any starting steps that are also off
+    rebootSteps.drop { step in step.state == .off }
+    .forEach { step in
+      // See if the 'step' cuboid intersects with the running list of 'on' cuboids.
+      // If there's an intersecton, new cuboid fragments are created by subtracting the
+      // intersecting region. We discard the cuboid that was intersected in the list and add back
+      // it's fragments.
+      // Finally, if the 'step' cuboid is "on" state, we add it to the 'on' cuboids list.
+      var additions: [Cuboid] = []
+      var removals: [Cuboid] = []
+      for c in onCuboids {
+        if let intersect = intersectRanges(c.range, step.range) {
+          additions += fragmentCuboidBySubtractingRegion(cuboid: c, region: intersect)
+          removals.append(c)
+        }
+      }
+      onCuboids.removeAll { removals.contains($0) }
+      onCuboids += additions
+      if step.state == .on {
+        onCuboids.append(step)
+      }
+    }
+    
+    return onCuboids.reduce(0) { $0 + $1.cubeCount }
+  }
+  
+  // Returns an array of Cuboids that represent the subtraction of region from cuboid.region.
+  func fragmentCuboidBySubtractingRegion(cuboid: Cuboid, region: Range3D) -> [Cuboid] {
+    guard areRangesOverlapping(cuboid.range, region) else {
+      return [cuboid]
+    }
+    var fragments: [Cuboid] = []
+    if cuboid.range.z.upperBound > region.z.upperBound {
+      let r = Range3D(cuboid.range.x, cuboid.range.y, (region.z.upperBound+1)...cuboid.range.z.upperBound)
+      fragments.append(Cuboid(range: r, state: cuboid.state))
+    }
+    if cuboid.range.z.lowerBound < region.z.lowerBound {
+      let r = Range3D(cuboid.range.x, cuboid.range.y, cuboid.range.z.lowerBound...(region.z.lowerBound-1))
+      fragments.append(Cuboid(range: r, state: cuboid.state))
+    }
+    if cuboid.range.y.upperBound > region.y.upperBound {
+      let r = Range3D(cuboid.range.x,
+                      (region.y.upperBound+1)...cuboid.range.y.upperBound,
+                      max(cuboid.range.z.lowerBound, region.z.lowerBound)...min(cuboid.range.z.upperBound, region.z.upperBound))
+      fragments.append(Cuboid(range: r, state: cuboid.state))
+    }
+    if cuboid.range.y.lowerBound < region.y.lowerBound {
+      let r = Range3D(cuboid.range.x,
+                      cuboid.range.y.lowerBound...(region.y.lowerBound-1),
+                      max(cuboid.range.z.lowerBound, region.z.lowerBound)...min(cuboid.range.z.upperBound, region.z.upperBound))
+      fragments.append(Cuboid(range: r, state: cuboid.state))
+    }
+    if cuboid.range.x.upperBound > region.x.upperBound {
+      let r = Range3D((region.x.upperBound+1)...cuboid.range.x.upperBound,
+                      max(cuboid.range.y.lowerBound, region.y.lowerBound)...min(cuboid.range.y.upperBound, region.y.upperBound),
+                      max(cuboid.range.z.lowerBound, region.z.lowerBound)...min(cuboid.range.z.upperBound, region.z.upperBound))
+      let c = Cuboid(range: r, state: cuboid.state)
+      fragments.append(c)
+    }
+    if cuboid.range.x.lowerBound < region.x.lowerBound {
+      let r = Range3D(cuboid.range.x.lowerBound...(region.x.lowerBound-1),
+                      max(cuboid.range.y.lowerBound, region.y.lowerBound)...min(cuboid.range.y.upperBound, region.y.upperBound),
+                      max(cuboid.range.z.lowerBound, region.z.lowerBound)...min(cuboid.range.z.upperBound, region.z.upperBound))
+      let c = Cuboid(range: r, state: cuboid.state)
+      fragments.append(c)
+    }
+    return fragments
+  }
+  
+  func areRangesOverlapping(_ a: Range3D, _ b: Range3D) -> Bool {
+    a.x.overlaps(b.x) && a.y.overlaps(b.y) && a.z.overlaps(b.z)
+  }
+  
   typealias Range3D = (x: ClosedRange<Int>, y: ClosedRange<Int>, z: ClosedRange<Int>)
   
   func intersectRanges(_ a: Range3D, _ b: Range3D) -> Range3D? {
@@ -106,9 +183,17 @@ class Day22: Day {
     return intersect
   }
   
-  struct Cuboid {
+  struct Cuboid: Equatable {
+    static func == (lhs: Day22.Cuboid, rhs: Day22.Cuboid) -> Bool {
+      lhs.state == rhs.state && lhs.range == rhs.range
+    }
+    
     let range: Range3D
     let state: State
+    
+    var cubeCount: Int {
+      range.x.count * range.y.count * range.z.count
+    }
     
     enum State: String {
       case off, on
