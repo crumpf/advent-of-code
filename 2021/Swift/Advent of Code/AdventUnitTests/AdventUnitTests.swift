@@ -574,4 +574,54 @@ class AdventUnitTests: XCTestCase {
     XCTAssertEqual(day.part2(), "2758514936282235", "Part 2 Failed")
   }
   
+  func testDay23() throws {
+    let input = """
+    #############
+    #...........#
+    ###B#C#B#D###
+      #A#D#C#A#
+      #########
+    """
+    let day = Day23(input: input)
+    XCTAssertEqual(day.part1(), "", "Part 1 Failed")
+    XCTAssertEqual(day.part2(), "", "Part 2 Failed")
+  }
+  
+  func testDay24() throws {
+    let larger3X = """
+    inp z
+    inp x
+    mul z 3
+    eql z x
+    """
+    var alu = Day24.ALU(program: larger3X.lines(), input: Day24.ALUInput(value: "34"))
+    alu.run()
+    XCTAssertEqual(alu.register["z"]!, 0)
+    alu = Day24.ALU(program: larger3X.lines(), input: Day24.ALUInput(value: "39"))
+    alu.run()
+    XCTAssertEqual(alu.register["z"]!, 1)
+    
+    let binary = """
+    inp w
+    add z w
+    mod z 2
+    div w 2
+    add y w
+    mod y 2
+    div w 2
+    add x w
+    mod x 2
+    div w 2
+    mod w 2
+    """
+    alu = Day24.ALU(program: binary.lines(), input: Day24.ALUInput(value: "9"))
+    alu.run()
+    var res = "\(alu.register["w"]!)\(alu.register["x"]!)\(alu.register["y"]!)\(alu.register["z"]!)"
+    XCTAssertEqual(res, "1001")
+    alu = Day24.ALU(program: binary.lines(), input: Day24.ALUInput(value: "7"))
+    alu.run()
+    res = "\(alu.register["w"]!)\(alu.register["x"]!)\(alu.register["y"]!)\(alu.register["z"]!)"
+    XCTAssertEqual(res, "0111")
+  }
+  
 }
