@@ -17,6 +17,10 @@
 		8CC483B32938665A00003294 /* input.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CC4839429385AD100003294 /* input.txt */; };
 		8CC483B62938681200003294 /* Day02.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC483B52938681200003294 /* Day02.swift */; };
 		8CC483B72938688B00003294 /* input.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CC483B42938681200003294 /* input.txt */; };
+		8CC483BA29386EDE00003294 /* String+Advent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC483B829386EDE00003294 /* String+Advent.swift */; };
+		8CC483BB29386EDE00003294 /* String+Advent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC483B829386EDE00003294 /* String+Advent.swift */; };
+		8CC483BC29386EDE00003294 /* String+Subscripts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC483B929386EDE00003294 /* String+Subscripts.swift */; };
+		8CC483BD29386EDE00003294 /* String+Subscripts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC483B929386EDE00003294 /* String+Subscripts.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -44,7 +48,7 @@
 
 /* Begin PBXFileReference section */
 		8CC4839129385AA300003294 /* FileInput.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileInput.swift; sourceTree = "<group>"; };
-		8CC4839329385AD100003294 /* Day01.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Day01.swift; sourceTree = "<group>"; };
+		8CC4839329385AD100003294 /* Day01.swift */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = Day01.swift; sourceTree = "<group>"; tabWidth = 4; };
 		8CC4839429385AD100003294 /* input.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = input.txt; sourceTree = "<group>"; };
 		8CC4839B29385C0C00003294 /* Day 02 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Day 02"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8CC4839D29385C0C00003294 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -53,6 +57,8 @@
 		8CC483B0293865F300003294 /* Puzzle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Puzzle.swift; sourceTree = "<group>"; };
 		8CC483B42938681200003294 /* input.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = input.txt; sourceTree = "<group>"; };
 		8CC483B52938681200003294 /* Day02.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Day02.swift; sourceTree = "<group>"; };
+		8CC483B829386EDE00003294 /* String+Advent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Advent.swift"; sourceTree = "<group>"; };
+		8CC483B929386EDE00003294 /* String+Subscripts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Subscripts.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +103,8 @@
 			children = (
 				8CC4839129385AA300003294 /* FileInput.swift */,
 				8CC483B0293865F300003294 /* Puzzle.swift */,
+				8CC483B829386EDE00003294 /* String+Advent.swift */,
+				8CC483B929386EDE00003294 /* String+Subscripts.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -204,6 +212,8 @@
 				8CC483AF29385D0C00003294 /* FileInput.swift in Sources */,
 				8CC4839E29385C0C00003294 /* main.swift in Sources */,
 				8CC483B62938681200003294 /* Day02.swift in Sources */,
+				8CC483BD29386EDE00003294 /* String+Subscripts.swift in Sources */,
+				8CC483BB29386EDE00003294 /* String+Advent.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -215,6 +225,8 @@
 				8CC483B1293865F300003294 /* Puzzle.swift in Sources */,
 				8CC483A929385C7000003294 /* main.swift in Sources */,
 				8CC483AD29385CAB00003294 /* Day01.swift in Sources */,
+				8CC483BC29386EDE00003294 /* String+Subscripts.swift in Sources */,
+				8CC483BA29386EDE00003294 /* String+Advent.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
