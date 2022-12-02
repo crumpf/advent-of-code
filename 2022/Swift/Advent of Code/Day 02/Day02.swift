@@ -8,7 +8,7 @@
 import Foundation
 
 class Day02: Day {
-  enum RPS: Int {
+  enum HandShape: Int {
     case rock = 1, paper = 2, scissors = 3
   }
   
@@ -16,34 +16,49 @@ class Day02: Day {
     case opponent = 0, tie = 3, me = 6
   }
   
-  private lazy var decodedStrategyGuide: [(RPS, RPS)] = input
-    .lines()
-    .compactMap {
-      let segmented = $0.split(separator: " ")
-      return (try! decodeOpponentCharacter(String(segmented[0])),
-              try! decodeMyCharacter(String(segmented[1])))
-    }
-  
-  private func decodeOpponentCharacter(_ character: String) throws -> RPS {
-    switch character {
+  private func decodeOpponentCode(_ code: String) throws -> HandShape {
+    switch code {
     case "A": return .rock
     case "B": return .paper
     case "C": return .scissors
-    default: throw NSError(domain: "Could not decode (\(character))", code: -1)
+    default: throw NSError(domain: "Could not decode (\(code))", code: -1)
     }
   }
   
-  private func decodeMyCharacter(_ character: String) throws -> RPS {
-    switch character {
+  private func decodeMyCodeExpectingItIsAHandShape(code: String) throws -> HandShape {
+    switch code {
     case "X": return .rock
     case "Y": return .paper
     case "Z": return .scissors
-    default: throw NSError(domain: "Could not decode (\(character))", code: -1)
+    default: throw NSError(domain: "Could not decode (\(code))", code: -1)
     }
   }
   
-  func part1() -> String {
-    let score = decodedStrategyGuide.reduce(0) { partialResult, prediction in
+  private func decodeMyCodeIndicatingRoundEnding(code: String, opponentShape: HandShape) throws -> HandShape {
+    switch code {
+    case "X":
+      // need to lose
+      switch opponentShape {
+      case .rock: return .scissors
+      case .paper: return .rock
+      case .scissors: return .paper
+      }
+    case "Y":
+      // need to end in a draw
+      return opponentShape
+    case "Z":
+      // need to win
+      switch opponentShape {
+      case .rock: return .paper
+      case .paper: return .scissors
+      case .scissors: return .rock
+      }
+    default: throw NSError(domain: "Could not decode (\(code))", code: -1)
+    }
+  }
+  
+  func scoreFromStrategyGuide(_ guide: [(HandShape, HandShape)]) -> Int {
+    guide.reduce(0) { partialResult, prediction in
       var winner: Winner = .tie
       switch prediction {
       case (.rock, .paper): winner = .me
@@ -56,11 +71,33 @@ class Day02: Day {
       }
       return partialResult + prediction.1.rawValue + winner.rawValue
     }
-    return "\(score)"
+  }
+  
+  func part1() -> String {
+    let decodedStrategyGuide: [(HandShape, HandShape)] = input
+      .lines()
+      .compactMap {
+        let segmented = $0.split(separator: " ")
+        return (try! decodeOpponentCode(String(segmented[0])),
+                try! decodeMyCodeExpectingItIsAHandShape(code: String(segmented[1])))
+      }
+    
+    return "\(scoreFromStrategyGuide(decodedStrategyGuide))"
   }
   
   func part2() -> String {
-    "Not Implemented"
+    let decodedStrategyGuide: [(HandShape, HandShape)] = input
+      .lines()
+      .compactMap {
+        let segmented = $0.split(separator: " ")
+        let opponentShape = try! decodeOpponentCode(String(segmented[0]))
+        return (
+          opponentShape,
+          try! decodeMyCodeIndicatingRoundEnding(code: String(segmented[1]), opponentShape: opponentShape)
+        )
+      }
+    
+    return "\(scoreFromStrategyGuide(decodedStrategyGuide))"
   }
 }
 
