@@ -12,8 +12,8 @@ class Day02: Day {
     case rock = 1, paper = 2, scissors = 3
   }
   
-  enum Winner: Int {
-    case opponent = 0, tie = 3, me = 6
+  enum Outcome: Int {
+      case loss = 0, draw = 3, win = 6
   }
   
   private func decodeOpponentCode(_ code: String) throws -> HandShape {
@@ -36,18 +36,15 @@ class Day02: Day {
   
   private func decodeMyCodeIndicatingRoundEnding(code: String, opponentShape: HandShape) throws -> HandShape {
     switch code {
-    case "X":
-      // need to lose
+    case "X": // need to lose
       switch opponentShape {
       case .rock: return .scissors
       case .paper: return .rock
       case .scissors: return .paper
       }
-    case "Y":
-      // need to end in a draw
+    case "Y": // need to end in a draw
       return opponentShape
-    case "Z":
-      // need to win
+    case "Z": // need to win
       switch opponentShape {
       case .rock: return .paper
       case .paper: return .scissors
@@ -57,19 +54,19 @@ class Day02: Day {
     }
   }
   
-  func scoreFromStrategyGuide(_ guide: [(HandShape, HandShape)]) -> Int {
+  private func scoreFromStrategyGuide(_ guide: [(HandShape, HandShape)]) -> Int {
     guide.reduce(0) { partialResult, prediction in
-      var winner: Winner = .tie
+      var outcome: Outcome = .draw
       switch prediction {
-      case (.rock, .paper): winner = .me
-      case (.rock, .scissors): winner = .opponent
-      case (.paper, .rock): winner = .opponent
-      case (.paper, .scissors): winner = .me
-      case (.scissors, .rock): winner = .me
-      case (.scissors, .paper): winner = .opponent
-      default: winner = .tie
+      case (.rock, .paper): outcome = .win
+      case (.rock, .scissors): outcome = .loss
+      case (.paper, .rock): outcome = .loss
+      case (.paper, .scissors): outcome = .win
+      case (.scissors, .rock): outcome = .win
+      case (.scissors, .paper): outcome = .loss
+      default: outcome = .draw
       }
-      return partialResult + prediction.1.rawValue + winner.rawValue
+      return partialResult + prediction.1.rawValue + outcome.rawValue
     }
   }
   
