@@ -9,40 +9,56 @@ import Foundation
 
 class Day02Alternative: Day {
   
-  enum HandShape: Int {
-      case rock = 1, paper = 2, scissors = 3
+  enum HandShape {
+    case rock, paper, scissors
+    
+    var score: Int {
+      switch self {
+      case .rock:     return 1
+      case .paper:    return 2
+      case .scissors: return 3
+      }
+    }
   }
-
-  enum Outcome: Int {
-      case loss = 0, draw = 3, win = 6
+  
+  enum Outcome {
+    case loss, draw, win
+    
+    var score: Int {
+      switch self {
+      case .loss: return 0
+      case .draw: return 3
+      case .win:  return 6
+      }
+    }
   }
   
   // A=rock B=paper C=scissors
   // X=rock Y=paper Z=scissors
   private let part1Map = [
-      "A X" : Outcome.draw.rawValue + HandShape.rock.rawValue,
-      "A Y" : Outcome.win.rawValue  + HandShape.paper.rawValue,
-      "A Z" : Outcome.loss.rawValue + HandShape.scissors.rawValue,
-      "B X" : Outcome.loss.rawValue + HandShape.rock.rawValue,
-      "B Y" : Outcome.draw.rawValue + HandShape.paper.rawValue,
-      "B Z" : Outcome.win.rawValue  + HandShape.scissors.rawValue,
-      "C X" : Outcome.win.rawValue  + HandShape.rock.rawValue,
-      "C Y" : Outcome.loss.rawValue + HandShape.paper.rawValue,
-      "C Z" : Outcome.draw.rawValue + HandShape.scissors.rawValue
+    "A X" : Outcome.draw.score + HandShape.rock.score,
+    "A Y" : Outcome.win.score  + HandShape.paper.score,
+    "A Z" : Outcome.loss.score + HandShape.scissors.score,
+    "B X" : Outcome.loss.score + HandShape.rock.score,
+    "B Y" : Outcome.draw.score + HandShape.paper.score,
+    "B Z" : Outcome.win.score  + HandShape.scissors.score,
+    "C X" : Outcome.win.score  + HandShape.rock.score,
+    "C Y" : Outcome.loss.score + HandShape.paper.score,
+    "C Z" : Outcome.draw.score + HandShape.scissors.score
   ]
-
+  
   // A=rock B=paper C=scissors
   // X=needLose Y=needDraw Z=needWin
   private let part2Map = [
-      "A X" : Outcome.loss.rawValue + HandShape.scissors.rawValue,
-      "A Y" : Outcome.draw.rawValue + HandShape.rock.rawValue,
-      "A Z" : Outcome.win.rawValue  + HandShape.paper.rawValue,
-      "B X" : Outcome.loss.rawValue + HandShape.rock.rawValue,
-      "B Y" : Outcome.draw.rawValue + HandShape.paper.rawValue,
-      "B Z" : Outcome.win.rawValue  + HandShape.scissors.rawValue,
-      "C X" : Outcome.loss.rawValue + HandShape.paper.rawValue,
-      "C Y" : Outcome.draw.rawValue + HandShape.scissors.rawValue,
-      "C Z" : Outcome.win.rawValue  + HandShape.rock.rawValue
+    "A X" : Outcome.loss.score + HandShape.scissors.score,
+    "A Y" : Outcome.draw.score + HandShape.rock.score,
+    "A Z" : Outcome.win.score  + HandShape.paper.score,
+    "B X" : Outcome.loss.score + HandShape.rock.score,
+    "B Y" : Outcome.draw.score + HandShape.paper.score,
+    "B Z" : Outcome.win.score  + HandShape.scissors.score,
+    "C X" : Outcome.loss.score + HandShape.paper.score,
+    "C Y" : Outcome.draw.score + HandShape.scissors.score,
+    "C Z" : Outcome.win.score  + HandShape.rock.score
   ]
   
   func part1() -> String {
@@ -52,5 +68,5 @@ class Day02Alternative: Day {
   func part2() -> String {
     "\(input.lines().reduce(0) { $0 + (part2Map[$1] ?? 0) })"
   }
-
+  
 }

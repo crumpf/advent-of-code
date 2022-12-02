@@ -8,12 +8,28 @@
 import Foundation
 
 class Day02: Day {
-  enum HandShape: Int {
-    case rock = 1, paper = 2, scissors = 3
+  enum HandShape {
+    case rock, paper, scissors
   }
   
-  enum Outcome: Int {
-      case loss = 0, draw = 3, win = 6
+  enum Outcome {
+    case loss, draw, win
+  }
+  
+  private func scoreOf(_ shape: HandShape) -> Int {
+    switch shape {
+    case .rock:     return 1
+    case .paper:    return 2
+    case .scissors: return 3
+    }
+  }
+  
+  private func scoreOf(_ outcome: Outcome) -> Int {
+    switch outcome {
+    case .loss: return 0
+    case .draw: return 3
+    case .win:  return 6
+    }
   }
   
   private func decodeOpponentCode(_ code: String) throws -> HandShape {
@@ -66,7 +82,7 @@ class Day02: Day {
       case (.scissors, .paper): outcome = .loss
       default: outcome = .draw
       }
-      return partialResult + prediction.1.rawValue + outcome.rawValue
+      return partialResult + scoreOf(prediction.1) + scoreOf(outcome)
     }
   }
   
@@ -96,5 +112,6 @@ class Day02: Day {
     
     return "\(scoreFromStrategyGuide(decodedStrategyGuide))"
   }
+  
 }
 
