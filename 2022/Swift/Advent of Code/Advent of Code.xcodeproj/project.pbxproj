@@ -21,6 +21,7 @@
 		8CC483BC29386EDE00003294 /* String+Subscripts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC483B929386EDE00003294 /* String+Subscripts.swift */; };
 		8CC483BD29386EDE00003294 /* String+Subscripts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC483B929386EDE00003294 /* String+Subscripts.swift */; };
 		8CC483BE293A475900003294 /* input.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CC483B42938681200003294 /* input.txt */; };
+		8CC483C0293A640D00003294 /* Day02Alternative.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC483BF293A640D00003294 /* Day02Alternative.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -59,6 +60,7 @@
 		8CC483B52938681200003294 /* Day02.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Day02.swift; sourceTree = "<group>"; };
 		8CC483B829386EDE00003294 /* String+Advent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Advent.swift"; sourceTree = "<group>"; };
 		8CC483B929386EDE00003294 /* String+Subscripts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Subscripts.swift"; sourceTree = "<group>"; };
+		8CC483BF293A640D00003294 /* Day02Alternative.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Day02Alternative.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +116,7 @@
 			children = (
 				8CC4839D29385C0C00003294 /* main.swift */,
 				8CC483B52938681200003294 /* Day02.swift */,
+				8CC483BF293A640D00003294 /* Day02Alternative.swift */,
 				8CC483B42938681200003294 /* input.txt */,
 			);
 			indentWidth = 2;
@@ -216,6 +219,7 @@
 				8CC483B62938681200003294 /* Day02.swift in Sources */,
 				8CC483BD29386EDE00003294 /* String+Subscripts.swift in Sources */,
 				8CC483BB29386EDE00003294 /* String+Advent.swift in Sources */,
+				8CC483C0293A640D00003294 /* Day02Alternative.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
