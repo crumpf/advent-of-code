@@ -16,23 +16,23 @@
 		8CC483B2293865F300003294 /* Puzzle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC483B0293865F300003294 /* Puzzle.swift */; };
 		8CC483B32938665A00003294 /* input.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CC4839429385AD100003294 /* input.txt */; };
 		8CC483B62938681200003294 /* Day02.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC483B52938681200003294 /* Day02.swift */; };
-		8CC483B72938688B00003294 /* input.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CC483B42938681200003294 /* input.txt */; };
 		8CC483BA29386EDE00003294 /* String+Advent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC483B829386EDE00003294 /* String+Advent.swift */; };
 		8CC483BB29386EDE00003294 /* String+Advent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC483B829386EDE00003294 /* String+Advent.swift */; };
 		8CC483BC29386EDE00003294 /* String+Subscripts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC483B929386EDE00003294 /* String+Subscripts.swift */; };
 		8CC483BD29386EDE00003294 /* String+Subscripts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC483B929386EDE00003294 /* String+Subscripts.swift */; };
+		8CC483BE293A475900003294 /* input.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CC483B42938681200003294 /* input.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		8CC4839929385C0C00003294 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			dstPath = "";
 			dstSubfolderSpec = 6;
 			files = (
-				8CC483B72938688B00003294 /* input.txt in CopyFiles */,
+				8CC483BE293A475900003294 /* input.txt in CopyFiles */,
 			);
-			runOnlyForDeploymentPostprocessing = 1;
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 		8CC483A429385C7000003294 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -116,8 +116,10 @@
 				8CC483B52938681200003294 /* Day02.swift */,
 				8CC483B42938681200003294 /* input.txt */,
 			);
+			indentWidth = 2;
 			path = "Day 02";
 			sourceTree = "<group>";
+			tabWidth = 2;
 		};
 		8CC483A729385C7000003294 /* Day 01 */ = {
 			isa = PBXGroup;
