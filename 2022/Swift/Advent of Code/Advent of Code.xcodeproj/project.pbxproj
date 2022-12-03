@@ -55,7 +55,7 @@
 		8CC483C3293A664100003294 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 12;
-			dstPath = usr/share/man/man1;
+			dstPath = "";
 			dstSubfolderSpec = 6;
 			files = (
 				8CC483D3293A66BF00003294 /* input.txt in CopyFiles */,
