@@ -17,7 +17,9 @@ class Day03: Day {
                 let right = Set($0[mid..<$0.count])
                 return left.intersection(right).first
             }
-        let result = sumOfPrioritiesOfItemTypes(repeatedItemTypes)
+        let result = repeatedItemTypes.reduce(0) { partialResult, item in
+            partialResult + priorityForItemType(item)
+        }
         return "\(result)"
     }
     
@@ -28,21 +30,20 @@ class Day03: Day {
             let set = Set(lines[i]).intersection(Set(lines[i+1])).intersection(Set(lines[i+2]))
             badgeItemTypes.append(set.first!)
         }
-        let result = sumOfPrioritiesOfItemTypes(badgeItemTypes)
+        let result = badgeItemTypes.reduce(0) { partialResult, item in
+            partialResult + priorityForItemType(item)
+        }
         return "\(result)"
     }
     
-    private func sumOfPrioritiesOfItemTypes(_ itemTypes: [Character]) -> Int {
-        itemTypes.reduce(0) { partialResult, item in
-            var priority = 0
-            if item.isLowercase {
-                priority = Int(item.asciiValue! - Character("a").asciiValue!) + 1
-            } else {
-                priority = Int(item.asciiValue! - Character("A").asciiValue!) + 27
-            }
-            return partialResult + priority
+    private func priorityForItemType(_ itemType: Character) -> Int {
+        var priority = 0
+        if itemType.isLowercase {
+            priority = Int(itemType.asciiValue! - Character("a").asciiValue!) + 1
+        } else {
+            priority = Int(itemType.asciiValue! - Character("A").asciiValue!) + 27
         }
+        return priority
     }
     
 }
-
