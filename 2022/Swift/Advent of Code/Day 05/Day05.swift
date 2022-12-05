@@ -9,17 +9,29 @@ import Foundation
 
 class Day05: Day {
     
-    private let stacks = [
-        ["M", "J", "C", "B", "F", "R", "L", "H"],
-        ["Z", "C", "D"],
-        ["H", "J", "F", "C", "N", "G", "W"],
-        ["P", "J", "D", "M", "T", "S", "B"],
-        ["N", "C", "D", "R", "J"],
-        ["W", "L", "D", "Q", "P", "J", "G", "Z"],
-        ["P", "Z", "T", "F", "R", "H"],
-        ["L", "V", "M", "G"],
-        ["C", "B", "G", "P", "F", "Q", "R", "J"]
-    ]
+    private lazy var stacks: [[String]] = {
+        let lines = input.lines()
+        guard let dividerIndex = lines.firstIndex(of: "") else { return [] }
+        
+        let stackIndexLine = lines[dividerIndex-1]
+        guard let last = stackIndexLine.last, let numberOfStacks = Int(String(last)) else { return [] }
+        
+        var stax: [[String]] = Array(repeating: [], count: numberOfStacks)
+        var lineIndex = dividerIndex - 2
+        while lineIndex >= 0 {
+            let line = lines[lineIndex]
+            var stackIndex = 0
+            for n in stride(from: 1, to: line.count, by: 4) {
+                let crate = line[n]
+                if crate.isLetter {
+                    stax[stackIndex].append(String(crate))
+                }
+                stackIndex += 1
+            }
+            lineIndex -= 1
+        }
+        return stax
+    }()
     
     private lazy var procedure: [(move: Int, from: Int, to: Int)] = input.lines().compactMap {
         guard $0.hasPrefix("move") else { return nil }
@@ -52,4 +64,3 @@ class Day05: Day {
     }
     
 }
-

@@ -9,6 +9,6 @@ import Foundation
 
 extension String {
   func lines() -> [String] {
-    trimmingCharacters(in: .whitespacesAndNewlines).components(separatedBy: .newlines)
+    trimmingCharacters(in: .newlines).components(separatedBy: .newlines)
   }
 }
