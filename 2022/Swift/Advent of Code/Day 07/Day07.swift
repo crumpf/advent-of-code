@@ -32,18 +32,25 @@ class Day07: Day {
     }
     
     private func filesystem(fromTerminalOutput terminalOutput: String) -> Dir {
-        let fs = Dir(parent: nil, name: "/")
-        var pwd = fs
+        let root = Dir(parent: nil, name: "/")
+        var pwd = root
         let operations = terminalOutput.components(separatedBy: "$ ").map { $0.trimmingCharacters(in: .newlines) }
         for op in operations {
             if op.hasPrefix("cd") {
                 let comps = op.components(separatedBy: .whitespaces)
                 if comps.indices.contains(1) {
                     let dirName = comps[1]
-                    if dirName == "..", let parent = pwd.parent {
-                        pwd = parent
-                    } else if let dir = pwd.subdirs.first(where: { $0.name == dirName }) {
-                        pwd = dir
+                    switch dirName {
+                    case "..":
+                        if let parent = pwd.parent {
+                            pwd = parent
+                        }
+                    case "/":
+                        pwd = root
+                    default:
+                        if let dir = pwd.subdirs.first(where: { $0.name == dirName }) {
+                            pwd = dir
+                        }
                     }
                 }
             } else if op.hasPrefix("ls") {
@@ -65,7 +72,7 @@ class Day07: Day {
                 }
             }
         }
-        return fs
+        return root
     }
     
 }
