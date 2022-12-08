@@ -10,7 +10,7 @@ import Foundation
 class Day07: Day {
     func part1() -> String {
         let fs = filesystem(fromTerminalOutput: input)
-        let result = fs.allDirs()
+        let result = fs.allDirectoriesInHierarchy()
             .map { $0.totalSize() }
             .filter { $0 <= 100_000 }
             .reduce(0, +)
@@ -24,7 +24,7 @@ class Day07: Day {
         let usedSpace = fs.totalSize()
         let unusedSpace = totalSpace - usedSpace
         let neededSpace = requriedSpace - unusedSpace
-        let qualifyingDirs = fs.allDirs()
+        let qualifyingDirs = fs.allDirectoriesInHierarchy()
             .map { $0.totalSize() }
             .filter { $0 >= neededSpace }
             .sorted(by: <)
@@ -85,8 +85,8 @@ class Dir {
         files.map { $0.size }.reduce(0, +) + subdirs.reduce(0) { $0 + $1.totalSize() }
     }
     
-    func allDirs() -> [Dir] {
-        subdirs.reduce(into: [self]) { $0 += $1.allDirs()}
+    func allDirectoriesInHierarchy() -> [Dir] {
+        subdirs.reduce(into: [self]) { $0 += $1.allDirectoriesInHierarchy()}
     }
 }
 
