@@ -19,28 +19,20 @@ class Day08: Day {
     lazy private(set) var grid = input.lines().map { $0.compactMap { Int(String($0))} }
     
     private func numberOfTreesVisibleFromOutsideOfGrid(_ grid: [[Int]]) -> Int {
-        var seeSet = Set<GridLocation>()
-        for (row, elem) in grid.enumerated() {
-            for (col, _) in elem.enumerated() {
-                if grid.isTreeVisibleAt(row: row, col: col) {
-                    seeSet.insert(GridLocation(row: row, col: col))
-                }
+        grid.enumerated().flatMap { row in
+            row.element.enumerated().compactMap { col in
+                grid.isTreeVisibleAt(row: row.offset, col: col.offset) ? (row, col) : nil
             }
         }
-        return seeSet.count
+        .count
     }
     
     private func highestScenicScoreForAnyTreeInGrid(_ grid: [[Int]]) -> Int {
-        var highest = 0
-        for (row, elem) in grid.enumerated() {
-            for (col, _) in elem.enumerated() {
-                let score = grid.scenicScoreOfTreeAt(row: row, col: col)
-                if score > highest {
-                    highest = score
-                }
-            }
+        grid.enumerated().reduce(0) { highest, row in
+            max(highest, row.element.enumerated().reduce(0) { highest, col in
+                max(highest, grid.scenicScoreOfTreeAt(row: row.offset, col: col.offset))
+            })
         }
-        return highest
     }
 }
 
