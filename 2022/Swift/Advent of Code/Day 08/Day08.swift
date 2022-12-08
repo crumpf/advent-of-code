@@ -13,7 +13,7 @@ class Day08: Day {
     }
     
     func part2() -> String {
-        return "Not Implemented"
+        return "\(highestScenicScoreForAnyTreeInGrid(grid))"
     }
     
     lazy private(set) var grid = input.lines().map { $0.compactMap { Int(String($0))} }
@@ -22,17 +22,30 @@ class Day08: Day {
         var seeSet = Set<GridLocation>()
         for (row, elem) in grid.enumerated() {
             for (col, _) in elem.enumerated() {
-                if grid.canSee(row: row, col: col) {
+                if grid.isTreeVisibleAt(row: row, col: col) {
                     seeSet.insert(GridLocation(row: row, col: col))
                 }
             }
         }
         return seeSet.count
     }
+    
+    private func highestScenicScoreForAnyTreeInGrid(_ grid: [[Int]]) -> Int {
+        var highest = 0
+        for (row, elem) in grid.enumerated() {
+            for (col, _) in elem.enumerated() {
+                let score = grid.scenicScoreOfTreeAt(row: row, col: col)
+                if score > highest {
+                    highest = score
+                }
+            }
+        }
+        return highest
+    }
 }
 
 extension [[Int]] {
-    func canSee(row: Int, col: Int) -> Bool {
+    func isTreeVisibleAt(row: Int, col: Int) -> Bool {
         guard row != 0, row != count - 1, col != 0, col != self[row].count - 1 else {
             return true
         }
@@ -56,5 +69,27 @@ extension [[Int]] {
             }
         }
         return false
+    }
+    
+    func scenicScoreOfTreeAt(row: Int, col: Int) -> Int {
+        let height = self[row][col]
+        var up = 0, down = 0, left = 0, right = 0
+        for n in (0..<row).reversed() {
+            up += 1
+            if self[n][col] >= height { break }
+        }
+        for n in (row+1)..<count {
+            down += 1
+            if self[n][col] >= height { break }
+        }
+        for n in (0..<col).reversed() {
+            left += 1
+            if self[row][n] >= height { break }
+        }
+        for n in (col+1)..<self[row].count {
+            right += 1
+            if self[row][n] >= height { break }
+        }
+        return up * down * left * right
     }
 }
