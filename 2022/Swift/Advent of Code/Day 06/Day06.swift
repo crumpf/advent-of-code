@@ -22,7 +22,7 @@ class Day06: Day {
         }
         return "\(num)"
     }
-    
+        
     private func processUntilFirstStartMessageMarker(dataStream: String, markerLength: Int) -> Int? {
         guard dataStream.count >= markerLength else { return nil }
         for end in stride(from: markerLength, to: input.count, by: 1) {

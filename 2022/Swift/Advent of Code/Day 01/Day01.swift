@@ -9,15 +9,11 @@ import Foundation
 
 class Day01: Day {
   func part1() -> String {
-    guard let max = elfCalorieLists.map({ $0.reduce(0, +) }).max() else {
-      return ""
-    }
-    return "\(max)"
+    "\(totalCaloriesOfElfCarryingTheMostCalories() ?? 0)"
   }
   
   func part2() -> String {
-    let totals = elfCalorieLists.map { $0.reduce(0, +) }.sorted(by: >)
-    return "\(totals[0..<3].reduce(0, +))"
+    "\(totalCaloriesOfTop3ElvesCarryingTheMostCalories())"
   }
   
   private(set) lazy var elfCalorieLists = input
@@ -25,5 +21,13 @@ class Day01: Day {
     .map {
       $0.components(separatedBy: .newlines).compactMap { Int($0) }
     }
+  
+  private func totalCaloriesOfElfCarryingTheMostCalories() -> Int? {
+    elfCalorieLists.map({ $0.reduce(0, +) }).max()
+  }
+  
+  private func totalCaloriesOfTop3ElvesCarryingTheMostCalories() -> Int {
+    elfCalorieLists.map { $0.reduce(0, +) }.sorted(by: >)[0..<3].reduce(0, +)
+  }
+  
 }
-

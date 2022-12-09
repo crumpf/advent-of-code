@@ -8,20 +8,27 @@
 import Foundation
 
 class Day04: Day {
+    
     func part1() -> String {
-        let numberFullyContained = assignmentPairs.reduce(0) { partialResult, pair in
-            let isFullyContained = (pair.0.contains(pair.1.lowerBound) && pair.0.contains(pair.1.upperBound))
-                || (pair.1.contains(pair.0.lowerBound) && pair.1.contains(pair.0.upperBound))
-            return partialResult + (isFullyContained ? 1 : 0)
-        }
-        return "\(numberFullyContained)"
+        "\(numberOfAssignmentPairsWhereOneRangeFullyContainsTheOther())"
     }
     
     func part2() -> String {
-        let numberOverlapping = assignmentPairs.reduce(0) { partialResult, pair in
+        "\(numberOfAssignmentPairsWhereRangesOverlap())"
+    }
+    
+    private func numberOfAssignmentPairsWhereOneRangeFullyContainsTheOther() -> Int {
+        assignmentPairs.reduce(0) { partialResult, pair in
+            let isFullyContained = (pair.0.contains(pair.1.lowerBound) && pair.0.contains(pair.1.upperBound))
+            || (pair.1.contains(pair.0.lowerBound) && pair.1.contains(pair.0.upperBound))
+            return partialResult + (isFullyContained ? 1 : 0)
+        }
+    }
+    
+    private func numberOfAssignmentPairsWhereRangesOverlap() -> Int {
+        assignmentPairs.reduce(0) { partialResult, pair in
             pair.0.overlaps(pair.1) ? partialResult + 1 : partialResult
         }
-        return "\(numberOverlapping)"
     }
     
     private lazy var assignmentPairs = input.lines().map {
@@ -39,4 +46,3 @@ class Day04: Day {
         return lower...upper
     }
 }
-

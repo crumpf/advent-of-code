@@ -8,6 +8,7 @@
 import Foundation
 
 class Day02: Day {
+  
   enum HandShape {
     case rock, paper, scissors
   }
@@ -86,7 +87,7 @@ class Day02: Day {
     }
   }
   
-  func part1() -> String {
+  private func totalScoreAssumingSecondColumnMapsToHandShapeToPlay() -> Int {
     let decodedStrategyGuide: [(HandShape, HandShape)] = input
       .lines()
       .compactMap {
@@ -94,11 +95,10 @@ class Day02: Day {
         return (try! decodeOpponentCode(String(segmented[0])),
                 try! decodeMyCodeExpectingItIsAHandShape(code: String(segmented[1])))
       }
-    
-    return "\(scoreFromStrategyGuide(decodedStrategyGuide))"
+    return scoreFromStrategyGuide(decodedStrategyGuide)
   }
   
-  func part2() -> String {
+  private func totalScoreSoRoundEndsAsIndicatedBySecondColumn() -> Int {
     let decodedStrategyGuide: [(HandShape, HandShape)] = input
       .lines()
       .compactMap {
@@ -109,9 +109,15 @@ class Day02: Day {
           try! decodeMyCodeIndicatingRoundEnding(code: String(segmented[1]), opponentShape: opponentShape)
         )
       }
-    
-    return "\(scoreFromStrategyGuide(decodedStrategyGuide))"
+    return scoreFromStrategyGuide(decodedStrategyGuide)
+  }
+  
+  func part1() -> String {
+    "\(totalScoreAssumingSecondColumnMapsToHandShapeToPlay())"
+  }
+  
+  func part2() -> String {
+    "\(totalScoreSoRoundEndsAsIndicatedBySecondColumn())"
   }
   
 }
-

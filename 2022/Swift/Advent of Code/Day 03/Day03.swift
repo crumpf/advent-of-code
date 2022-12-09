@@ -8,7 +8,16 @@
 import Foundation
 
 class Day03: Day {
+    
     func part1() -> String {
+        "\(sumOfPrioritiesOfItemsAppearingInBothCompartments())"
+    }
+    
+    func part2() -> String {
+        "\(sumOfPrioritiesOfItemsCorrespondingToBadgesOfEachThreeElfGroup())"
+    }
+    
+    private func sumOfPrioritiesOfItemsAppearingInBothCompartments() -> Int {
         let repeatedItemTypes = input
             .lines()
             .compactMap {
@@ -17,23 +26,21 @@ class Day03: Day {
                 let right = Set($0[mid..<$0.count])
                 return left.intersection(right).first
             }
-        let result = repeatedItemTypes.reduce(0) { partialResult, item in
+        return repeatedItemTypes.reduce(0) { partialResult, item in
             partialResult + priorityForItemType(item)
         }
-        return "\(result)"
     }
     
-    func part2() -> String {
+    private func sumOfPrioritiesOfItemsCorrespondingToBadgesOfEachThreeElfGroup() -> Int {
         let lines = input.lines()
         var badgeItemTypes: [Character] = []
         for i in stride(from: 0, to: lines.count, by: 3) {
             let set = Set(lines[i]).intersection(Set(lines[i+1])).intersection(Set(lines[i+2]))
             badgeItemTypes.append(set.first!)
         }
-        let result = badgeItemTypes.reduce(0) { partialResult, item in
+        return badgeItemTypes.reduce(0) { partialResult, item in
             partialResult + priorityForItemType(item)
         }
-        return "\(result)"
     }
     
     private func priorityForItemType(_ itemType: Character) -> Int {

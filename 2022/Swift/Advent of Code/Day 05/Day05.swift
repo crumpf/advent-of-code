@@ -40,7 +40,7 @@ class Day05: Day {
         return (move: move, from: from, to: to)
     }
     
-    func part1() -> String {
+    private func cratesOnTopOfEachStackAfterRearrangmentProcedureWithCrateMover9000() -> String {
         var stax = stacks
         for step in procedure {
             (1...step.move).forEach { _ in
@@ -51,7 +51,7 @@ class Day05: Day {
         return stax.reduce("") { pr, stack in pr + stack.last! }
     }
     
-    func part2() -> String {
+    private func cratesOnTopOfEachStackAfterRearrangmentProcedureWithCrateMover9001() -> String {
         var stax = stacks
         for step in procedure {
             var crates: [String] = []
@@ -61,6 +61,14 @@ class Day05: Day {
             stax[step.to - 1].append(contentsOf: crates.reversed())
         }
         return stax.reduce("") { pr, stack in pr + stack.last! }
+    }
+    
+    func part1() -> String {
+        cratesOnTopOfEachStackAfterRearrangmentProcedureWithCrateMover9000()
+    }
+    
+    func part2() -> String {
+        cratesOnTopOfEachStackAfterRearrangmentProcedureWithCrateMover9001()
     }
     
 }

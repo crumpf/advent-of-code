@@ -9,26 +9,32 @@ import Foundation
 
 class Day07: Day {
     func part1() -> String {
-        let fs = filesystem(fromTerminalOutput: input)
-        let result = fs.allDirectoriesInHierarchy()
-            .map { $0.totalSize() }
-            .filter { $0 <= 100_000 }
-            .reduce(0, +)
-        return "\(result)"
+        "\(sumOfAllDirectorySizes(havingMaxSize: 100_000))"
     }
     
     func part2() -> String {
+        "\(sizeOfSmallestDirectoryToBeDeletedToRunUpdate(requiringSpace: 30_000_000))"
+    }
+    
+    private func sumOfAllDirectorySizes(havingMaxSize max: Int) -> Int {
+        filesystem(fromTerminalOutput: input)
+            .allDirectoriesInHierarchy()
+            .map { $0.totalSize() }
+            .filter { $0 <= max }
+            .reduce(0, +)
+    }
+    
+    private func sizeOfSmallestDirectoryToBeDeletedToRunUpdate(requiringSpace requiredSpace: Int) -> Int {
         let totalSpace = 70_000_000
-        let requriedSpace = 30_000_000
         let fs = filesystem(fromTerminalOutput: input)
         let usedSpace = fs.totalSize()
         let unusedSpace = totalSpace - usedSpace
-        let neededSpace = requriedSpace - unusedSpace
+        let neededSpace = requiredSpace - unusedSpace
         let qualifyingDirs = fs.allDirectoriesInHierarchy()
             .map { $0.totalSize() }
             .filter { $0 >= neededSpace }
             .sorted(by: <)
-        return "\(qualifyingDirs.first ?? -1)"
+        return qualifyingDirs.first ?? -1
     }
     
     private func filesystem(fromTerminalOutput terminalOutput: String) -> Dir {
