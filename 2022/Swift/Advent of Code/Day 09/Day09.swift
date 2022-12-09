@@ -9,6 +9,14 @@ import Foundation
 
 class Day09: Day {
     
+    func part1() -> String {
+        "\(numberOfPositionsVisitedByRopeTailForMotions(motions, knots: 2))"
+    }
+    
+    func part2() -> String {
+        "\(numberOfPositionsVisitedByRopeTailForMotions(motions, knots: 10))"
+    }
+    
     enum Direction: String {
         case up = "U", down = "D", left = "L", right = "R"
     }
@@ -24,14 +32,6 @@ class Day09: Day {
             return nil
         }
         return Motion(direction: dir, steps: steps)
-    }
-    
-    func part1() -> String {
-        "\(numberOfPositionsVisitedByRopeTailForMotions(motions, knots: 2))"
-    }
-    
-    func part2() -> String {
-        "\(numberOfPositionsVisitedByRopeTailForMotions(motions, knots: 10))"
     }
     
     private func numberOfPositionsVisitedByRopeTailForMotions(_ motions: [Motion], knots: Int) -> Int {

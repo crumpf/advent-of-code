@@ -8,6 +8,7 @@
 import Foundation
 
 class Day10: Day {
+    
     func part1() -> String {
         "Not Implemented"
     }
@@ -15,4 +16,5 @@ class Day10: Day {
     func part2() -> String {
         "Not Implemented"
     }
+    
 }

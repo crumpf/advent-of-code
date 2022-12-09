@@ -8,6 +8,7 @@
 import Foundation
 
 class Day07: Day {
+    
     func part1() -> String {
         "\(sumOfAllDirectorySizes(havingMaxSize: 100_000))"
     }

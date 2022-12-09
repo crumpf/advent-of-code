@@ -8,14 +8,14 @@
 import Foundation
 
 struct FileInput {
-  let raw: String
-  
-  init?(pathRelativeToCurrentDirectory: String) {
-    let fileURL = URL(fileURLWithPath: pathRelativeToCurrentDirectory, relativeTo: URL(fileURLWithPath: FileManager.default.currentDirectoryPath))
-    do {
-      raw = try String(contentsOf: fileURL, encoding: .utf8)
-    } catch {
-      return nil
+    let raw: String
+    
+    init?(pathRelativeToCurrentDirectory: String) {
+        let fileURL = URL(fileURLWithPath: pathRelativeToCurrentDirectory, relativeTo: URL(fileURLWithPath: FileManager.default.currentDirectoryPath))
+        do {
+            raw = try String(contentsOf: fileURL, encoding: .utf8)
+        } catch {
+            return nil
+        }
     }
-  }
 }

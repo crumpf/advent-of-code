@@ -8,6 +8,7 @@
 import Foundation
 
 class Day08: Day {
+    
     func part1() -> String {
         return "\(numberOfTreesVisibleFromOutsideOfGrid(grid))"
     }
@@ -34,6 +35,7 @@ class Day08: Day {
             })
         }
     }
+    
 }
 
 extension [[Int]] {

@@ -7,18 +7,8 @@
 
 import Foundation
 
-let testInput = """
-vJrwpWtwJgWrhcsFMMfFFhFp
-jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL
-PmmdzqPrVvPwwTWBwg
-wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn
-ttgJtRGJQctTZtZT
-CrZsJsPPZsGzwwsLwLmpwMDw
-"""
-
 guard let fileInput = FileInput(pathRelativeToCurrentDirectory: "input.txt") else { abort() }
 var startTime = 0.0
-//let day = Day03(input: testInput)
 let day = Day03(input: fileInput.raw)
 
 print("====Part 1====")

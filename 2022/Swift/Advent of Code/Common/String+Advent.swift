@@ -8,7 +8,7 @@
 import Foundation
 
 extension String {
-  func lines() -> [String] {
-    trimmingCharacters(in: .newlines).components(separatedBy: .newlines)
-  }
+    func lines() -> [String] {
+        trimmingCharacters(in: .newlines).components(separatedBy: .newlines)
+    }
 }

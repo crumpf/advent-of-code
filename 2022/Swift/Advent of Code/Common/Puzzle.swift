@@ -9,14 +9,14 @@
 typealias Day = AdventBase & Puzzle
 
 protocol Puzzle {
-  func part1() -> String
-  func part2() -> String
+    func part1() -> String
+    func part2() -> String
 }
 
 class AdventBase {
-  let input: String
-  
-  init(input: String) {
-    self.input = input
-  }
+    let input: String
+    
+    init(input: String) {
+        self.input = input
+    }
 }

@@ -9,6 +9,14 @@ import Foundation
 
 class Day05: Day {
     
+    func part1() -> String {
+        cratesOnTopOfEachStackAfterRearrangmentProcedureWithCrateMover9000()
+    }
+    
+    func part2() -> String {
+        cratesOnTopOfEachStackAfterRearrangmentProcedureWithCrateMover9001()
+    }
+    
     private lazy var stacks: [[String]] = {
         let lines = input.lines()
         guard let dividerIndex = lines.firstIndex(of: "") else { return [] }
@@ -61,14 +69,6 @@ class Day05: Day {
             stax[step.to - 1].append(contentsOf: crates.reversed())
         }
         return stax.reduce("") { pr, stack in pr + stack.last! }
-    }
-    
-    func part1() -> String {
-        cratesOnTopOfEachStackAfterRearrangmentProcedureWithCrateMover9000()
-    }
-    
-    func part2() -> String {
-        cratesOnTopOfEachStackAfterRearrangmentProcedureWithCrateMover9001()
     }
     
 }
