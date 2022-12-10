@@ -326,4 +326,102 @@ final class AdventUnitTests: XCTestCase {
             "Part 2 Failed")
     }
     
+    func testDay11() throws {
+        let day = Day11(input: """
+            """)
+        XCTAssertEqual(day.part1(), "Not Implemented", "Part 1 Failed")
+        XCTAssertEqual(day.part2(), "Not Implemented", "Part 2 Failed")
+    }
+    
+//    func testDay12() throws {
+//        let day = Day12(input: """
+//            """)
+//        XCTAssertEqual(day.part1(), "Not Implemented", "Part 1 Failed")
+//        XCTAssertEqual(day.part2(), "Not Implemented", "Part 2 Failed")
+//    }
+//
+//    func testDay13() throws {
+//        let day = Day13(input: """
+//            """)
+//        XCTAssertEqual(day.part1(), "Not Implemented", "Part 1 Failed")
+//        XCTAssertEqual(day.part2(), "Not Implemented", "Part 2 Failed")
+//    }
+//
+//    func testDay14() throws {
+//        let day = Day14(input: """
+//            """)
+//        XCTAssertEqual(day.part1(), "Not Implemented", "Part 1 Failed")
+//        XCTAssertEqual(day.part2(), "Not Implemented", "Part 2 Failed")
+//    }
+//
+//    func testDay15() throws {
+//        let day = Day15(input: """
+//            """)
+//        XCTAssertEqual(day.part1(), "Not Implemented", "Part 1 Failed")
+//        XCTAssertEqual(day.part2(), "Not Implemented", "Part 2 Failed")
+//    }
+//
+//    func testDay16() throws {
+//        let day = Day16(input: """
+//            """)
+//        XCTAssertEqual(day.part1(), "Not Implemented", "Part 1 Failed")
+//        XCTAssertEqual(day.part2(), "Not Implemented", "Part 2 Failed")
+//    }
+//
+//    func testDay17() throws {
+//        let day = Day17(input: """
+//            """)
+//        XCTAssertEqual(day.part1(), "Not Implemented", "Part 1 Failed")
+//        XCTAssertEqual(day.part2(), "Not Implemented", "Part 2 Failed")
+//    }
+//
+//    func testDay18() throws {
+//        let day = Day18(input: """
+//            """)
+//        XCTAssertEqual(day.part1(), "Not Implemented", "Part 1 Failed")
+//        XCTAssertEqual(day.part2(), "Not Implemented", "Part 2 Failed")
+//    }
+//
+//    func testDay19() throws {
+//        let day = Day19(input: """
+//            """)
+//        XCTAssertEqual(day.part1(), "Not Implemented", "Part 1 Failed")
+//        XCTAssertEqual(day.part2(), "Not Implemented", "Part 2 Failed")
+//    }
+//
+//    func testDay20() throws {
+//        let day = Day20(input: """
+//            """)
+//        XCTAssertEqual(day.part1(), "Not Implemented", "Part 1 Failed")
+//        XCTAssertEqual(day.part2(), "Not Implemented", "Part 2 Failed")
+//    }
+//
+//    func testDay21() throws {
+//        let day = Day21(input: """
+//            """)
+//        XCTAssertEqual(day.part1(), "Not Implemented", "Part 1 Failed")
+//        XCTAssertEqual(day.part2(), "Not Implemented", "Part 2 Failed")
+//    }
+//
+//    func testDay22() throws {
+//        let day = Day22(input: """
+//            """)
+//        XCTAssertEqual(day.part1(), "Not Implemented", "Part 1 Failed")
+//        XCTAssertEqual(day.part2(), "Not Implemented", "Part 2 Failed")
+//    }
+//
+//    func testDay23() throws {
+//        let day = Day23(input: """
+//            """)
+//        XCTAssertEqual(day.part1(), "Not Implemented", "Part 1 Failed")
+//        XCTAssertEqual(day.part2(), "Not Implemented", "Part 2 Failed")
+//    }
+//
+//    func testDay24() throws {
+//        let day = Day24(input: """
+//            """)
+//        XCTAssertEqual(day.part1(), "Not Implemented", "Part 1 Failed")
+//        XCTAssertEqual(day.part2(), "Not Implemented", "Part 2 Failed")
+//    }
+    
 }
