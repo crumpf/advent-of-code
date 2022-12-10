@@ -37,7 +37,7 @@ class Day09: Day {
     private func numberOfPositionsVisitedByRopeTailForMotions(_ motions: [Motion], knots: Int) -> Int {
         guard knots > 1 else { return 0 }
         var rope = Array(repeating: SIMD2<Int>.zero, count: knots)
-        var tailVisits = Set([SIMD2<Int>.zero])
+        var tailVisits = Set([rope.last!])
         for motion in motions {
             for _ in 0..<motion.steps {
                 rope[0].step(motion.direction)
