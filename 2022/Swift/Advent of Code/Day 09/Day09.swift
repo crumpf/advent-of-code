@@ -63,18 +63,10 @@ extension SIMD2 where Scalar == Int {
     }
     
     mutating func follow(_ vector: SIMD2<Int>) {
-        switch vector &- self {
-        case let delta where abs(delta.x) > 1:
-            x += delta.x > 0 ? 1 : -1
-            if abs(delta.y) > 0 {
-                y += delta.y > 0 ? 1 : -1
-            }
-        case let delta where abs(delta.y) > 1:
-            y += delta.y > 0 ? 1 : -1
-            if abs(delta.x) > 0 {
-                x += delta.x > 0 ? 1 : -1
-            }
-        default: break
+        let delta = vector &- self
+        if abs(delta.x) > 1 || abs(delta.y) > 1 {
+            if delta.x != 0 { x += delta.x > 0 ? 1 : -1 }
+            if delta.y != 0 { y += delta.y > 0 ? 1 : -1 }
         }
     }
 }
