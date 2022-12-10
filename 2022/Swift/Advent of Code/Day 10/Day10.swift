@@ -23,7 +23,7 @@ class Day10: Day {
         var strengths: [Int] = []
         let cpu = CPU(program: input)
         var bag = Set<AnyCancellable>()
-        cpu.$cycle.sink { cycle in
+        cpu.cycleStartedPublisher.sink { cycle in
             if let first = sortedCycles.first, first == cycle {
                 strengths.append(cycle * cpu.X)
                 sortedCycles.removeFirst()
@@ -38,7 +38,7 @@ class Day10: Day {
         var crt: [[Character]] = Array(repeating: Array(repeating: Character("."), count: rowLength), count: 6)
         let cpu = CPU(program: input)
         var bag = Set<AnyCancellable>()
-        cpu.$cycle.sink { cycle in
+        cpu.cycleStartedPublisher.sink { cycle in
             guard cycle > 0 else { return }
             let pixel = (cycle - 1) % rowLength
             let sprite = (cpu.X-1)...(cpu.X+1)
@@ -51,13 +51,13 @@ class Day10: Day {
     }
     
     class CPU {
-        enum Instruction {
-            case noop
-            case addx(Int)
-        }
-        
-        @Published private(set) var cycle = 0
+        private(set) var cycle = 0
         private(set) var X = 1
+        var cycleStartedPublisher: some Publisher<Int, Never> { cycleStarted }
+        var cycleEndedPublisher: some Publisher<Int, Never> { cycleEnded }
+        
+        private let cycleStarted = PassthroughSubject<Int, Never>()
+        private let cycleEnded = PassthroughSubject<Int, Never>()
         private let program: String
         
         init(program: String) {
@@ -66,35 +66,26 @@ class Day10: Day {
                 
         func run() {
             program.enumerateLines { line, stop in
-                var duration = 1
-                var currentinstruction: Instruction?
                 let comps = line.components(separatedBy: .whitespaces)
                 switch comps[0] {
                 case "noop":
-                    currentinstruction = .noop
-                    duration = 1
+                    self.tick()
                 case "addx" where comps.count == 2:
-                    currentinstruction = .addx(Int(comps[1])!)
-                    duration = 2
+                    self.tick()
+                    self.tick { self.X += Int(comps[1])! }
                 default:
-                    break
-                }
-                
-                // run cycles
-                for _ in 1...duration {
-                    self.cycle += 1
-                }
-                
-                // finish execution
-                if let currentinstruction {
-                    switch currentinstruction {
-                    case .noop:
-                        break
-                    case .addx(let value):
-                        self.X += value
-                    }
+                    print("Invalid instruction: \(comps)")
+                    stop = true
+                    return
                 }
             }
+        }
+        
+        private func tick(operation: (() -> Void)? = nil) {
+            cycle += 1
+            cycleStarted.send(cycle)
+            operation?()
+            cycleEnded.send(cycle)
         }
     }
     
