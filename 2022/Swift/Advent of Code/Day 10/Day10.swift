@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 class Day10: Day {
     
@@ -21,12 +22,13 @@ class Day10: Day {
         var sortedCycles = cycles.sorted(by: <)
         var strengths: [Int] = []
         let cpu = CPU(program: input)
-        let cancellable = cpu.$cycle.sink { cycle in
+        var bag = Set<AnyCancellable>()
+        cpu.$cycle.sink { cycle in
             if let first = sortedCycles.first, first == cycle {
                 strengths.append(cycle * cpu.X)
                 sortedCycles.removeFirst()
             }
-        }
+        }.store(in: &bag)
         cpu.run()
         return strengths.reduce(0, +)
     }
@@ -35,14 +37,15 @@ class Day10: Day {
         let rowLength = 40
         var crt: [[Character]] = Array(repeating: Array(repeating: Character("."), count: rowLength), count: 6)
         let cpu = CPU(program: input)
-        let cancellable = cpu.$cycle.sink { cycle in
+        var bag = Set<AnyCancellable>()
+        cpu.$cycle.sink { cycle in
             guard cycle > 0 else { return }
             let pixel = (cycle - 1) % rowLength
             let sprite = (cpu.X-1)...(cpu.X+1)
             if sprite.contains(pixel) {
                 crt[(cycle - 1)/rowLength][pixel] = "#"
             }
-        }
+        }.store(in: &bag)
         cpu.run()
         return crt.map { String($0) }.joined(separator: "\n")
     }
