@@ -313,7 +313,17 @@ final class AdventUnitTests: XCTestCase {
             noop
             """)
         XCTAssertEqual(day.part1(), "13140", "Part 1 Failed")
-        XCTAssertEqual(day.part2(), "Not Implemented", "Part 2 Failed")
+        XCTAssertEqual(
+            day.part2(),
+            """
+            ##..##..##..##..##..##..##..##..##..##..
+            ###...###...###...###...###...###...###.
+            ####....####....####....####....####....
+            #####.....#####.....#####.....#####.....
+            ######......######......######......####
+            #######.......#######.......#######.....
+            """,
+            "Part 2 Failed")
     }
     
 }
