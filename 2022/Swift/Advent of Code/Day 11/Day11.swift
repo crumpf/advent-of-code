@@ -9,11 +9,11 @@ import Foundation
 
 class Day11: Day {
     func part1() -> String {
-        "\(levelOfMonkeyBusiness(rounds: 20))"
+        "\(levelOfMonkeyBusiness(rounds: 20, relievedAfterInspection: true))"
     }
     
     func part2() -> String {
-        "\(levelOfMonkeyBusinessWithoutRelief(rounds: 10_000))"
+        "\(levelOfMonkeyBusiness(rounds: 10_000, relievedAfterInspection: false))"
     }
     
     enum Operation {
@@ -87,8 +87,9 @@ class Day11: Day {
 //        ]
 //    }
     
-    private func levelOfMonkeyBusiness(rounds: Int) -> Int {
+    private func levelOfMonkeyBusiness(rounds: Int, relievedAfterInspection: Bool) -> Int {
         let monkeys = makeMonkeys()
+        let productOfAllMonkeyTests = monkeys.reduce(1) { $0 * $1.test.divisibleBy }
         for _ in 1...rounds {
             for monkey in monkeys {
                 while !monkey.items.isEmpty {
@@ -103,36 +104,7 @@ class Day11: Day {
                     case .square:
                         worry = item * item
                     }
-                    worry /= 3
-                    if worry.isMultiple(of: monkey.test.divisibleBy) {
-                        monkeys[monkey.test.trueMonkey].items.append(worry)
-                    } else {
-                        monkeys[monkey.test.falseMonkey].items.append(worry)
-                    }
-                }
-            }
-        }
-        return monkeys.map { $0.inspectionCount }.sorted(by: >)[0..<2].reduce(1, *)
-    }
-    
-    private func levelOfMonkeyBusinessWithoutRelief(rounds: Int) -> Int {
-        let monkeys = makeMonkeys()
-        let worryMod = monkeys.reduce(1) { $0 * $1.test.divisibleBy}
-        for _ in 1...rounds {
-            for monkey in monkeys {
-                while !monkey.items.isEmpty {
-                    let item = monkey.items.removeFirst()
-                    monkey.inspectionCount += 1
-                    var worry = 0
-                    switch monkey.operation {
-                    case .multiply(let operand):
-                        worry = item * operand
-                    case .add(let operand):
-                        worry = item + operand
-                    case .square:
-                        worry = item * item
-                    }
-                    worry = worry % worryMod
+                    worry = relievedAfterInspection ? worry / 3 : worry % productOfAllMonkeyTests
                     if worry.isMultiple(of: monkey.test.divisibleBy) {
                         monkeys[monkey.test.trueMonkey].items.append(worry)
                     } else {
