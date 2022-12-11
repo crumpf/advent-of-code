@@ -42,50 +42,21 @@ class Day11: Day {
     }
     
     private func makeMonkeys() -> [Monkey] {
-        [
-            Monkey(items: [99, 63, 76, 93, 54, 73],
-                   operation: .multiply(11),
-                   test: Test(divisibleBy: 2, trueMonkey: 7, falseMonkey: 1)),
-            Monkey(items: [91, 60, 97, 54],
-                   operation: .add(1),
-                   test: Test(divisibleBy: 17, trueMonkey: 3, falseMonkey: 2)),
-            Monkey(items: [65],
-                   operation: .add(7),
-                   test: Test(divisibleBy: 7, trueMonkey: 6, falseMonkey: 5)),
-            Monkey(items: [84, 55],
-                   operation: .add(3),
-                   test: Test(divisibleBy: 11, trueMonkey: 2, falseMonkey: 6)),
-            Monkey(items: [86, 63, 79, 54, 83],
-                   operation: .square,
-                   test: Test(divisibleBy: 19, trueMonkey: 7, falseMonkey: 0)),
-            Monkey(items: [96, 67, 56, 95, 64, 69, 96],
-                   operation: .add(4),
-                   test: Test(divisibleBy: 5, trueMonkey: 4, falseMonkey: 0)),
-            Monkey(items: [66, 94, 70, 93, 72, 67, 88, 51],
-                   operation: .multiply(5),
-                   test: Test(divisibleBy: 13, trueMonkey: 4, falseMonkey: 5)),
-            Monkey(items: [59, 59, 74],
-                   operation: .add(8),
-                   test: Test(divisibleBy: 3, trueMonkey: 1, falseMonkey: 3))
-        ]
+        input.components(separatedBy: "\n\n").map { monkeyNotes in
+            let comps = monkeyNotes.components(separatedBy: .newlines)
+            let items = comps[1].split(separator: ": ")[1].split(separator: ", ").compactMap { Int($0) }
+            let op = {
+                if let operand = Int(comps[2].components(separatedBy: .whitespaces).last!) {
+                    return comps[2].firstIndex(of: "*") != nil  ? Operation.multiply(operand) : Operation.add(operand)
+                }
+                return Operation.square
+            }()
+            let test = Test(divisibleBy: Int(comps[3].components(separatedBy: .whitespaces).last!)!,
+                            trueMonkey:  Int(comps[4].components(separatedBy: .whitespaces).last!)!,
+                            falseMonkey: Int(comps[5].components(separatedBy: .whitespaces).last!)!)
+            return Monkey(items: items, operation: op, test: test)
+        }
     }
-    
-//    private func makeMonkeys() -> [Monkey] {
-//        [
-//            Monkey(items: [79, 98],
-//                   operation: .multiply(19),
-//                   test: Test(divisibleBy: 23, trueMonkey: 2, falseMonkey: 3)),
-//            Monkey(items: [54, 65, 75, 74],
-//                   operation: .add(6),
-//                   test: Test(divisibleBy: 19, trueMonkey: 2, falseMonkey: 0)),
-//            Monkey(items: [79, 60, 97],
-//                   operation: .square,
-//                   test: Test(divisibleBy: 13, trueMonkey: 1, falseMonkey: 3)),
-//            Monkey(items: [74],
-//                   operation: .add(3),
-//                   test: Test(divisibleBy: 17, trueMonkey: 0, falseMonkey: 1))
-//        ]
-//    }
     
     private func levelOfMonkeyBusiness(rounds: Int, relievedAfterInspection: Bool) -> Int {
         let monkeys = makeMonkeys()
