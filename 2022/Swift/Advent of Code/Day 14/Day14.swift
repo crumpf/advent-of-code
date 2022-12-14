@@ -14,14 +14,21 @@ class Day14: Day {
     }
     
     func part2() -> String {
-        "Not Implemented"
+        "\(amountOfSandUntilSourceIsBlocked(floorDistancePastHightestY: 2))"
     }
     
     private func amountOfSandThatComesToRestBeforeFlowingIntoTheAbyss() -> Int {
-        var cave = CaveMap(scanInput: input)
-        cave.display()
+        calculateSand(floorDistancePastHightestY: nil)
+    }
+    
+    private func amountOfSandUntilSourceIsBlocked(floorDistancePastHightestY: Int) -> Int {
+        calculateSand(floorDistancePastHightestY: floorDistancePastHightestY)
+    }
+    
+    // if floorDistancePastHightestY == nil there's an abyss
+    private func calculateSand(floorDistancePastHightestY: Int?) -> Int {
+        var cave = CaveMap(scanInput: input, floorDistancePastHightestY: floorDistancePastHightestY)
         let count = cave.fillWithSand()
-        cave.display()
         return count
     }
     
@@ -30,9 +37,19 @@ class Day14: Day {
     struct CaveMap {
         private(set) var grid: [[Character]] = []
         private(set) var boundaries: Boundaries = (SIMD2.zero, SIMD2.zero)
+        let floorDistancePastHightestY: Int?
+        var hasFloor: Bool { floorDistancePastHightestY != nil }
         
-        init(scanInput: String) {
-            boundaries = findMapBoundaries(inScanInput: scanInput)
+        // if floorDistancePastHightestY == nil there's an abyss
+        init(scanInput: String, floorDistancePastHightestY: Int? = nil) {
+            self.floorDistancePastHightestY = floorDistancePastHightestY
+            var inputBoundaries = findMapBoundaries(inScanInput: scanInput)
+            if let floorDistancePastHightestY {
+                inputBoundaries.max.y += floorDistancePastHightestY
+                inputBoundaries.max.x += inputBoundaries.min.x
+                inputBoundaries.min.x = 0
+            }
+            boundaries = inputBoundaries
             grid = Array(
                 repeating: Array(repeating: ".", count: 1 + (boundaries.max.x - boundaries.min.x)),
                 count: boundaries.max.y + 1
@@ -53,6 +70,11 @@ class Day14: Day {
                             grid[line.0.y][x - boundaries.min.x] = "#"
                         }
                     }
+                }
+            }
+            if hasFloor {
+                for x in boundaries.min.x...boundaries.max.x {
+                    grid[boundaries.max.y][x - boundaries.min.x] = "#"
                 }
             }
         }
@@ -78,11 +100,12 @@ class Day14: Day {
             return count
         }
         
+        private let sandSource = SIMD2(x: 500, y: -1)
+        
         private mutating func addSandUnit() -> Bool {
-            var sand = SIMD2(x: 500, y: -1)
+            var sand = sandSource
             while let next = nextSandLocation(from: sand) {
                 if !contains(index: next) {
-                    // next location not on the map, falls into the abyss
                     return false
                 }
                 sand = next
@@ -95,14 +118,17 @@ class Day14: Day {
         
         private func nextSandLocation(from sand: SIMD2<Int>) -> SIMD2<Int>? {
             let down = sand &+ SIMD2(0, 1)
-            let downAndLeft = sand &+ SIMD2(-1, 1)
-            let downAndRight = sand &+ SIMD2(1, 1)
+            if sand == sandSource && self[down] != "." {
+                return nil
+            }
             if !contains(index: down) || self[down] == "." {
                 return down
             }
+            let downAndLeft = sand &+ SIMD2(-1, 1)
             if !contains(index: downAndLeft) || self[downAndLeft] == "." {
                 return downAndLeft
             }
+            let downAndRight = sand &+ SIMD2(1, 1)
             if !contains(index: downAndRight) || self[downAndRight] == "." {
                 return downAndRight
             }
