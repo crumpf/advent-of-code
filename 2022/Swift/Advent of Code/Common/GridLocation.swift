@@ -9,6 +9,8 @@ struct GridLocation: Hashable {
     let row: Int
     let col: Int
     
+    static var zero = Self(row: 0, col: 0)
+    
     func orthogonal() -> [GridLocation]  {
         [GridLocation(row: row-1, col: col),
          GridLocation(row: row,   col: col+1),
