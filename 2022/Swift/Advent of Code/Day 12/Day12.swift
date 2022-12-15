@@ -16,7 +16,20 @@ class Day12: Day {
         "\(fewestStepsToReachTheGoalFromAnyLowestElevation(analyzingDeviceReading: readFromHandheldDevice()) ?? -1)"
     }
     
-    struct DeviceReading {
+    struct DeviceReading: Pathfinding {
+        // Implement Pathfinding Protocol
+        typealias Vertex = GridLocation
+        func neighbors(for vertex: GridLocation) -> [GridLocation] {
+            vertex.orthogonal()
+                .filter {
+                    if let locElev = elevationAt(row: vertex.row, col: vertex.col),
+                       let orthElev = elevationAt(row: $0.row, col: $0.col) {
+                        return orthElev - locElev <= 1
+                    }
+                    return false
+                }
+        }
+        
         let elevationMap: [[Int]]
         let start: GridLocation
         let end: GridLocation
@@ -59,30 +72,14 @@ class Day12: Day {
     }
     
     private func fewestStepsToReachTheGoal(analyzingDeviceReading reading: DeviceReading, startingAt start: GridLocation) -> Int? {
-        let solution = Pathfinding.breadthFirstSearch(
-            startingAt: start,
-            goalReached: { loc in
-                loc == reading.end
-            },
-            successorsFor: { loc in
-                loc.orthogonal()
-                    .filter {
-                        if let locElev = reading.elevationAt(row: loc.row, col: loc.col),
-                           let orthElev = reading.elevationAt(row: $0.row, col: $0.col) {
-                            return orthElev - locElev <= 1
-                        }
-                        return false
-                    }
-            })
-        return {
-            var stepsToReach: Int?
-            var n = solution?.predecessor
-            while n != nil {
-                stepsToReach = 1 + (stepsToReach ?? 0)
-                n = n?.predecessor
-            }
-            return stepsToReach
-        }()
+        let solution = BreadthFirstSearch.findPath(from: start, to: reading.end, in: reading)
+        var stepsToReach: Int?
+        var n = solution?.predecessor
+        while n != nil {
+            stepsToReach = 1 + (stepsToReach ?? 0)
+            n = n?.predecessor
+        }
+        return stepsToReach
     }
     
     private func fewestStepsToReachTheGoalFromAnyLowestElevation(analyzingDeviceReading reading: DeviceReading) -> Int? {

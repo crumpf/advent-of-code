@@ -4,20 +4,21 @@
 //  Created by Christopher Rumpf on 12/14/22.
 //
 
-public struct Queue<Element> {
+struct Queue<Element> {
     
     private var q: [Element] = []
-    public var isEmpty: Bool { q.isEmpty }
+    var isEmpty: Bool { q.isEmpty }
+    var count: Int { q.count }
     
-    public mutating func push(_ element: Element) {
+    mutating func push(_ element: Element) {
         q.append(element)
     }
     
-    public mutating func pop() -> Element {
+    mutating func pop() -> Element {
         q.removeFirst()
     }
     
-    public func peek() -> Element? {
+    func peek() -> Element? {
         q.first
     }
     

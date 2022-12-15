@@ -5,38 +5,37 @@
 //  Created by Christopher Rumpf on 12/14/22.
 //
 
-struct Pathfinding {
+protocol Pathfinding {
+    associatedtype Vertex: Hashable
     
-    class Node<Element> {
-        let element: Element
-        let predecessor: Node?
+    func neighbors(for vertex: Vertex) -> [Vertex]
+}
 
-        init(element: Element, predecessor: Node? = nil) {
-            self.element = element
-            self.predecessor = predecessor
-        }
+class PathNode<Vertex: Hashable> {
+    let vertex: Vertex
+    let predecessor: PathNode?
+
+    init(vertex: Vertex, predecessor: PathNode? = nil) {
+        self.vertex = vertex
+        self.predecessor = predecessor
     }
-    
-    static func breadthFirstSearch<Location: Hashable>(
-        startingAt: Location,
-        goalReached: (Location) -> Bool,
-        successorsFor: (Location) -> [Location]
-    ) -> Node<Location>? {
-        
-        var frontier = Queue<Node<Location>>()
-        frontier.push(Node(element: startingAt))
-        var explored: Set<Location> = [startingAt]
+}
+
+struct BreadthFirstSearch<Graph: Pathfinding> {
+    static func findPath(from start: Graph.Vertex, to destination: Graph.Vertex, in graph: Graph) -> PathNode<Graph.Vertex>? {
+        var frontier = Queue<PathNode<Graph.Vertex>>()
+        frontier.push(PathNode(vertex: start))
+        var explored: Set<Graph.Vertex> = [start]
         while !frontier.isEmpty {
             let currentNode = frontier.pop()
-            if goalReached(currentNode.element) {
+            if currentNode.vertex == destination {
                 return currentNode
             }
-            for child in successorsFor(currentNode.element) where !explored.contains(child) {
-                explored.insert(child)
-                frontier.push(Node(element: child, predecessor: currentNode))
+            for successor in graph.neighbors(for: currentNode.vertex) where !explored.contains(successor) {
+                explored.insert(successor)
+                frontier.push(PathNode(vertex: successor, predecessor: currentNode))
             }
         }
         return nil
     }
-    
 }
