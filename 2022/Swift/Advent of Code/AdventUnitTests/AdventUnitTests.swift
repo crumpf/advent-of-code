@@ -429,7 +429,7 @@ final class AdventUnitTests: XCTestCase {
             Sensor at x=20, y=1: closest beacon is at x=15, y=3
             """)
         XCTAssertEqual(day.numberOfPositionsThatCannotContainABeacon(inRow: 10), 26, "Part 1 Failed")
-        XCTAssertEqual(day.part2(), "Not Implemented", "Part 2 Failed")
+        XCTAssertEqual(day.tuningFrequencyOfDistressBeaconHavingSearchBounds(lower: 0, upper: 20), 56000011, "Part 2 Failed")
     }
 
 //    func testDay16() throws {
