@@ -18,25 +18,21 @@ class Day15: Day {
     }
     
     func numberOfPositionsThatCannotContainABeacon(inRow row: Int) -> Int {
-        let boundaries = findMapBoundaries()
-        var count = 0
-        // this is hacky, just expanding the search area an arbitrary amount hoping to capture all the available positions
-        for x in (boundaries.min.x - 500_000)...(boundaries.max.x + 500_000) {
-            let vector = SIMD2(x, row)
-            for (sensor, beacon) in closestBeacons {
-                // check if there's already a beacon here
-                if vector == beacon {
-                    continue
-                }
-                // check if the vector being looked at is within sight of of the sensor, meaning its
-                // distance from the senson is <= the beacon's distance to the sensor
-                if vector.manhattanDistance(to: sensor) <= beacon.manhattanDistance(to: sensor) {
-                    count += 1
-                    break
-                }
+        let ranges = xRangesSeenBySensors(atYCoordinate: row)
+        let beaconsInRow: Set<SIMD2<Int>> = Set(closestBeacons.compactMap { (sensor, beacon) in
+            guard beacon.y == row else {
+                return nil
             }
+            return beacon
+        })
+        let beaconsWithinRanges = beaconsInRow.filter { beacon in
+            for r in ranges where r.contains(beacon.x) {
+                return true
+            }
+            return false
         }
-        return count
+        // sum the count of our ranges and subtract out the beacons that already occupy space within the ranges
+        return ranges.reduce(0) { $0 + $1.count } - beaconsWithinRanges.count
     }
     
     func tuningFrequencyOfDistressBeaconHavingSearchBounds(lower: Int, upper: Int) -> Int {
@@ -110,6 +106,35 @@ class Day15: Day {
         }
     }
     
+    private func xRangesSeenBySensors(atYCoordinate y: Int) -> [ClosedRange<Int>] {
+        reduce(closestBeacons.compactMap { (sensor, beacon) in
+            let distance = sensor.manhattanDistance(to: beacon)
+            return sensor.xRange(withinManhattanDistance: distance, atY: y)
+        })
+    }
+    
+    private func reduce(_ ranges: [ClosedRange<Int>]) -> [ClosedRange<Int>] {
+        guard !ranges.isEmpty else {
+            return ranges
+        }
+        var result = [ClosedRange<Int>]()
+        let sorted = ranges.sorted { $0.lowerBound < $1.lowerBound }
+        var lower = sorted.first!.lowerBound
+        var upper = sorted.first!.upperBound
+        for r in sorted {
+            if upper >= r.lowerBound && lower <= r.upperBound {
+                // lower bound is already fine
+                upper = max(upper, r.upperBound)
+            } else {
+                result.append(lower...upper)
+                lower = r.lowerBound
+                upper = r.upperBound
+            }
+        }
+        result.append(lower...upper)
+        return result
+    }
+    
 }
 
 extension SIMD2 where Scalar == Int {
@@ -131,6 +156,15 @@ extension SIMD2 where Scalar == Int {
             }
         }
         return vectors
+    }
+    
+    func xRange(withinManhattanDistance distance: Int, atY: Int) -> ClosedRange<Int>? {
+        let deltaY = abs(y - atY)
+        let deltaX = distance - deltaY
+        guard (0...distance).contains(deltaX) else {
+            return nil
+        }
+        return (x - deltaX)...(x + deltaX)
     }
     
     func tuningFrequency() -> Int {
