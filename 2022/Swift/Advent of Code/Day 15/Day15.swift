@@ -95,17 +95,6 @@ class Day15: Day {
         return closestBeacons
     }()
     
-    typealias Boundaries = (min: SIMD2<Int>, max: SIMD2<Int>)
-
-    private func findMapBoundaries() -> Boundaries {
-        closestBeacons.reduce(into: (min: SIMD2<Int>(Int.max, Int.max), max: SIMD2<Int>(Int.min, Int.min))) {
-            $0.min.x = min($0.min.x, min($1.key.x, $1.value.x))
-            $0.min.y = min($0.min.y, min($1.key.y, $1.value.y))
-            $0.max.x = max($0.max.x, max($1.key.x, $1.value.x))
-            $0.max.y = max($0.max.y, max($1.key.y, $1.value.y))
-        }
-    }
-    
     private func xRangesSeenBySensors(atYCoordinate y: Int) -> [ClosedRange<Int>] {
         reduce(closestBeacons.compactMap { (sensor, beacon) in
             let distance = sensor.manhattanDistance(to: beacon)
