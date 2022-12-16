@@ -92,6 +92,8 @@
 		8C28AE31294AA2F000E623E5 /* String+Advent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC483B829386EDE00003294 /* String+Advent.swift */; };
 		8C28AE32294AA2F000E623E5 /* String+Subscripts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC483B929386EDE00003294 /* String+Subscripts.swift */; };
 		8C28AE33294AA34E00E623E5 /* Day15.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C28AE2B294AA2CC00E623E5 /* Day15.swift */; };
+		8C28AE35294CCE4500E623E5 /* Ranges.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C28AE34294CCE4500E623E5 /* Ranges.swift */; };
+		8C28AE36294CD59B00E623E5 /* Ranges.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C28AE34294CCE4500E623E5 /* Ranges.swift */; };
 		8CA01542293F0F4F0085A2E1 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CA01541293F0F4F0085A2E1 /* main.swift */; };
 		8CA01548293F0F860085A2E1 /* Day07.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CA01546293F0F860085A2E1 /* Day07.swift */; };
 		8CA01549293F0F8D0085A2E1 /* String+Subscripts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC483B929386EDE00003294 /* String+Subscripts.swift */; };
@@ -336,6 +338,7 @@
 		8C28AE26294AA29100E623E5 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		8C28AE2B294AA2CC00E623E5 /* Day15.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Day15.swift; sourceTree = "<group>"; };
 		8C28AE2C294AA2CC00E623E5 /* input.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = input.txt; sourceTree = "<group>"; };
+		8C28AE34294CCE4500E623E5 /* Ranges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ranges.swift; sourceTree = "<group>"; };
 		8CA0153F293F0F4F0085A2E1 /* Day 07 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Day 07"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8CA01541293F0F4F0085A2E1 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		8CA01546293F0F860085A2E1 /* Day07.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Day07.swift; sourceTree = "<group>"; };
@@ -643,6 +646,7 @@
 				8C28ADE9294765CE00E623E5 /* TreeNode.swift */,
 				8C28AE192949A83E00E623E5 /* Queue.swift */,
 				8C28AE1D2949B44F00E623E5 /* Pathfinding.swift */,
+				8C28AE34294CCE4500E623E5 /* Ranges.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1141,6 +1145,7 @@
 				8C28ADAC2943EDD700E623E5 /* Puzzle.swift in Sources */,
 				8C28ADBB2943F12000E623E5 /* Day06.swift in Sources */,
 				8C28AE182949904D00E623E5 /* Day14.swift in Sources */,
+				8C28AE35294CCE4500E623E5 /* Ranges.swift in Sources */,
 				8C28ADAE2943EDD700E623E5 /* String+Subscripts.swift in Sources */,
 				8C28AE33294AA34E00E623E5 /* Day15.swift in Sources */,
 				8C28ADCF294538E000E623E5 /* Day11.swift in Sources */,
@@ -1226,6 +1231,7 @@
 				8C28AE27294AA29100E623E5 /* main.swift in Sources */,
 				8C28AE32294AA2F000E623E5 /* String+Subscripts.swift in Sources */,
 				8C28AE31294AA2F000E623E5 /* String+Advent.swift in Sources */,
+				8C28AE36294CD59B00E623E5 /* Ranges.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

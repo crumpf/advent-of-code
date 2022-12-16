@@ -96,32 +96,11 @@ class Day15: Day {
     }()
     
     private func xRangesSeenBySensors(atYCoordinate y: Int) -> [ClosedRange<Int>] {
-        reduce(closestBeacons.compactMap { (sensor, beacon) in
+        closestBeacons.compactMap { (sensor, beacon) in
             let distance = sensor.manhattanDistance(to: beacon)
             return sensor.xRange(withinManhattanDistance: distance, atY: y)
-        })
-    }
-    
-    private func reduce(_ ranges: [ClosedRange<Int>]) -> [ClosedRange<Int>] {
-        guard !ranges.isEmpty else {
-            return ranges
         }
-        var result = [ClosedRange<Int>]()
-        let sorted = ranges.sorted { $0.lowerBound < $1.lowerBound }
-        var lower = sorted.first!.lowerBound
-        var upper = sorted.first!.upperBound
-        for r in sorted {
-            if r.lowerBound <= upper {
-                // lower bound is within the range we're building
-                upper = max(upper, r.upperBound)
-            } else {
-                result.append(lower...upper)
-                lower = r.lowerBound
-                upper = r.upperBound
-            }
-        }
-        result.append(lower...upper)
-        return result
+        .mergeOverlapping()
     }
     
 }
