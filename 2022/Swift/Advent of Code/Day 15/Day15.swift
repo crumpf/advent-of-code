@@ -111,8 +111,8 @@ class Day15: Day {
         var lower = sorted.first!.lowerBound
         var upper = sorted.first!.upperBound
         for r in sorted {
-            if upper >= r.lowerBound && lower <= r.upperBound {
-                // lower bound is already fine
+            if r.lowerBound <= upper {
+                // lower bound is within the range we're building
                 upper = max(upper, r.upperBound)
             } else {
                 result.append(lower...upper)
