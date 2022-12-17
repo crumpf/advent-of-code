@@ -23,19 +23,46 @@ class PathNode<Vertex: Hashable> {
 
 struct BreadthFirstSearch<Graph: Pathfinding> {
     static func findPath(from start: Graph.Vertex, to destination: Graph.Vertex, in graph: Graph) -> PathNode<Graph.Vertex>? {
-        var frontier = Queue<PathNode<Graph.Vertex>>()
-        frontier.push(PathNode(vertex: start))
-        var explored: Set<Graph.Vertex> = [start]
-        while !frontier.isEmpty {
-            let currentNode = frontier.pop()
-            if currentNode.vertex == destination {
-                return currentNode
+        findPath(from: start, isDestination: { $0 == destination }, in: graph)
+    }
+    
+    static func findPath(from start: Graph.Vertex, isDestination: (Graph.Vertex) -> Bool, in graph: Graph) -> PathNode<Graph.Vertex>? {
+            var frontier = Queue<PathNode<Graph.Vertex>>()
+            frontier.enqueue(PathNode(vertex: start))
+            var explored: Set<Graph.Vertex> = [start]
+            while !frontier.isEmpty {
+                let currentNode = frontier.dequeue()
+                if isDestination(currentNode.vertex) {
+                    return currentNode
+                }
+                for successor in graph.neighbors(for: currentNode.vertex) where !explored.contains(successor) {
+                    explored.insert(successor)
+                    frontier.enqueue(PathNode(vertex: successor, predecessor: currentNode))
+                }
             }
-            for successor in graph.neighbors(for: currentNode.vertex) where !explored.contains(successor) {
-                explored.insert(successor)
-                frontier.push(PathNode(vertex: successor, predecessor: currentNode))
+            return nil
+    }
+}
+
+struct DepthFirstSearch<Graph: Pathfinding> {
+    static func findPath(from start: Graph.Vertex, to destination: Graph.Vertex, in graph: Graph) -> PathNode<Graph.Vertex>? {
+        findPath(from: start, isDestination: { $0 == destination }, in: graph)
+    }
+    
+    static func findPath(from start: Graph.Vertex, isDestination: (Graph.Vertex) -> Bool, in graph: Graph) -> PathNode<Graph.Vertex>? {
+            var frontier = Stack<PathNode<Graph.Vertex>>()
+            frontier.push(PathNode(vertex: start))
+            var explored: Set<Graph.Vertex> = [start]
+            while !frontier.isEmpty {
+                let currentNode = frontier.pop()
+                if isDestination(currentNode.vertex) {
+                    return currentNode
+                }
+                for successor in graph.neighbors(for: currentNode.vertex) where !explored.contains(successor) {
+                    explored.insert(successor)
+                    frontier.push(PathNode(vertex: successor, predecessor: currentNode))
+                }
             }
-        }
-        return nil
+            return nil
     }
 }
