@@ -44,14 +44,10 @@ class Day15: Day {
         // This is pretty slow, and there's probably a way to reduce the search space, but
         // this is Advent of Code and let's keep it moving.
         let range = lower...upper
-        let borders = closestBeacons.map { (sensor, beacon) in
+        for (sensor, beacon) in closestBeacons {
             let radius = sensor.manhattanDistance(to: beacon)
-            return sensor.borderVertices(havingManhattanDistance: radius + 1)
-        }
-        
-        for vertices in borders {
-            for vertex in vertices.filter({ range.contains($0.x) && range.contains($0.y)
-            }) {
+            for vertex in sensor.borderVertices(havingManhattanDistance: radius + 1)
+            where range.contains(vertex.x) && range.contains(vertex.y) {
                 var withinSensorsRange = false
                 for (sensor, beacon) in closestBeacons {
                     if sensor.manhattanDistance(to: beacon) >= sensor.manhattanDistance(to: vertex) {
