@@ -38,7 +38,7 @@ class Day08: Day {
     
 }
 
-extension [[Int]] {
+private extension [[Int]] {
     func isTreeVisibleAt(row: Int, col: Int) -> Bool {
         guard row != 0, row != count - 1, col != 0, col != self[row].count - 1 else {
             return true

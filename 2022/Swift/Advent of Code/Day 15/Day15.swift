@@ -101,7 +101,7 @@ class Day15: Day {
     
 }
 
-extension SIMD2 where Scalar == Int {
+private extension SIMD2 where Scalar == Int {
     func manhattanDistance(to vector: Self) -> Scalar {
         let delta = self &- vector
         return abs(delta.x) + abs(delta.y)

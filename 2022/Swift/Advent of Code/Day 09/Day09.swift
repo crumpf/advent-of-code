@@ -52,7 +52,7 @@ class Day09: Day {
     
 }
 
-extension SIMD2 where Scalar == Int {
+private extension SIMD2 where Scalar == Int {
     mutating func step(_ direction: Day09.Direction) {
         switch direction {
         case .up:    y += 1
