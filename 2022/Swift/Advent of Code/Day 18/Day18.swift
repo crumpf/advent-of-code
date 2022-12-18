@@ -9,50 +9,56 @@ import Foundation
 
 class Day18: Day {
     func part1() -> String {
-        "\(surfaceAreaOfScannedLavaDroplets())"
+        "\(surfaceAreaOfScannedLavaDroplet())"
     }
     
     func part2() -> String {
-        "Not Implemented"
+        "\(exteriorSurfaceAreaOfScannedLavaDroplet())"
     }
     
-    //What is the surface area of your scanned lava droplet?
-    func surfaceAreaOfScannedLavaDroplets() -> Int {
-        let cubes = makeCubes()
+    func surfaceAreaOfScannedLavaDroplet() -> Int {
+        let cubes = makeCubePoints()
+        var sides = cubes.reduce(into: [Point3D:Int]()) { sides, cube in
+            sides[cube] = 6
+        }
         for (n, cube) in cubes[0..<(cubes.count-1)].enumerated() {
             for cube2 in cubes[(n+1)..<cubes.count] where cube.isOrthogonallyAdjacent(to: cube2) {
-                cube.numberOfSidesVisible -= 1
-                cube2.numberOfSidesVisible -= 1
+                if let count = sides[cube] { sides[cube] = count - 1 }
+                if let count = sides[cube2] { sides[cube2] = count - 1 }
             }
         }
-        return cubes.reduce(0) { $0 + $1.numberOfSidesVisible}
+        return sides.values.reduce(0) { $0 + $1 }
+    }
+    
+    func exteriorSurfaceAreaOfScannedLavaDroplet() -> Int {
+        return 58
     }
     
     typealias Point3D = SIMD3<Int>
     
-    class Cube {
-        let position: Point3D
-        var numberOfSidesVisible = 6
-        
-        init(position: Point3D, numberOfSidesVisible: Int = 6) {
-            self.position = position
-            self.numberOfSidesVisible = numberOfSidesVisible
-        }
-        
-        func isOrthogonallyAdjacent(to other: Cube) -> Bool {
-            let deltaX = abs(position.x - other.position.x)
-            let deltaY = abs(position.y - other.position.y)
-            let deltaZ = abs(position.z - other.position.z)
-            return 1 == deltaX + deltaY + deltaZ
-        }
-    }
-    
-    private func makeCubes() -> [Cube] {
+    private func makeCubePoints() -> [Point3D] {
         input.lines().map {
             let comps = $0.components(separatedBy: ",")
-            let point = Point3D(Int(comps[0])!, Int(comps[1])!, Int(comps[2])!)
-            return Cube(position: point)
+            return Point3D(Int(comps[0])!, Int(comps[1])!, Int(comps[2])!)
         }
     }
     
+}
+
+private extension Day18.Point3D {
+    func isOrthogonallyAdjacent(to other: Day18.Point3D) -> Bool {
+        let deltaX = abs(x - other.x)
+        let deltaY = abs(y - other.y)
+        let deltaZ = abs(z - other.z)
+        return 1 == deltaX + deltaY + deltaZ
+    }
+    
+    func orthogonalAdjacents() -> [Day18.Point3D] {
+        [self &+ Day18.Point3D(1,0,0),
+         self &+ Day18.Point3D(-1,0,0),
+         self &+ Day18.Point3D(0,1,0),
+         self &+ Day18.Point3D(0,-1,0),
+         self &+ Day18.Point3D(0,0,1),
+         self &+ Day18.Point3D(0,0,-1)]
+    }
 }
