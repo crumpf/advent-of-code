@@ -13,7 +13,7 @@ class Day17: Day {
     }
     
     func part2() -> String {
-        "\(implementPart2())"
+        "\(heightOfTower(afterAbsurdNumberOfStoppedRocks: 1000000000000))"
     }
     
     typealias Point = SIMD2<Int>
@@ -26,8 +26,24 @@ class Day17: Day {
         return chamber.towerHeight
     }
     
-    private func implementPart2() -> Int {
-        return -1
+    private func heightOfTower(afterAbsurdNumberOfStoppedRocks count: Int) -> Int {
+        let chamber = Chamber(jetPattern: input.trimmingCharacters(in: .whitespacesAndNewlines))
+        // this solution is pretty hacky. I found some of thse magic numbers with a bit of trial and error
+        // run enough drops to hopefully contain cycles
+        for _ in 1...4000 {
+            chamber.dropRock()
+        }
+        // see if we can find a cycle
+        // pick an arbitrary point, i, to start at
+        let i = 200
+        var size = 2
+        while chamber.rockResults[i..<(i+size)] != chamber.rockResults[(i+size)..<(i + 2*size)] {
+            size += 1
+        }
+        let heightBeforeCycle = chamber.heights[i - 1]
+        let heightDuringCycle = chamber.heights[i + size - 1] - heightBeforeCycle
+        let result = ((count-i)/size)*heightDuringCycle + chamber.heights[i + (count-i)%size - 1]
+        return result
     }
     
     class Chamber {
@@ -56,6 +72,13 @@ class Day17: Day {
         private var rockShapeIndex = 0
         private let jetPattern: String
         private var jetIndex = 0
+        private(set) var rockResults = [RockResult]()
+        private(set) var heights = [Int]()
+        
+        struct RockResult: Equatable {
+            let rocktype: Int
+            let stopDelta: Point
+        }
         
         init(jetPattern: String) {
             self.jetPattern = jetPattern
@@ -82,9 +105,12 @@ class Day17: Day {
                     origin = gravityOrigin
                     rockPoints = gravityPoints
                 } else {
+                    rockResults.append(RockResult(rocktype: rockShapeIndex,
+                                                  stopDelta: Point(2, towerHeight + 3) &- origin))
                     settledPoints = settledPoints.union(rockPoints)
                     rockShapeIndex = (rockShapeIndex + 1) % rockShapes.count
                     towerHeight = max(towerHeight, 1 + rockPoints.max { $0.y < $1.y }!.y)
+                    heights.append(towerHeight)
                     return
                 }
             }
