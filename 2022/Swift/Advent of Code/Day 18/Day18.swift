@@ -31,7 +31,14 @@ class Day18: Day {
     }
     
     func exteriorSurfaceAreaOfScannedLavaDroplet() -> Int {
-        return 58
+        var count = 0
+        let lava = LavaDroplet(scan: makeCubePoints())
+        let start = Point3D(lava.domain.x.lowerBound, lava.domain.y.lowerBound, lava.domain.z.lowerBound)
+        let _ = BreadthFirstSearch<LavaDroplet>.findPath(from: start, isDestination: { point in
+            count += Set(point.orthogonalAdjacents()).intersection(lava.scan).count
+            return false // exaustive search the domain
+        }, in: lava)
+        return count
     }
     
     typealias Point3D = SIMD3<Int>
@@ -40,6 +47,34 @@ class Day18: Day {
         input.lines().map {
             let comps = $0.components(separatedBy: ",")
             return Point3D(Int(comps[0])!, Int(comps[1])!, Int(comps[2])!)
+        }
+    }
+    
+    struct LavaDroplet: Pathfinding {
+        // Implement Pathfinding
+        typealias Vertex = Point3D
+        func neighbors(for vertex: Point3D) -> [Point3D] {
+            vertex.orthogonalAdjacents().filter { point in
+                domain.x.contains(point.x) && domain.y.contains(point.y) && domain.z.contains(point.z) && !scan.contains(point)
+            }
+        }
+        
+        let scan: Set<Point3D>
+        let domain: (x: ClosedRange<Int>, y: ClosedRange<Int>, z: ClosedRange<Int>)
+    
+        init(scan: [Point3D]) {
+            var xmin = Int.max, xmax = Int.min, ymin = xmin, ymax = xmax, zmin = xmin, zmax = xmax
+            scan.forEach { point in
+                xmin = min(xmin, point.x)
+                xmax = max(xmax, point.x)
+                ymin = min(ymin, point.y)
+                ymax = max(ymax, point.y)
+                zmin = min(zmin, point.z)
+                zmax = max(zmax, point.z)
+            }
+            
+            self.scan = Set(scan)
+            self.domain = (x: (xmin-1)...(xmax+1), y: (ymin-1)...(ymax+1), z: (zmin-1)...(zmax+1))
         }
     }
     
