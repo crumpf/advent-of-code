@@ -45,16 +45,14 @@ class Day20: Day {
             for coord in coordinates {
                 let index = list.firstIndex(of: coord)!
                 list.remove(at: index)
-                let newIndex = {
-                    let offset = index + coord.value
-                    if offset >= 0 {
-                        return offset % list.count
-                    } else {
-                        let reverseIndex = (((list.count - index) + abs(coord.value)) % list.count)
-                        if reverseIndex == 0 { return 0 }
-                        return list.count - reverseIndex
-                    }
-                }()
+                let newIndex: Int
+                let offset = index + coord.value
+                if offset >= 0 {
+                    newIndex = offset % list.count
+                } else {
+                    let reverseIndex = (((list.count - index) + abs(coord.value)) % list.count)
+                    newIndex = reverseIndex == 0 ? 0 : list.count - reverseIndex
+                }
                 list.insert(coord, at: newIndex)
             }
         }

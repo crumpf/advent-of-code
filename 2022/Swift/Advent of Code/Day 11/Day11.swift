@@ -45,12 +45,12 @@ class Day11: Day {
         input.components(separatedBy: "\n\n").map { monkeyNotes in
             let comps = monkeyNotes.components(separatedBy: .newlines)
             let items = comps[1].split(separator: ": ")[1].split(separator: ", ").compactMap { Int($0) }
-            let op = {
-                if let operand = Int(comps[2].components(separatedBy: .whitespaces).last!) {
-                    return comps[2].firstIndex(of: "*") != nil  ? Operation.multiply(operand) : Operation.add(operand)
-                }
-                return Operation.square
-            }()
+            let op: Operation
+            if let operand = Int(comps[2].components(separatedBy: .whitespaces).last!) {
+                op = comps[2].firstIndex(of: "*") != nil  ? Operation.multiply(operand) : Operation.add(operand)
+            } else {
+                op = Operation.square
+            }
             let test = Test(divisibleBy: Int(comps[3].components(separatedBy: .whitespaces).last!)!,
                             trueMonkey:  Int(comps[4].components(separatedBy: .whitespaces).last!)!,
                             falseMonkey: Int(comps[5].components(separatedBy: .whitespaces).last!)!)
