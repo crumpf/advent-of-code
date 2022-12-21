@@ -23,20 +23,14 @@ class Day20: Day {
 
     private func sumOfNumbersFormingTheGroveCoordinates() -> Int {
         let list = mix(encryptedList)
-        if let zeroIndex = list.firstIndex(where: { $0.value == 0} ) {
-            return [1000, 2000, 3000].map { list[(zeroIndex + $0) % list.count].value }.reduce(0, +)
-        }
-        return 0
+        return calculateGroveCoordinates(from: list)
     }
     
     let decryptionKey = 811589153
     
     private func sumOfDecryptedGroveCoordinates() -> Int {
         let list = mix(decryptedList, numberOfTimes: 10)
-        if let zeroIndex = list.firstIndex(where: { $0.value == 0} ) {
-            return [1000, 2000, 3000].map { list[(zeroIndex + $0) % list.count].value }.reduce(0, +)
-        }
-        return 0
+        return calculateGroveCoordinates(from: list)
     }
     
     private func mix(_ coordinates: [Coordinate], numberOfTimes: Int = 1) -> [Coordinate] {
@@ -57,6 +51,13 @@ class Day20: Day {
             }
         }
         return list
+    }
+    
+    private func calculateGroveCoordinates(from list: [Coordinate]) -> Int {
+        if let zeroIndex = list.firstIndex(where: { $0.value == 0} ) {
+            return [1000, 2000, 3000].map { list[(zeroIndex + $0) % list.count].value }.reduce(0, +)
+        }
+        return 0
     }
     
     private lazy var encryptedList = input.lines().enumerated().map { (n, value) in
