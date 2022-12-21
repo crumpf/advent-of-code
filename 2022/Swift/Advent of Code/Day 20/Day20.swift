@@ -31,7 +31,7 @@ class Day20: Day {
     
     let decryptionKey = 811589153
     
-    func sumOfDecryptedGroveCoordinates() -> Int {
+    private func sumOfDecryptedGroveCoordinates() -> Int {
         let list = mix(decryptedList, numberOfTimes: 10)
         if let zeroIndex = list.firstIndex(where: { $0.value == 0} ) {
             return [1000, 2000, 3000].map { list[(zeroIndex + $0) % list.count].value }.reduce(0, +)
@@ -39,22 +39,20 @@ class Day20: Day {
         return 0
     }
     
-    func mix(_ coordinates: [Coordinate], numberOfTimes: Int = 1) -> [Coordinate] {
+    private func mix(_ coordinates: [Coordinate], numberOfTimes: Int = 1) -> [Coordinate] {
         var list = coordinates
         for _ in 1...numberOfTimes {
             for coord in coordinates {
                 let index = list.firstIndex(of: coord)!
                 list.remove(at: index)
                 let newIndex = {
-                    switch index + coord.value {
-                    case let offset where offset > 0:
+                    let offset = index + coord.value
+                    if offset >= 0 {
                         return offset % list.count
-                    case let offset where offset < 0:
+                    } else {
                         let reverseIndex = (((list.count - index) + abs(coord.value)) % list.count)
                         if reverseIndex == 0 { return 0 }
                         return list.count - reverseIndex
-                    default:
-                        return 0
                     }
                 }()
                 list.insert(coord, at: newIndex)
