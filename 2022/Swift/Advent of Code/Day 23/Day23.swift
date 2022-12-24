@@ -13,17 +13,34 @@ class Day23: Day {
     }
     
     func part2() -> String {
-        "Not Implemented"
+        "\(firstRoundWhereNoElfMoves())"
     }
     
     private func numberOfEmptyTilesInBoundingRect(afterNumberOfRounds rounds: Int) -> Int {
+        let elfPoints = elfLocations(maxNumberOfRounds: rounds, startingAt: input).0
+        var xmin = Int.max, xmax = Int.min, ymin = xmin, ymax = xmax
+        elfPoints.forEach { point in
+            xmin = min(xmin, point.x)
+            xmax = max(xmax, point.x)
+            ymin = min(ymin, point.y)
+            ymax = max(ymax, point.y)
+        }
+        return (xmax - xmin + 1) * (ymax - ymin + 1) - elfPoints.count
+    }
+    
+    private func firstRoundWhereNoElfMoves() -> Int {
+        elfLocations(maxNumberOfRounds: 100000, startingAt: input).1
+    }
+    
+    private func elfLocations(maxNumberOfRounds rounds: Int, startingAt input: String) -> ([Point], Int) {
         var elfPoints = startingElfPoints(from: input)
         var directionPriority: [Direction] = [.north, .south, .west, .east]
         
-        for _ in 1...rounds {
+        for n in 1...rounds {
+            let elfset = Set(elfPoints)
+            var proposalCounts = [Point: Int]()
             // 1st 1/2
             let proposals: [Point?] = elfPoints.map { elf in
-                let elfset = Set(elfPoints)
                 if elfset.intersection(elf.surrounding()).isEmpty {
                     return nil
                 }
@@ -32,15 +49,16 @@ class Day23: Day {
                     let consider: [Point]
                     switch dir {
                     case .north:
-                        consider = [elf &+ Point(-1,-1), elf &+ Point(0,-1), elf &+ Point(1,-1)]
+                        consider = [Point(-1,-1), Point(0,-1), Point(1,-1)].map { elf &+ $0 }
                     case .south:
-                        consider = [elf &+ Point(-1,1), elf &+ Point(0,1), elf &+ Point(1,1)]
+                        consider = [Point(-1,1), Point(0,1), Point(1,1)].map { elf &+ $0 }
                     case .west:
-                        consider = [elf &+ Point(-1,-1), elf &+ Point(-1,0), elf &+ Point(-1,1)]
+                        consider = [Point(-1,-1), Point(-1,0), Point(-1,1)].map { elf &+ $0 }
                     case .east:
-                        consider = [elf &+ Point(1,-1), elf &+ Point(1,0), elf &+ Point(1,1)]
+                        consider = [Point(1,-1), Point(1,0), Point(1,1)].map { elf &+ $0 }
                     }
                     if elfset.intersection(consider).isEmpty {
+                        proposalCounts[consider[1]] = 1 + (proposalCounts[consider[1]] ?? 0)
                         return consider[1]
                     }
                 }
@@ -48,25 +66,22 @@ class Day23: Day {
             }
             
             // 2nd 1/2
+            var anyMoved = false
             elfPoints = zip(elfPoints, proposals).map({ (elf, proposal) in
-                guard let proposal, proposals.filter({ $0 == proposal }).count == 1 else {
+                guard let proposal, proposalCounts[proposal] == 1 else {
                     return elf
                 }
+                anyMoved = true
                 return proposal
             })
+            if !anyMoved {
+                return (elfPoints, n)
+            }
             
             directionPriority.append(directionPriority.removeFirst())
         }
         
-        var xmin = Int.max, xmax = Int.min, ymin = xmin, ymax = xmax
-        elfPoints.forEach { point in
-            xmin = min(xmin, point.x)
-            xmax = max(xmax, point.x)
-            ymin = min(ymin, point.y)
-            ymax = max(ymax, point.y)
-        }
-        
-        return (xmax - xmin + 1) * (ymax - ymin + 1) - elfPoints.count
+        return (elfPoints, rounds)
     }
     
     enum Direction {
@@ -84,17 +99,12 @@ class Day23: Day {
         }
         return points
     }
+    
 }
 
 private extension Day23.Point {
     func surrounding() -> [Self] {
-        [self &+ Self(-1, -1),
-         self &+ Self(0, -1),
-         self &+ Self(1, -1),
-         self &+ Self(-1, 0),
-         self &+ Self(1, 0),
-         self &+ Self(-1, 1),
-         self &+ Self(0, 1),
-         self &+ Self(1, 1)]
+        [Self(-1, -1), Self(0, -1), Self(1, -1), Self(-1, 0), Self(1, 0), Self(-1, 1), Self(0, 1), Self(1, 1)]
+            .map { self &+ $0 }
     }
 }
