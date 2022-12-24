@@ -172,6 +172,10 @@
 		8C28AF0D2956BADB00E623E5 /* Day21.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C28AF0B2956BADB00E623E5 /* Day21.swift */; };
 		8C28AF0E2956BB0600E623E5 /* Day21.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C28AF0B2956BADB00E623E5 /* Day21.swift */; };
 		8C28AF0F2956BB2B00E623E5 /* input.txt in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C28AF0C2956BADB00E623E5 /* input.txt */; };
+		8C28AF10295754D100E623E5 /* Pathfinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C28AE1D2949B44F00E623E5 /* Pathfinding.swift */; };
+		8C28AF1129577F9400E623E5 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C28AE192949A83E00E623E5 /* Queue.swift */; };
+		8C28AF1229577F9400E623E5 /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C28AE4C294D625600E623E5 /* Stack.swift */; };
+		8C28AF1329577F9400E623E5 /* String+Subscripts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC483B929386EDE00003294 /* String+Subscripts.swift */; };
 		8CA01542293F0F4F0085A2E1 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CA01541293F0F4F0085A2E1 /* main.swift */; };
 		8CA01548293F0F860085A2E1 /* Day07.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CA01546293F0F860085A2E1 /* Day07.swift */; };
 		8CA01549293F0F8D0085A2E1 /* String+Subscripts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC483B929386EDE00003294 /* String+Subscripts.swift */; };
@@ -1928,9 +1932,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				8C28AF082956B85E00E623E5 /* Puzzle.swift in Sources */,
+				8C28AF1129577F9400E623E5 /* Queue.swift in Sources */,
 				8C28AF062956B85E00E623E5 /* String+Advent.swift in Sources */,
 				8C28AF052956B83300E623E5 /* Day24.swift in Sources */,
+				8C28AF1329577F9400E623E5 /* String+Subscripts.swift in Sources */,
+				8C28AF1229577F9400E623E5 /* Stack.swift in Sources */,
 				8C28AF072956B85E00E623E5 /* FileInput.swift in Sources */,
+				8C28AF10295754D100E623E5 /* Pathfinding.swift in Sources */,
 				8C28AEFF2956B80500E623E5 /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

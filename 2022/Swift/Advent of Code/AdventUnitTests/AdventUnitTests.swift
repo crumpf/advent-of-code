@@ -551,7 +551,7 @@ final class AdventUnitTests: XCTestCase {
             #<^v^^>#
             ######.#
             """)
-        XCTAssertEqual(day.part1(), "Not Implemented", "Part 1 Failed")
+        XCTAssertEqual(day.part1(), "18", "Part 1 Failed")
         XCTAssertEqual(day.part2(), "Not Implemented", "Part 2 Failed")
     }
     
