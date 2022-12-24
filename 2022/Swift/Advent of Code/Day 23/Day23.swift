@@ -17,31 +17,30 @@ class Day23: Day {
     }
     
     private func numberOfEmptyTilesInBoundingRect(afterNumberOfRounds rounds: Int) -> Int {
-        let elfPoints = elfLocations(maxNumberOfRounds: rounds, startingAt: input).0
+        let elves = elfLocations(maxNumberOfRounds: rounds, startingAt: input).0
         var xmin = Int.max, xmax = Int.min, ymin = xmin, ymax = xmax
-        elfPoints.forEach { point in
+        elves.forEach { point in
             xmin = min(xmin, point.x)
             xmax = max(xmax, point.x)
             ymin = min(ymin, point.y)
             ymax = max(ymax, point.y)
         }
-        return (xmax - xmin + 1) * (ymax - ymin + 1) - elfPoints.count
+        return (xmax - xmin + 1) * (ymax - ymin + 1) - elves.count
     }
     
     private func firstRoundWhereNoElfMoves() -> Int {
         elfLocations(maxNumberOfRounds: 100000, startingAt: input).1
     }
     
-    private func elfLocations(maxNumberOfRounds rounds: Int, startingAt input: String) -> ([Point], Int) {
-        var elfPoints = startingElfPoints(from: input)
+    private func elfLocations(maxNumberOfRounds rounds: Int, startingAt input: String) -> (Set<Point>, Int) {
+        var elves = startingElfPoints(from: input)
         var directionPriority: [Direction] = [.north, .south, .west, .east]
         
         for n in 1...rounds {
-            let elfset = Set(elfPoints)
             var proposalCounts = [Point: Int]()
             // 1st 1/2
-            let proposals: [Point?] = elfPoints.map { elf in
-                if elfset.intersection(elf.surrounding()).isEmpty {
+            let proposals: [Point?] = elves.map { elf in
+                if elves.intersection(elf.surrounding()).isEmpty {
                     return nil
                 }
             
@@ -57,7 +56,7 @@ class Day23: Day {
                     case .east:
                         consider = [Point(1,-1), Point(1,0), Point(1,1)].map { elf &+ $0 }
                     }
-                    if elfset.intersection(consider).isEmpty {
+                    if elves.intersection(consider).isEmpty {
                         proposalCounts[consider[1]] = 1 + (proposalCounts[consider[1]] ?? 0)
                         return consider[1]
                     }
@@ -66,22 +65,24 @@ class Day23: Day {
             }
             
             // 2nd 1/2
-            var anyMoved = false
-            elfPoints = zip(elfPoints, proposals).map({ (elf, proposal) in
-                guard let proposal, proposalCounts[proposal] == 1 else {
-                    return elf
-                }
-                anyMoved = true
-                return proposal
-            })
-            if !anyMoved {
-                return (elfPoints, n)
+            var didAnyElvesMove = false
+            elves = Set(
+                zip(elves, proposals).map({ (elf, proposal) in
+                    guard let proposal, proposalCounts[proposal] == 1 else {
+                        return elf
+                    }
+                    didAnyElvesMove = true
+                    return proposal
+                })
+            )
+            if !didAnyElvesMove {
+                return (elves, n)
             }
             
             directionPriority.append(directionPriority.removeFirst())
         }
         
-        return (elfPoints, rounds)
+        return (elves, rounds)
     }
     
     enum Direction {
@@ -90,14 +91,12 @@ class Day23: Day {
     
     typealias Point = SIMD2<Int>
     
-    private func startingElfPoints(from input: String) -> [Point] {
-        var points = [Point]()
-        for (y, line) in input.lines().enumerated() {
-            for (x, c) in line.enumerated() where c == "#" {
-                points.append(Point(x, y))
+    private func startingElfPoints(from input: String) -> Set<Point> {
+        Set(input.lines().enumerated().flatMap { (y, line) in
+            line.enumerated().compactMap { (x, c) in
+                c == "#" ? Point(x, y) : nil
             }
-        }
-        return points
+        })
     }
     
 }
