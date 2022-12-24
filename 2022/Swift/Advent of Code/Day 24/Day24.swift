@@ -13,7 +13,7 @@ class Day24: Day {
     }
     
     func part2() -> String {
-        "Not Implemented"
+        "\(fewestMinutesToReachGoalGoBackToStartThenReachGoalAgain())"
     }
     
     //fewest number of minutes required to avoid the blizzards and reach the goal
@@ -27,6 +27,32 @@ class Day24: Day {
             in: valley
         )
         return path?.vertex.z ?? -1
+    }
+    
+    private func fewestMinutesToReachGoalGoBackToStartThenReachGoalAgain() -> Int {
+        let valley = makeValley(from: input)
+        let path1 = BreadthFirstSearch.findPath(
+            from: valley.start,
+            isDestination: { vertex in
+                vertex.x == valley.end.x && vertex.y == valley.end.y
+            },
+            in: valley
+        )
+        let path2 = BreadthFirstSearch.findPath(
+            from: path1!.vertex,
+            isDestination: { vertex in
+                vertex.x == valley.start.x && vertex.y == valley.start.y
+            },
+            in: valley
+        )
+        let path3 = BreadthFirstSearch.findPath(
+            from: path2!.vertex,
+            isDestination: { vertex in
+                vertex.x == valley.end.x && vertex.y == valley.end.y
+            },
+            in: valley
+        )
+        return path3?.vertex.z ?? -1
     }
     
     typealias Point = SIMD2<Int>
