@@ -16,7 +16,6 @@ class Day24: Day {
         "\(fewestMinutesToReachGoalGoBackToStartThenReachGoalAgain())"
     }
     
-    //fewest number of minutes required to avoid the blizzards and reach the goal
     private func fewestNumberOfMinutesToAvoidBlizzardsAndReachTheGoal() -> Int {
         let valley = makeValley(from: input)
         let path = BreadthFirstSearch.findPath(
