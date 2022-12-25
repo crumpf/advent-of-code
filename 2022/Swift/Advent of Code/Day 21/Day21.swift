@@ -13,7 +13,8 @@ class Day21: Day {
     }
     
     func part2() -> String {
-        "Not Implemented"
+        "\(numberYouYellToPassRootEqualityTest())"
+        return "Not Implemented"
     }
     
     private func numberYelledByRootMonkey() -> Int {
@@ -38,6 +39,10 @@ class Day21: Day {
             }
         }
         return numberYelledByMonkey["root"] ?? 0
+    }
+    
+    private func numberYouYellToPassRootEqualityTest() -> Int {
+        return -1
     }
     
     struct Equation {
