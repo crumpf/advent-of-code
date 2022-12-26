@@ -17,8 +17,8 @@ struct Stack<Element> {
     }
     
     // Remove an element from the top of the stack and return it.
-    mutating func pop() -> Element {
-        stack.removeLast()
+    mutating func pop() -> Element? {
+        stack.isEmpty ? nil : stack.removeLast()
     }
     
     // Peek at the topmost element without removing it.

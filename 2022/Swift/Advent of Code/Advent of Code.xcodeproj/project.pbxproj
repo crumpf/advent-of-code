@@ -184,6 +184,8 @@
 		8C28AF25295893BB00E623E5 /* String+Subscripts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC483B929386EDE00003294 /* String+Subscripts.swift */; };
 		8C28AF26295893BB00E623E5 /* FileInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC4839129385AA300003294 /* FileInput.swift */; };
 		8C28AF27295893C100E623E5 /* Day25.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C28AF1F2958939200E623E5 /* Day25.swift */; };
+		8C727A622959786A00626531 /* HeapModule in Frameworks */ = {isa = PBXBuildFile; productRef = 8C727A612959786A00626531 /* HeapModule */; };
+		8C727A69295A0ACD00626531 /* WeightedPathfinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C727A68295A0ACD00626531 /* WeightedPathfinding.swift */; };
 		8CA01542293F0F4F0085A2E1 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CA01541293F0F4F0085A2E1 /* main.swift */; };
 		8CA01548293F0F860085A2E1 /* Day07.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CA01546293F0F860085A2E1 /* Day07.swift */; };
 		8CA01549293F0F8D0085A2E1 /* String+Subscripts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC483B929386EDE00003294 /* String+Subscripts.swift */; };
@@ -571,6 +573,7 @@
 		8C28AF1A2958936800E623E5 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		8C28AF1F2958939200E623E5 /* Day25.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Day25.swift; sourceTree = "<group>"; };
 		8C28AF202958939200E623E5 /* input.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = input.txt; sourceTree = "<group>"; };
+		8C727A68295A0ACD00626531 /* WeightedPathfinding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeightedPathfinding.swift; sourceTree = "<group>"; };
 		8CA0153F293F0F4F0085A2E1 /* Day 07 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Day 07"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8CA01541293F0F4F0085A2E1 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		8CA01546293F0F860085A2E1 /* Day07.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Day07.swift; sourceTree = "<group>"; };
@@ -632,6 +635,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C727A622959786A00626531 /* HeapModule in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -980,6 +984,13 @@
 			path = "Day 25";
 			sourceTree = "<group>";
 		};
+		8C727A63295978AD00626531 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		8CA01540293F0F4F0085A2E1 /* Day 07 */ = {
 			isa = PBXGroup;
 			children = (
@@ -1021,6 +1032,7 @@
 				8C28AEFD2956B80500E623E5 /* Day 24 */,
 				8C28AF192958936800E623E5 /* Day 25 */,
 				8CC483862938584100003294 /* Products */,
+				8C727A63295978AD00626531 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1071,6 +1083,7 @@
 				8C28AE1D2949B44F00E623E5 /* Pathfinding.swift */,
 				8C28AE34294CCE4500E623E5 /* Ranges.swift */,
 				8C28AEAD295275DC00E623E5 /* CircularlyLinkedList.swift */,
+				8C727A68295A0ACD00626531 /* WeightedPathfinding.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1205,6 +1218,9 @@
 			dependencies = (
 			);
 			name = AdventUnitTests;
+			packageProductDependencies = (
+				8C727A612959786A00626531 /* HeapModule */,
+			);
 			productName = AdventUnitTests;
 			productReference = 8C28ADA22943ED0B00E623E5 /* AdventUnitTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -1443,6 +1459,8 @@
 			dependencies = (
 			);
 			name = "Day 24";
+			packageProductDependencies = (
+			);
 			productName = "Day 24";
 			productReference = 8C28AEFC2956B80500E623E5 /* Day 24 */;
 			productType = "com.apple.product-type.tool";
@@ -1460,6 +1478,8 @@
 			dependencies = (
 			);
 			name = "Day 25";
+			packageProductDependencies = (
+			);
 			productName = "Day 25";
 			productReference = 8C28AF182958936800E623E5 /* Day 25 */;
 			productType = "com.apple.product-type.tool";
@@ -1682,6 +1702,9 @@
 				Base,
 			);
 			mainGroup = 8CC4837C2938584100003294;
+			packageReferences = (
+				8C727A602959786A00626531 /* XCRemoteSwiftPackageReference "swift-collections" */,
+			);
 			productRefGroup = 8CC483862938584100003294 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1777,6 +1800,7 @@
 				8C28ADEA294765CE00E623E5 /* TreeNode.swift in Sources */,
 				8C28ADBC2943F12000E623E5 /* Day07.swift in Sources */,
 				8C28AEAA295274A800E623E5 /* Day20.swift in Sources */,
+				8C727A69295A0ACD00626531 /* WeightedPathfinding.swift in Sources */,
 				8C28ADC02943F12000E623E5 /* Day08.swift in Sources */,
 				8C28ADAC2943EDD700E623E5 /* Puzzle.swift in Sources */,
 				8C28AE7A294EDFD900E623E5 /* Day18.swift in Sources */,
@@ -3000,6 +3024,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		8C727A602959786A00626531 /* XCRemoteSwiftPackageReference "swift-collections" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-collections.git";
+			requirement = {
+				branch = release/1.1;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		8C727A612959786A00626531 /* HeapModule */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8C727A602959786A00626531 /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = HeapModule;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 8CC4837D2938584100003294 /* Project object */;
 }

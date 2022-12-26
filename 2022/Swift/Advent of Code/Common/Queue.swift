@@ -16,8 +16,8 @@ struct Queue<Element> {
     }
     
     // Remove the first element from the queue and return it.
-    mutating func dequeue() -> Element {
-        q.removeFirst()
+    mutating func dequeue() -> Element? {
+        q.isEmpty ? nil : q.removeFirst()
     }
     
     // Peek at the first queue element without removing it.

@@ -9,6 +9,7 @@ protocol Pathfinding {
     associatedtype Vertex: Hashable
     
     func neighbors(for vertex: Vertex) -> [Vertex]
+    
 }
 
 class PathNode<Vertex: Hashable> {
@@ -30,8 +31,7 @@ struct BreadthFirstSearch<Graph: Pathfinding> {
             var frontier = Queue<PathNode<Graph.Vertex>>()
             frontier.enqueue(PathNode(vertex: start))
             var explored: Set<Graph.Vertex> = [start]
-            while !frontier.isEmpty {
-                let currentNode = frontier.dequeue()
+            while let currentNode = frontier.dequeue() {
                 if isDestination(currentNode.vertex) {
                     return currentNode
                 }
@@ -53,8 +53,7 @@ struct DepthFirstSearch<Graph: Pathfinding> {
             var frontier = Stack<PathNode<Graph.Vertex>>()
             frontier.push(PathNode(vertex: start))
             var explored: Set<Graph.Vertex> = [start]
-            while !frontier.isEmpty {
-                let currentNode = frontier.pop()
+            while let currentNode = frontier.pop() {
                 if isDestination(currentNode.vertex) {
                     return currentNode
                 }
