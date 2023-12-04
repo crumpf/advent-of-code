@@ -29,6 +29,23 @@ class Day04: Day {
             .reduce(0, +)
     }
     
+    private func totalCards() -> Int {
+        var instances = Array(repeating: 1, count: input.lines().count)
+        let cards = input.lines().map(makeCard(line:))
+        for (index, card) in cards.enumerated() {
+            let myWinners = Set(card.winners).intersection(Set(card.have))
+            if myWinners.count > 0 {
+                for offset in 1...myWinners.count {
+                    let next = index + offset
+                    if offset < instances.count {
+                        instances[next] += instances[index]
+                    }
+                }
+            }
+        }
+        return instances.reduce(0, +)
+    }
+    
     struct Card {
         let id: Int
         let winners: [Int]
@@ -49,19 +66,4 @@ class Day04: Day {
         return Card(id: id, winners: nums[0], have: nums[1])
     }
     
-    private func totalCards() -> Int {
-        var instances = Array(repeating: 1, count: input.lines().count)
-        let cards = input.lines().map(makeCard(line:))
-        for (index, card) in cards.enumerated() {
-            let myWinners = Set(card.winners).intersection(Set(card.have))
-            if myWinners.count > 0 {
-                for next in 1...myWinners.count {
-                    if next < instances.count {
-                        instances[index+next] += instances[index]
-                    }
-                }
-            }
-        }
-        return instances.reduce(0, +)
-    }
 }
