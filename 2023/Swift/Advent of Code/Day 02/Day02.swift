@@ -15,7 +15,7 @@ class Day02: Day {
     }
     
     func part2() -> String {
-        "Not Implemented"
+        "\(sumOfGamePowers())"
     }
     
     typealias Reveal = (count: Int, color: String)
@@ -26,6 +26,13 @@ class Day02: Day {
             .map(makeGame(line:))
             .filter { isGameValid(game: $0, red: red, green: green, blue: blue) }
             .map { $0.id }
+            .reduce(0, +)
+    }
+    
+    private func sumOfGamePowers() -> Int {
+        input.lines()
+            .map(makeGame(line:))
+            .map(power(ofGame:))
             .reduce(0, +)
     }
     
@@ -55,5 +62,20 @@ class Day02: Day {
             }
         }
         return true
+    }
+    
+    private func power(ofGame game: Game) -> Int {
+        var minimum: (r: Int, g: Int, b: Int) = (0, 0, 0)
+        for reveal in game.reveals {
+            for cubes in reveal {
+                switch cubes {
+                case let (count, "red"): minimum.r = max(minimum.r, count)
+                case let (count, "green"): minimum.g = max(minimum.g, count)
+                case let (count, "blue"): minimum.b = max(minimum.b, count)
+                default: break
+                }
+            }
+        }
+        return minimum.r * minimum.g * minimum.b
     }
 }
