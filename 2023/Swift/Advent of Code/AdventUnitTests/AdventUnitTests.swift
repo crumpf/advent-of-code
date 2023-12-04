@@ -67,7 +67,7 @@ final class AdventUnitTests: XCTestCase {
             Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11
             """)
         XCTAssertEqual(day.part1(), "13", "Part 1 Failed")
-        XCTAssertEqual(day.part2(), "Not Implemented", "Part 2 Failed")
+        XCTAssertEqual(day.part2(), "30", "Part 2 Failed")
     }
 
     func testDay05() throws {
