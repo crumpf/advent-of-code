@@ -1,9 +1,10 @@
 //
-//  DayX.swift
+//  Day03.swift
 //  Advent of Code
 //
-//  Created by Christopher Rumpf on MM/DD/YY.
+//  Created by Christopher Rumpf on 12/04/23.
 //
+// --- Day 3: Gear Ratios ---
 
 import Foundation
 
