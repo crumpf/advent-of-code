@@ -10,13 +10,11 @@ import Foundation
 
 class Day03: Day {
     func part1() -> String {
-        // 324655 isn't right, too low
-        // 340217 isn't right, too low
         "\(sumOfAllPartNumbers())"
     }
     
     func part2() -> String {
-        "Not Implemented"
+        "\(sumOfAllGearRatios())"
     }
     
     struct Coord2D: Hashable {
@@ -35,7 +33,32 @@ class Day03: Day {
     }
     
     private func sumOfAllPartNumbers() -> Int {
+        partsList(foundIn: makeGrid())
+            .map { $0.num }
+            .reduce(0, +)
+    }
+    
+    private func sumOfAllGearRatios() -> Int {
         let grid = makeGrid()
+        var partsList = partsList(foundIn: grid)
+        var result = 0
+        while !partsList.isEmpty {
+            let part = partsList.removeFirst()
+            let gearCoords = part.adjacents.filter { coord in
+                grid.char(at: coord) == "*"
+            }
+            partsList.filter {
+                !$0.adjacents.intersection(gearCoords).isEmpty
+            }.forEach { otherPart in
+                result += part.num * otherPart.num
+            }
+        }
+        return result
+    }
+    
+    private func makeGrid() -> Grid { input.lines().map(Array.init) }
+    
+    private func partsList(foundIn grid: Grid) -> [(num: Int, adjacents: Set<Coord2D>)] {
         var partsList = [(num: Int, adjacents: Set<Coord2D>)]()
         
         for (y, row) in grid.enumerated() {
@@ -72,11 +95,7 @@ class Day03: Day {
         }
         
         return partsList
-            .map { $0.num }
-            .reduce(0, +)
     }
-    
-    private func makeGrid() -> Grid { input.lines().map(Array.init) }
 }
 
 fileprivate typealias Grid = [[Character]]
