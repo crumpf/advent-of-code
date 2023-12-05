@@ -13,7 +13,7 @@ class Day05: Day {
     }
     
     func part2() -> String {
-        "Not Implemented"
+        "\(lowestLocationNumberThatCorrespondsToAnyInitialSeedNumberRanges())"
     }
 
     struct Almanac {
@@ -21,15 +21,17 @@ class Day05: Day {
         let maps: [AlmanacMap]
 
         func soilNumbersForSeeds() -> [Int] {
-            seeds.map { seed in
-                maps.reduce(seed) { partialResult, m in
-                    if let matchedRange = m.ranges.first(where: { range in
-                        (range.sourceRangeStart..<(range.sourceRangeStart+range.rangeLength)).contains(partialResult)
-                    }) {
-                        return matchedRange.destinationRangeStart + (partialResult - matchedRange.sourceRangeStart)
-                    }
-                    return partialResult
+            seeds.map(soilNumber(forSeed:))
+        }
+
+        func soilNumber(forSeed seed: Int) -> Int {
+            maps.reduce(seed) { partialResult, m in
+                if let matchedRange = m.ranges.first(where: { range in
+                    (range.sourceRangeStart..<(range.sourceRangeStart+range.rangeLength)).contains(partialResult)
+                }) {
+                    return matchedRange.destinationRangeStart + (partialResult - matchedRange.sourceRangeStart)
                 }
+                return partialResult
             }
         }
     }
@@ -64,6 +66,23 @@ class Day05: Day {
 
     private func lowestLocationNumberThatCorrespondsToAnyInitialSeedNumbers() -> Int {
         makeAlmanac(input: input).soilNumbersForSeeds().min() ?? Int.max
+    }
+
+    private func lowestLocationNumberThatCorrespondsToAnyInitialSeedNumberRanges() -> Int {
+        let almanac = makeAlmanac(input: input)
+        let ranges = stride(from: 0, to: almanac.seeds.count, by: 2).map { i in
+            (almanac.seeds[i]..<(almanac.seeds[i]+almanac.seeds[i+1]))
+        }
+        // maybe there's an optimization for this, but brute-forcing through
+        // all the ranges with -Ofast compiler optimizations gets the job done in
+        // about 2.5 mins on an M1 Pro
+        let lowest = ranges.map { range in
+            range.reduce(range.startIndex) {
+                min($0, almanac.soilNumber(forSeed: $1))
+            }
+        }.min()
+
+        return lowest ?? Int.max
     }
 
 }
