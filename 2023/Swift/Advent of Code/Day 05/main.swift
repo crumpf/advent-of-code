@@ -16,7 +16,12 @@ startTime = CFAbsoluteTimeGetCurrent()
 let part1 = day.part1()
 print("result: \(part1), duration: \((CFAbsoluteTimeGetCurrent()-startTime)*1000)ms")
 
-print("====Part 2====")
+print("====Part 2 Optimized====")
+startTime = CFAbsoluteTimeGetCurrent()
+let part2Op = day.part2Optimized()
+print("result: \(part2Op), duration: \((CFAbsoluteTimeGetCurrent()-startTime)*1000)ms")
+
+print("====Part 2 Original====")
 startTime = CFAbsoluteTimeGetCurrent()
 let part2 = day.part2()
 print("result: \(part2), duration: \((CFAbsoluteTimeGetCurrent()-startTime)*1000)ms")

@@ -16,15 +16,19 @@ class Day05: Day {
         "\(lowestLocationNumberThatCorrespondsToAnyInitialSeedNumberRanges())"
     }
 
+    func part2Optimized() -> String {
+        "\(lowestLocationNumberThatCorrespondsToAnyInitialSeedNumberRangesOptimized())"
+    }
+
     struct Almanac {
         let seeds: [Int]
         let maps: [AlmanacMap]
 
-        func soilNumbersForSeeds() -> [Int] {
-            seeds.map(soilNumber(forSeed:))
+        func locationsForSeeds() -> [Int] {
+            seeds.map(location(forSeed:))
         }
 
-        func soilNumber(forSeed seed: Int) -> Int {
+        func location(forSeed seed: Int) -> Int {
             maps.reduce(seed) { partialResult, m in
                 if let matchedRange = m.ranges.first(where: { range in
                     (range.sourceRangeStart..<(range.sourceRangeStart+range.rangeLength)).contains(partialResult)
@@ -65,7 +69,7 @@ class Day05: Day {
     }
 
     private func lowestLocationNumberThatCorrespondsToAnyInitialSeedNumbers() -> Int {
-        makeAlmanac(input: input).soilNumbersForSeeds().min() ?? Int.max
+        makeAlmanac(input: input).locationsForSeeds().min() ?? Int.max
     }
 
     private func lowestLocationNumberThatCorrespondsToAnyInitialSeedNumberRanges() -> Int {
@@ -78,11 +82,38 @@ class Day05: Day {
         // about 2.5 mins on an M1 Pro
         let lowest = ranges.map { range in
             range.reduce(range.startIndex) {
-                min($0, almanac.soilNumber(forSeed: $1))
+                min($0, almanac.location(forSeed: $1))
             }
         }.min()
 
         return lowest ?? Int.max
+    }
+
+    private func lowestLocationNumberThatCorrespondsToAnyInitialSeedNumberRangesOptimized() -> Int {
+        let almanac = makeAlmanac(input: input)
+        // Start at location zero and increment, completing when we find the smallest value that reverse-maps to one of our starting seeds.
+        // This finishes in about 4 seconds compared to 2.5 minutes in my first approach.
+        for loc in (0...) {
+            // work backwards to the seed
+            let seed = almanac.maps.reversed().reduce(loc) { partialResult, m in
+                if let found = m.ranges.first(where: { r in
+                    (r.destinationRangeStart..<(r.destinationRangeStart+r.rangeLength)).contains(partialResult)
+                }) {
+                    return found.sourceRangeStart + (partialResult - found.destinationRangeStart)
+                }
+                return partialResult
+            }
+            // check if it's one of our initial seeds
+            if nil != stride(from: 0, to: almanac.seeds.count, by: 2).map({ i in
+                (almanac.seeds[i]..<(almanac.seeds[i]+almanac.seeds[i+1]))
+            }).first(where: { r in
+                r.contains(seed)
+            }) {
+                return loc
+            }
+        }
+
+        return -1
     }
 
 }
