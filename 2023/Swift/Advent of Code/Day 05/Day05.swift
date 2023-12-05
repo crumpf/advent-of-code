@@ -1,8 +1,8 @@
 //
-//  DayX.swift
+//  Day05.swift
 //  Advent of Code
 //
-//  Created by Christopher Rumpf on MM/DD/YY.
+//  Created by Christopher Rumpf on 12/05/23.
 //
 
 import Foundation
