@@ -9,7 +9,7 @@ import Foundation
 
 guard let fileInput = FileInput(pathRelativeToCurrentDirectory: "input.txt") else { abort() }
 var startTime = 0.0
-let day = DayX(input: fileInput.raw)
+let day = Day06(input: fileInput.raw)
 
 print("====Part 1====")
 startTime = CFAbsoluteTimeGetCurrent()
