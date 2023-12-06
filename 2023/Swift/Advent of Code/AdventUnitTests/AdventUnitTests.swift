@@ -117,8 +117,8 @@ final class AdventUnitTests: XCTestCase {
             56 93 4
             """)
         XCTAssertEqual(day.part1(), "35", "Part 1 Failed")
-//        XCTAssertEqual(day.part2(), "46", "Part 2 Failed")
         XCTAssertEqual(day.part2Optimized(), "46", "Part 2 Failed")
+        XCTAssertEqual(day.part2(), "46", "Part 2 Failed")
     }
 
     func testDay06() throws {

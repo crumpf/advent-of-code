@@ -51,10 +51,6 @@ class Day01: Day {
     private func sumOfAllCalibrationValuesWithSpelledOutLetters(of lines: [String]) -> Int? {
         let conversions = lines.map(convertSpelled(_:))
         let values = conversions.compactMap(calibrationValue(of:))
-        for i in lines.indices {
-            print("\(lines[i]) \(conversions[i]) \(values[i])")
-        }
-        
         return sumOfAllCalibrationValues(of: lines.map(convertSpelled(_:)))
     }
 
