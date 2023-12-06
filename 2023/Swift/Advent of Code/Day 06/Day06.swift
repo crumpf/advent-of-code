@@ -15,10 +15,10 @@ class Day06: Day {
     }
     
     func part2() -> String {
-        "Not Implemented"
+        "\(waysToWinInLongRace())"
     }
     
-    func productOfNumberOfWaysToBeatRecord() -> Int {
+    private func productOfNumberOfWaysToBeatRecord() -> Int {
         let records = Records(input: input)
         let winners = zip(records.time, records.distance).compactMap { (time, dist) in
             var numWaysToWin = 0
@@ -40,6 +40,31 @@ class Day06: Day {
             return numWaysToWin > 0 ? numWaysToWin : nil
         }
         return winners.reduce(1, *)
+    }
+    
+    private func waysToWinInLongRace() -> Int {
+        let records = Records(input: input)
+        let time = Int(records.time.map(String.init).reduce("", +))!
+        let dist = Int(records.distance.map(String.init).reduce("", +))!
+        
+        var numWaysToWin = 0
+        let half = time / 2
+        for t in (0..<half).reversed() {
+            if raceResult(lasts: time, holdTime: t) > dist {
+                numWaysToWin += 1
+            } else {
+                break
+            }
+        }
+        for t in (half...time) {
+            if raceResult(lasts: time, holdTime: t) > dist {
+                numWaysToWin += 1
+            } else {
+                break
+            }
+        }
+        
+        return numWaysToWin
     }
     
     private func raceResult(lasts: Int, holdTime: Int) -> Int {
