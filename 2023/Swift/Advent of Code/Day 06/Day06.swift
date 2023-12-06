@@ -21,7 +21,7 @@ class Day06: Day {
     private func productOfNumberOfWaysToBeatRecord() -> Int {
         let records = Records(input: input)
         let winners = zip(records.time, records.distance).compactMap { (time, dist) in
-            var numWaysToWin = numberOfWaysToWin(recordTime: time, recordDistance: dist)
+            let numWaysToWin = numberOfWaysToWin(recordTime: time, recordDistance: dist)
             return numWaysToWin > 0 ? numWaysToWin : nil
         }
         return winners.reduce(1, *)
@@ -29,8 +29,8 @@ class Day06: Day {
     
     private func waysToWinInLongRace() -> Int {
         let records = Records(input: input)
-        let time = Int(records.time.map(String.init).reduce("", +))!
-        let dist = Int(records.distance.map(String.init).reduce("", +))!
+        let time = Int(records.time.map(String.init).joined())!
+        let dist = Int(records.distance.map(String.init).joined())!
         return numberOfWaysToWin(recordTime: time, recordDistance: dist)
     }
     
