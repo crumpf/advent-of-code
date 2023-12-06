@@ -21,22 +21,7 @@ class Day06: Day {
     private func productOfNumberOfWaysToBeatRecord() -> Int {
         let records = Records(input: input)
         let winners = zip(records.time, records.distance).compactMap { (time, dist) in
-            var numWaysToWin = 0
-            let half = time / 2
-            for t in (0..<half).reversed() {
-                if raceResult(lasts: time, holdTime: t) > dist {
-                    numWaysToWin += 1
-                } else {
-                    break
-                }
-            }
-            for t in (half...time) {
-                if raceResult(lasts: time, holdTime: t) > dist {
-                    numWaysToWin += 1
-                } else {
-                    break
-                }
-            }
+            var numWaysToWin = numberOfWaysToWin(recordTime: time, recordDistance: dist)
             return numWaysToWin > 0 ? numWaysToWin : nil
         }
         return winners.reduce(1, *)
@@ -46,31 +31,33 @@ class Day06: Day {
         let records = Records(input: input)
         let time = Int(records.time.map(String.init).reduce("", +))!
         let dist = Int(records.distance.map(String.init).reduce("", +))!
-        
-        var numWaysToWin = 0
+        return numberOfWaysToWin(recordTime: time, recordDistance: dist)
+    }
+    
+    private func raceResult(lasts: Int, holdTime: Int) -> Int {
+        (lasts - holdTime) * holdTime
+    }
+
+    private func numberOfWaysToWin(recordTime time: Int, recordDistance dist: Int) -> Int {
+        var count = 0
         let half = time / 2
         for t in (0..<half).reversed() {
             if raceResult(lasts: time, holdTime: t) > dist {
-                numWaysToWin += 1
+                count += 1
             } else {
                 break
             }
         }
         for t in (half...time) {
             if raceResult(lasts: time, holdTime: t) > dist {
-                numWaysToWin += 1
+                count += 1
             } else {
                 break
             }
         }
-        
-        return numWaysToWin
+        return count
     }
-    
-    private func raceResult(lasts: Int, holdTime: Int) -> Int {
-        (lasts - holdTime) * holdTime
-    }
-    
+
     struct Records {
         let time, distance: [Int]
         

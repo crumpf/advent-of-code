@@ -77,9 +77,8 @@ class Day05: Day {
         let ranges = stride(from: 0, to: almanac.seeds.count, by: 2).map { i in
             (almanac.seeds[i]..<(almanac.seeds[i]+almanac.seeds[i+1]))
         }
-        // maybe there's an optimization for this, but brute-forcing through
-        // all the ranges with -Ofast compiler optimizations gets the job done in
-        // about 2.5 mins on an M1 Pro
+        // Not optimal, but brute-forcing through all the ranges with Swift Compilier -O and
+        // Apple Clang -Ofast compiler optimizations gets the job done in about 2.5 mins on an M1 Pro.
         let lowest = ranges.map { range in
             range.reduce(range.startIndex) {
                 min($0, almanac.location(forSeed: $1))
