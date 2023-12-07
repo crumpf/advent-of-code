@@ -4,6 +4,7 @@
 //
 //  Created by Christopher Rumpf on 12/07/2023.
 //
+//  --- Day 7: Camel Cards ---
 
 import Foundation
 
@@ -28,7 +29,7 @@ class Day07: Day {
             self.bid = bid
             self.useJokers = useJokers
             self.strengths = cards.map { Hand.strengthOfCard($0, useJokers: useJokers) }
-            self.type = Self.handType(cards: cards, useJokers: useJokers)
+            self.type = Hand.handType(cards: cards, useJokers: useJokers)
         }
 
         enum HandType: Int, CaseIterable {
@@ -46,6 +47,7 @@ class Day07: Day {
             }
         }
 
+        /// convert jokers (J cards) to whatever card would make the hand the strongest type possible
         private static func replaceJokers(in cards: [Character]) -> [Character] {
             let mostNonJoker = cards.reduce(into: [Character:Int]()) { dict, card in
                 dict[card] = (dict[card] ?? 0) + 1
