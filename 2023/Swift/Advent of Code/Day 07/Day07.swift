@@ -48,14 +48,27 @@ class Day07: Day {
     }
 
     struct Hand: Comparable {
-        let cards: [Int]
+        let cards: [Character]
         let bid: Int
         let type: HandType
+        let strengths: [Int]
 
-        init(cards: [Int], bid: Int) {
+        init(cards: [Character], bid: Int) {
             self.cards = cards
             self.bid = bid
-            self.type = .handType(cards: cards)
+            self.strengths = cards.map(Hand.strengthOfCard(_:))
+            self.type = .handType(cards: strengths)
+        }
+
+        static func strengthOfCard(_ card: Character) -> Int {
+            switch card {
+            case "A": return 14
+            case "K": return 13
+            case "Q": return 12
+            case "J": return 11
+            case "T": return 10
+            default: return Int(String(card))!
+            }
         }
 
         static func < (lhs: Hand, rhs: Hand) -> Bool {
@@ -63,7 +76,7 @@ class Day07: Day {
                 return lhs.type.rawValue < rhs.type.rawValue
             }
 
-            for pair in zip(lhs.cards, rhs.cards) {
+            for pair in zip(lhs.strengths, rhs.strengths) {
                 if pair.0 != pair.1 {
                     return pair.0 < pair.1
                 }
@@ -76,18 +89,7 @@ class Day07: Day {
     private func makeHands(input: String) -> [Hand] {
         input.lines().map { line in
             let comps = line.components(separatedBy: .whitespaces)
-            return Hand(cards: comps[0].map(strengthOfCard(_:)), bid: Int(String(comps[1]))!)
-        }
-    }
-
-    private func strengthOfCard(_ card: Character) -> Int {
-        switch card {
-        case "A": return 14
-        case "K": return 13
-        case "Q": return 12
-        case "J": return 11
-        case "T": return 10
-        default: return Int(String(card))!
+            return Hand(cards: Array(comps[0]), bid: Int(String(comps[1]))!)
         }
     }
 
