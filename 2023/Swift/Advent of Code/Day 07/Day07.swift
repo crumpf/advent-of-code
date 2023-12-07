@@ -13,7 +13,7 @@ class Day07: Day {
     }
     
     func part2() -> String {
-        "Not Implemented"
+        "\(totalWinningsWithJokers())"
     }
 
     struct Hand: Comparable {
@@ -21,12 +21,14 @@ class Day07: Day {
         let bid: Int
         let type: HandType
         let strengths: [Int]
+        let useJokers: Bool
 
-        init(cards: [Character], bid: Int) {
+        init(cards: [Character], bid: Int, useJokers: Bool = false) {
             self.cards = cards
             self.bid = bid
-            self.strengths = cards.map(Hand.strengthOfCard(_:))
-            self.type = Self.handType(cards: cards)
+            self.useJokers = useJokers
+            self.strengths = cards.map { Hand.strengthOfCard($0, useJokers: useJokers) }
+            self.type = Self.handType(cards: cards, useJokers: useJokers)
         }
 
         enum HandType: Int, CaseIterable {
@@ -39,26 +41,44 @@ class Day07: Day {
             case fiveOfAKind
         }
 
-        static func strengthOfCard(_ card: Character) -> Int {
+        static func strengthOfCard(_ card: Character, useJokers: Bool) -> Int {
             switch card {
             case "A": return 14
             case "K": return 13
             case "Q": return 12
-            case "J": return 11
+            case "J": return useJokers ? 1 : 11
             case "T": return 10
             default: return Int(String(card))!
             }
         }
 
-        private static func handType(cards: [Character]) -> HandType {
+        private static func replaceJokers(in cards: [Character]) -> [Character] {
+            let mostNonJoker = cards.reduce(into: [Character:Int]()) { dict, card in
+                dict[card] = (dict[card] ?? 0) + 1
+            }.sorted { lhs, rhs in
+                lhs.value > rhs.value
+            }.first { elem in
+                elem.key != "J"
+            }
+
+            return cards.map {
+                if $0 == "J", let mostNonJoker {
+                    return mostNonJoker.key
+                }
+                return $0
+            }
+        }
+
+        private static func handType(cards: [Character], useJokers: Bool) -> HandType {
             guard cards.count == 5 else { abort() }
 
-            let orderedCounts = cards.reduce(into: [Character:Int]()) { dict, card in
-                dict[card] = (dict[card] ?? 0) + 1
-            }
-                .sorted { lhs, rhs in
-                    lhs.value > rhs.value
+            let dict = (!useJokers ? cards : replaceJokers(in: cards))
+                .reduce(into: [Character:Int]()) { dict, card in
+                    dict[card] = (dict[card] ?? 0) + 1
                 }
+            let orderedCounts = dict.sorted { lhs, rhs in
+                lhs.value > rhs.value
+            }
 
             switch (orderedCounts[0].value, orderedCounts.count > 1 ? orderedCounts[1].value : 0) {
             case (5, _): return .fiveOfAKind
@@ -86,15 +106,23 @@ class Day07: Day {
         }
     }
 
-    private func makeHands(input: String) -> [Hand] {
+    private func makeHands(input: String, useJokers: Bool = false) -> [Hand] {
         input.lines().map { line in
             let comps = line.components(separatedBy: .whitespaces)
-            return Hand(cards: Array(comps[0]), bid: Int(String(comps[1]))!)
+            return Hand(cards: Array(comps[0]), bid: Int(String(comps[1]))!, useJokers: useJokers)
         }
     }
 
     private func totalWinnings() -> Int {
         let hands = makeHands(input: input)
+        let result = hands.sorted().enumerated().reduce(0) { partialResult, elem in
+            return partialResult + elem.element.bid * (elem.offset + 1)
+        }
+        return result
+    }
+
+    private func totalWinningsWithJokers() -> Int {
+        let hands = makeHands(input: input, useJokers: true)
         let result = hands.sorted().enumerated().reduce(0) { partialResult, elem in
             return partialResult + elem.element.bid * (elem.offset + 1)
         }
