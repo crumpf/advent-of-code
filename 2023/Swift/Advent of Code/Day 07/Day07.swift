@@ -73,8 +73,10 @@ class Day07: Day {
             let orderedCounts = dict.sorted { lhs, rhs in
                 lhs.value > rhs.value
             }
-
-            switch (orderedCounts[0].value, orderedCounts.count > 1 ? orderedCounts[1].value : 0) {
+            let mostOccurances = orderedCounts[0].value
+            let secondMostOccurances = orderedCounts.count > 1 ? orderedCounts[1].value : 0
+            
+            switch (mostOccurances, secondMostOccurances) {
             case (5, _): return .fiveOfAKind
             case (4, _): return .fourOfAKind
             case (3, 2): return .fullHouse
