@@ -32,13 +32,7 @@ class Day07: Day {
         }
 
         enum HandType: Int, CaseIterable {
-            case highCard
-            case onePair
-            case twoPair
-            case threeOfAKind
-            case fullHouse
-            case fourOfAKind
-            case fiveOfAKind
+            case highCard, onePair, twoPair, threeOfAKind, fullHouse, fourOfAKind, fiveOfAKind
         }
 
         static func strengthOfCard(_ card: Character, useJokers: Bool) -> Int {
