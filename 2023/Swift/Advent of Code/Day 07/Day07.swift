@@ -16,19 +16,44 @@ class Day07: Day {
         "Not Implemented"
     }
 
-    enum HandType: Int, CaseIterable {
-        case highCard
-        case onePair
-        case twoPair
-        case threeOfAKind
-        case fullHouse
-        case fourOfAKind
-        case fiveOfAKind
+    struct Hand: Comparable {
+        let cards: [Character]
+        let bid: Int
+        let type: HandType
+        let strengths: [Int]
 
-        static func handType(cards: [Int]) -> HandType {
+        init(cards: [Character], bid: Int) {
+            self.cards = cards
+            self.bid = bid
+            self.strengths = cards.map(Hand.strengthOfCard(_:))
+            self.type = Self.handType(cards: cards)
+        }
+
+        enum HandType: Int, CaseIterable {
+            case highCard
+            case onePair
+            case twoPair
+            case threeOfAKind
+            case fullHouse
+            case fourOfAKind
+            case fiveOfAKind
+        }
+
+        static func strengthOfCard(_ card: Character) -> Int {
+            switch card {
+            case "A": return 14
+            case "K": return 13
+            case "Q": return 12
+            case "J": return 11
+            case "T": return 10
+            default: return Int(String(card))!
+            }
+        }
+
+        private static func handType(cards: [Character]) -> HandType {
             guard cards.count == 5 else { abort() }
 
-            let orderedCounts = cards.reduce(into: [Int:Int]()) { dict, card in
+            let orderedCounts = cards.reduce(into: [Character:Int]()) { dict, card in
                 dict[card] = (dict[card] ?? 0) + 1
             }
                 .sorted { lhs, rhs in
@@ -43,31 +68,6 @@ class Day07: Day {
             case (2, 2): return .twoPair
             case (2, _): return .onePair
             default: return .highCard
-            }
-        }
-    }
-
-    struct Hand: Comparable {
-        let cards: [Character]
-        let bid: Int
-        let type: HandType
-        let strengths: [Int]
-
-        init(cards: [Character], bid: Int) {
-            self.cards = cards
-            self.bid = bid
-            self.strengths = cards.map(Hand.strengthOfCard(_:))
-            self.type = .handType(cards: strengths)
-        }
-
-        static func strengthOfCard(_ card: Character) -> Int {
-            switch card {
-            case "A": return 14
-            case "K": return 13
-            case "Q": return 12
-            case "J": return 11
-            case "T": return 10
-            default: return Int(String(card))!
             }
         }
 
