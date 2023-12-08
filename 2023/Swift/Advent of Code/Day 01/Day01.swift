@@ -6,7 +6,6 @@
 //
 //  --- Day 1: Trebuchet?! ---
 
-
 import Foundation
 
 class Day01: Day {
@@ -49,9 +48,7 @@ class Day01: Day {
     ]
     
     private func sumOfAllCalibrationValuesWithSpelledOutLetters(of lines: [String]) -> Int? {
-        let conversions = lines.map(convertSpelled(_:))
-        let values = conversions.compactMap(calibrationValue(of:))
-        return sumOfAllCalibrationValues(of: lines.map(convertSpelled(_:)))
+        sumOfAllCalibrationValues(of: lines.map(convertSpelled(_:)))
     }
 
     private func convertSpelled(_ line: String) -> String {
@@ -61,15 +58,10 @@ class Day01: Day {
     private func convertFirst(_ line: String) -> String {
         for start in (0..<line.count) {
             for (spelled, number) in spelledToDigitMap {
-                // (╯°□°）╯︵ ┻━┻  there are cases in the actual input where 2 spelled numbers overlap and
-                // should both be decoded. For example, "nineight" should be "98". So replacing the whole
-                // range we find can give incorrect results as I did first in this commented code. Gah!
-//                if line[start..<line.count].hasPrefix(spelled),
-//                   let range = line.range(of: spelled) {
-//                    return line.replacingCharacters(in: range, with: number)
-//                }
-                
-                // instead, just replace the starting character
+                // There are cases in the actual input where 2 spelled numbers overlap and should
+                // both be decoded. For example, "nineight" should be "98". So we can't replace the
+                // whole word matched. Instead, just replace the leftmost character with the digit
+                // representation since it won't overlap with any shared word on the right side.
                 if line[start..<line.count].hasPrefix(spelled) {
                     let index = line.index(line.startIndex, offsetBy: start)
                     return line.replacingCharacters(in: index...index, with: number)
@@ -82,10 +74,7 @@ class Day01: Day {
     private func convertLast(_ line: String) -> String {
         for last in (0..<line.count).reversed() {
             for (spelled, number) in spelledToDigitMap {
-//                if line[0...last].hasSuffix(spelled),
-//                   let range = line.range(of: spelled, options: [.backwards]) {
-//                    return line.replacingCharacters(in: range, with: number)
-//                }
+                // Similar to convertFirst, we just replace the rightmost character in a spelled number with a digit.
                 if line[0...last].hasSuffix(spelled) {
                     let index = line.index(line.startIndex, offsetBy: last)
                     return line.replacingCharacters(in: index...index, with: number)
