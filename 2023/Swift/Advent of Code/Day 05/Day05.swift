@@ -69,7 +69,7 @@ class Day05: Day {
     }
 
     private func lowestLocationNumberThatCorrespondsToAnyInitialSeedNumbers() -> Int {
-        makeAlmanac(input: input).locationsForSeeds().min() ?? Int.max
+        makeAlmanac(input: input).locationsForSeeds().min() ?? -1
     }
 
     private func lowestLocationNumberThatCorrespondsToAnyInitialSeedNumberRanges() -> Int {
@@ -80,12 +80,12 @@ class Day05: Day {
         // Not optimal, but brute-forcing through all the ranges with Swift Compilier -O and
         // Apple Clang -Ofast compiler optimizations gets the job done in about 2.5 mins on an M1 Pro.
         let lowest = ranges.map { range in
-            range.reduce(range.startIndex) {
+            range.reduce(Int.max) {
                 min($0, almanac.location(forSeed: $1))
             }
         }.min()
 
-        return lowest ?? Int.max
+        return lowest ?? -1
     }
 
     private func lowestLocationNumberThatCorrespondsToAnyInitialSeedNumberRangesOptimized() -> Int {
