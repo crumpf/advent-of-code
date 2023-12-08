@@ -1,15 +1,15 @@
 //
 //  main.swift
-//  Day X 
+//  Day 1
 //
 //  Created by Christopher Rumpf.
 //
 
 import Foundation
 
-guard let fileInput = FileInput(pathRelativeToCurrentDirectory: "input.txt") else { abort() }
+guard let fileInput = FileInput(pathRelativeToCurrentDirectory: "inputs/day/1/input") else { abort() }
 var startTime = 0.0
-let day = Day01 (input: fileInput.raw)
+let day = Day01(input: fileInput.raw)
 
 print("====Part 1====")
 startTime = CFAbsoluteTimeGetCurrent()

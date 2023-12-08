@@ -1,13 +1,13 @@
 //
 //  main.swift
-//  Day X 
+//  Day 4
 //
 //  Created by Christopher Rumpf.
 //
 
 import Foundation
 
-guard let fileInput = FileInput(pathRelativeToCurrentDirectory: "input.txt") else { abort() }
+guard let fileInput = FileInput(pathRelativeToCurrentDirectory: "inputs/day/4/input") else { abort() }
 var startTime = 0.0
 let day = Day04(input: fileInput.raw)
 

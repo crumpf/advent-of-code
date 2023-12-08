@@ -53,7 +53,6 @@ class Day04: Day {
     }
     
     private func makeCard(line: String) -> Card {
-        // e.g. "Card 1: 41 48 83 86 17 | 83 86  6 31 17  9 48 53"
         let comps = line.components(separatedBy: ":")
         let id = Int(comps[0].dropFirst("Card".count).trimmingCharacters(in: .whitespaces))!
         let nums = comps[1].components(separatedBy: "|").map {

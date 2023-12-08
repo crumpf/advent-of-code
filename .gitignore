@@ -23,3 +23,6 @@ CommunicateUITests/SuiteConfigs/*.json
 
 .DS_Store
 .idea/
+
+# Advent of Code asks please don't include parts of Advent of Code like puzzle inputs.
+**/inputs/day
