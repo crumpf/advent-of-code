@@ -8,7 +8,7 @@
 import Foundation
 
 struct Math {
-    /// Greatest Common Factor
+    /// Greatest Common Divisor
     static func gcd(_ a: Int, _ b: Int) -> Int {
         // Euclidean algorithm
         if b == 0 {
