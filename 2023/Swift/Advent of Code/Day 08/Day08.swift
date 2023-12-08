@@ -13,7 +13,7 @@ class Day08: Day {
     }
     
     func part2() -> String {
-        "Not Implemented"
+        "\(stepsToReachNodesEndingInZ())"
     }
 
     struct Map {
@@ -35,7 +35,6 @@ class Day08: Day {
 
     private func stepsToReachZZZ() -> Int {
         let map = makeMap(input: input)
-        
         var node = "AAA"
         var steps = 0
         while node != "ZZZ" {
@@ -47,4 +46,28 @@ class Day08: Day {
 
         return steps
     }
+
+    private func stepsToReachNodesEndingInZ() -> Int {
+        let map = makeMap(input: input)
+        let startNodes = map.network.keys.filter { $0.last == "A" }
+        var nodes = startNodes
+        var steps = 0
+        var stepsBeforeLoop = Array(repeating: 0, count: startNodes.count)
+        repeat {
+            let inst = map.instructions[steps % map.instructions.count]
+            steps += 1
+            for i in nodes.indices {
+                let current = nodes[i]
+                let choices = map.network[current]!
+                let next = inst == "L" ? choices.0 : choices.1
+                nodes[i] = next
+                if next.last == "Z" && stepsBeforeLoop[i] == 0 {
+                    stepsBeforeLoop[i] = steps
+                }
+            }
+        } while !stepsBeforeLoop.allSatisfy({$0 != 0})
+
+        return stepsBeforeLoop.reduce(1) { Math.lcm($0, $1) }
+    }
+
 }

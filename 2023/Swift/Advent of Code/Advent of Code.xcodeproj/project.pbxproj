@@ -235,6 +235,32 @@
 		8CF0E9C32B226869000298BC /* inputs in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CF0E9AB2B2263FC000298BC /* inputs */; };
 		8CF0E9C42B22686D000298BC /* inputs in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CF0E9AB2B2263FC000298BC /* inputs */; };
 		8CF0E9C52B226871000298BC /* inputs in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8CF0E9AB2B2263FC000298BC /* inputs */; };
+		8CF0E9C72B22F0E9000298BC /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF0E9C62B22F0E9000298BC /* Math.swift */; };
+		8CF0E9C82B22F0E9000298BC /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF0E9C62B22F0E9000298BC /* Math.swift */; };
+		8CF0E9C92B22F0E9000298BC /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF0E9C62B22F0E9000298BC /* Math.swift */; };
+		8CF0E9CA2B22F0E9000298BC /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF0E9C62B22F0E9000298BC /* Math.swift */; };
+		8CF0E9CB2B22F0E9000298BC /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF0E9C62B22F0E9000298BC /* Math.swift */; };
+		8CF0E9CC2B22F0E9000298BC /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF0E9C62B22F0E9000298BC /* Math.swift */; };
+		8CF0E9CD2B22F0E9000298BC /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF0E9C62B22F0E9000298BC /* Math.swift */; };
+		8CF0E9CE2B22F0E9000298BC /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF0E9C62B22F0E9000298BC /* Math.swift */; };
+		8CF0E9CF2B22F0E9000298BC /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF0E9C62B22F0E9000298BC /* Math.swift */; };
+		8CF0E9D02B22F0E9000298BC /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF0E9C62B22F0E9000298BC /* Math.swift */; };
+		8CF0E9D12B22F0E9000298BC /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF0E9C62B22F0E9000298BC /* Math.swift */; };
+		8CF0E9D22B22F0E9000298BC /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF0E9C62B22F0E9000298BC /* Math.swift */; };
+		8CF0E9D32B22F0E9000298BC /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF0E9C62B22F0E9000298BC /* Math.swift */; };
+		8CF0E9D42B22F0E9000298BC /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF0E9C62B22F0E9000298BC /* Math.swift */; };
+		8CF0E9D52B22F0E9000298BC /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF0E9C62B22F0E9000298BC /* Math.swift */; };
+		8CF0E9D62B22F0E9000298BC /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF0E9C62B22F0E9000298BC /* Math.swift */; };
+		8CF0E9D72B22F0E9000298BC /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF0E9C62B22F0E9000298BC /* Math.swift */; };
+		8CF0E9D82B22F0E9000298BC /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF0E9C62B22F0E9000298BC /* Math.swift */; };
+		8CF0E9D92B22F0E9000298BC /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF0E9C62B22F0E9000298BC /* Math.swift */; };
+		8CF0E9DA2B22F0E9000298BC /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF0E9C62B22F0E9000298BC /* Math.swift */; };
+		8CF0E9DB2B22F0E9000298BC /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF0E9C62B22F0E9000298BC /* Math.swift */; };
+		8CF0E9DC2B22F0E9000298BC /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF0E9C62B22F0E9000298BC /* Math.swift */; };
+		8CF0E9DD2B22F0E9000298BC /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF0E9C62B22F0E9000298BC /* Math.swift */; };
+		8CF0E9DE2B22F0E9000298BC /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF0E9C62B22F0E9000298BC /* Math.swift */; };
+		8CF0E9DF2B22F0E9000298BC /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF0E9C62B22F0E9000298BC /* Math.swift */; };
+		8CF0E9E02B22F0E9000298BC /* Math.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CF0E9C62B22F0E9000298BC /* Math.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -581,6 +607,7 @@
 		8CC48400293E4FBD00003294 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		8CC48406293E576A00003294 /* Day06.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Day06.swift; sourceTree = "<group>"; };
 		8CF0E9AB2B2263FC000298BC /* inputs */ = {isa = PBXFileReference; lastKnownFileType = folder; name = inputs; path = ../../inputs; sourceTree = "<group>"; };
+		8CF0E9C62B22F0E9000298BC /* Math.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Math.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1040,6 +1067,7 @@
 				8C28AE34294CCE4500E623E5 /* Ranges.swift */,
 				8C28AEAD295275DC00E623E5 /* CircularlyLinkedList.swift */,
 				8C727A68295A0ACD00626531 /* WeightedPathfinding.swift */,
+				8CF0E9C62B22F0E9000298BC /* Math.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1706,6 +1734,7 @@
 			files = (
 				8C28AD742941956B00E623E5 /* FileInput.swift in Sources */,
 				8C28AD732941956B00E623E5 /* String+Subscripts.swift in Sources */,
+				8CF0E9CF2B22F0E9000298BC /* Math.swift in Sources */,
 				8C28AD712941956B00E623E5 /* String+Advent.swift in Sources */,
 				8C28AD722941956B00E623E5 /* Puzzle.swift in Sources */,
 				8C28AD6A2941953900E623E5 /* main.swift in Sources */,
@@ -1719,6 +1748,7 @@
 			files = (
 				8C28AD872942E31D00E623E5 /* FileInput.swift in Sources */,
 				8C28AD882942E31D00E623E5 /* Puzzle.swift in Sources */,
+				8CF0E9D02B22F0E9000298BC /* Math.swift in Sources */,
 				8C28AD7F2942E25500E623E5 /* main.swift in Sources */,
 				8C28AD852942E2B200E623E5 /* Day09.swift in Sources */,
 				8C28AD8A2942E31D00E623E5 /* String+Subscripts.swift in Sources */,
@@ -1732,6 +1762,7 @@
 			files = (
 				8C28AD9929438D7300E623E5 /* String+Advent.swift in Sources */,
 				8C28AD9A29438D7300E623E5 /* Puzzle.swift in Sources */,
+				8CF0E9D12B22F0E9000298BC /* Math.swift in Sources */,
 				8C28AD9229438D4300E623E5 /* main.swift in Sources */,
 				8C28AD9829438D6C00E623E5 /* Day10.swift in Sources */,
 				8C28AD9C29438D7300E623E5 /* String+Subscripts.swift in Sources */,
@@ -1753,6 +1784,7 @@
 				8C727A69295A0ACD00626531 /* WeightedPathfinding.swift in Sources */,
 				8C28ADC02943F12000E623E5 /* Day08.swift in Sources */,
 				8C28ADAC2943EDD700E623E5 /* Puzzle.swift in Sources */,
+				8CF0E9C72B22F0E9000298BC /* Math.swift in Sources */,
 				8C28AE7A294EDFD900E623E5 /* Day18.swift in Sources */,
 				8C28AF092956B86300E623E5 /* Day24.swift in Sources */,
 				8C28ADBB2943F12000E623E5 /* Day06.swift in Sources */,
@@ -1790,6 +1822,7 @@
 			files = (
 				8C28ADD3294538EE00E623E5 /* String+Advent.swift in Sources */,
 				8C28ADD2294538EE00E623E5 /* Puzzle.swift in Sources */,
+				8CF0E9D22B22F0E9000298BC /* Math.swift in Sources */,
 				8C28ADC8294538A900E623E5 /* main.swift in Sources */,
 				8C28ADD0294538EE00E623E5 /* String+Subscripts.swift in Sources */,
 				8C28ADD1294538EE00E623E5 /* FileInput.swift in Sources */,
@@ -1802,6 +1835,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8C28ADEB294765CE00E623E5 /* TreeNode.swift in Sources */,
+				8CF0E9D32B22F0E9000298BC /* Math.swift in Sources */,
 				8C28ADE72946665900E623E5 /* FileInput.swift in Sources */,
 				8C28ADE62946665900E623E5 /* String+Subscripts.swift in Sources */,
 				8C28ADE42946665900E623E5 /* Puzzle.swift in Sources */,
@@ -1821,6 +1855,7 @@
 			files = (
 				8C28AE012948B0E600E623E5 /* String+Subscripts.swift in Sources */,
 				8C28ADFF2948B0E600E623E5 /* FileInput.swift in Sources */,
+				8CF0E9D42B22F0E9000298BC /* Math.swift in Sources */,
 				8C28ADF72948B0B300E623E5 /* main.swift in Sources */,
 				8C28AE022948B0E600E623E5 /* Puzzle.swift in Sources */,
 				8C28AE002948B0E600E623E5 /* String+Advent.swift in Sources */,
@@ -1834,6 +1869,7 @@
 			files = (
 				8C28AE142949900900E623E5 /* String+Advent.swift in Sources */,
 				8C28AE152949900900E623E5 /* Puzzle.swift in Sources */,
+				8CF0E9D52B22F0E9000298BC /* Math.swift in Sources */,
 				8C28AE0B29498F7300E623E5 /* main.swift in Sources */,
 				8C28AE1129498F9900E623E5 /* Day14.swift in Sources */,
 				8C28AE172949900900E623E5 /* String+Subscripts.swift in Sources */,
@@ -1850,6 +1886,7 @@
 				8C28AE2D294AA2CC00E623E5 /* Day15.swift in Sources */,
 				8C28AE27294AA29100E623E5 /* main.swift in Sources */,
 				8C28AE32294AA2F000E623E5 /* String+Subscripts.swift in Sources */,
+				8CF0E9D62B22F0E9000298BC /* Math.swift in Sources */,
 				8C28AE31294AA2F000E623E5 /* String+Advent.swift in Sources */,
 				8C28AE36294CD59B00E623E5 /* Ranges.swift in Sources */,
 			);
@@ -1864,6 +1901,7 @@
 				8C28AE46294CD6F800E623E5 /* String+Subscripts.swift in Sources */,
 				8C28AE47294CD6F800E623E5 /* String+Advent.swift in Sources */,
 				8C28AE49294CD6F800E623E5 /* Puzzle.swift in Sources */,
+				8CF0E9D72B22F0E9000298BC /* Math.swift in Sources */,
 				8C28AE44294CD6C700E623E5 /* Day16.swift in Sources */,
 				8C28AE48294CD6F800E623E5 /* FileInput.swift in Sources */,
 			);
@@ -1875,6 +1913,7 @@
 			files = (
 				8C28AE65294D7C2500E623E5 /* String+Advent.swift in Sources */,
 				8C28AE64294D7C2500E623E5 /* Puzzle.swift in Sources */,
+				8CF0E9D82B22F0E9000298BC /* Math.swift in Sources */,
 				8C28AE60294D7C1300E623E5 /* Day17.swift in Sources */,
 				8C28AE62294D7C2500E623E5 /* String+Subscripts.swift in Sources */,
 				8C28AE63294D7C2500E623E5 /* FileInput.swift in Sources */,
@@ -1891,6 +1930,7 @@
 				8C28AE77294EDF8500E623E5 /* Puzzle.swift in Sources */,
 				8C28AE75294EDF8500E623E5 /* FileInput.swift in Sources */,
 				8C28AE7C29509FD800E623E5 /* Queue.swift in Sources */,
+				8CF0E9D92B22F0E9000298BC /* Math.swift in Sources */,
 				8C28AE6E294EDF4B00E623E5 /* main.swift in Sources */,
 				8C28AE76294EDF8500E623E5 /* String+Advent.swift in Sources */,
 				8C28AE78294EDF8500E623E5 /* String+Subscripts.swift in Sources */,
@@ -1904,6 +1944,7 @@
 			files = (
 				8C28AE8F2950DB0C00E623E5 /* Puzzle.swift in Sources */,
 				8C28AE8D2950DB0C00E623E5 /* String+Advent.swift in Sources */,
+				8CF0E9DA2B22F0E9000298BC /* Math.swift in Sources */,
 				8C28AE8B2950DAD200E623E5 /* Day19.swift in Sources */,
 				8C28AE8E2950DB0C00E623E5 /* FileInput.swift in Sources */,
 				8C28AE902950DB0C00E623E5 /* String+Subscripts.swift in Sources */,
@@ -1917,6 +1958,7 @@
 			files = (
 				8C28AEA72952745E00E623E5 /* Puzzle.swift in Sources */,
 				8C28AEA52952745E00E623E5 /* String+Advent.swift in Sources */,
+				8CF0E9DB2B22F0E9000298BC /* Math.swift in Sources */,
 				8C28AEA42952742500E623E5 /* Day20.swift in Sources */,
 				8C28AEA62952745E00E623E5 /* FileInput.swift in Sources */,
 				8C28AEA82952745E00E623E5 /* String+Subscripts.swift in Sources */,
@@ -1930,6 +1972,7 @@
 			files = (
 				8C28AEEB2955EB8500E623E5 /* String+Subscripts.swift in Sources */,
 				8C28AEE92955EB8500E623E5 /* Puzzle.swift in Sources */,
+				8CF0E9DC2B22F0E9000298BC /* Math.swift in Sources */,
 				8C28AEE82955EB8500E623E5 /* FileInput.swift in Sources */,
 				8C28AEEA2955EB8500E623E5 /* String+Advent.swift in Sources */,
 				8C28AEC72955EAF600E623E5 /* main.swift in Sources */,
@@ -1943,6 +1986,7 @@
 			files = (
 				8C28AEE42955EB8400E623E5 /* FileInput.swift in Sources */,
 				8C28AEE52955EB8400E623E5 /* Puzzle.swift in Sources */,
+				8CF0E9DD2B22F0E9000298BC /* Math.swift in Sources */,
 				8C28AEE32955EB4800E623E5 /* Day22.swift in Sources */,
 				8C28AED22955EB0000E623E5 /* main.swift in Sources */,
 				8C28AEE72955EB8400E623E5 /* String+Subscripts.swift in Sources */,
@@ -1956,6 +2000,7 @@
 			files = (
 				8C28AEEF2955EB8600E623E5 /* String+Subscripts.swift in Sources */,
 				8C28AEF4295612FF00E623E5 /* Day23.swift in Sources */,
+				8CF0E9DE2B22F0E9000298BC /* Math.swift in Sources */,
 				8C28AEED2955EB8600E623E5 /* Puzzle.swift in Sources */,
 				8C28AEEC2955EB8600E623E5 /* FileInput.swift in Sources */,
 				8C28AEEE2955EB8600E623E5 /* String+Advent.swift in Sources */,
@@ -1972,6 +2017,7 @@
 				8C28AF062956B85E00E623E5 /* String+Advent.swift in Sources */,
 				8C28AF052956B83300E623E5 /* Day24.swift in Sources */,
 				8C28AF1329577F9400E623E5 /* String+Subscripts.swift in Sources */,
+				8CF0E9DF2B22F0E9000298BC /* Math.swift in Sources */,
 				8C28AF1229577F9400E623E5 /* Stack.swift in Sources */,
 				8C28AF072956B85E00E623E5 /* FileInput.swift in Sources */,
 				8C28AF10295754D100E623E5 /* Pathfinding.swift in Sources */,
@@ -1985,6 +2031,7 @@
 			files = (
 				8C28AF26295893BB00E623E5 /* FileInput.swift in Sources */,
 				8C28AF25295893BB00E623E5 /* String+Subscripts.swift in Sources */,
+				8CF0E9E02B22F0E9000298BC /* Math.swift in Sources */,
 				8C28AF23295893BB00E623E5 /* Puzzle.swift in Sources */,
 				8C28AF1B2958936800E623E5 /* main.swift in Sources */,
 				8C28AF24295893BB00E623E5 /* String+Advent.swift in Sources */,
@@ -1998,6 +2045,7 @@
 			files = (
 				8CA0154C293F0F8D0085A2E1 /* String+Advent.swift in Sources */,
 				8CA0154B293F0F8D0085A2E1 /* Puzzle.swift in Sources */,
+				8CF0E9CE2B22F0E9000298BC /* Math.swift in Sources */,
 				8CA01542293F0F4F0085A2E1 /* main.swift in Sources */,
 				8CA01549293F0F8D0085A2E1 /* String+Subscripts.swift in Sources */,
 				8CA0154A293F0F8D0085A2E1 /* FileInput.swift in Sources */,
@@ -2011,6 +2059,7 @@
 			files = (
 				8CC483B2293865F300003294 /* Puzzle.swift in Sources */,
 				8CC483AF29385D0C00003294 /* FileInput.swift in Sources */,
+				8CF0E9C92B22F0E9000298BC /* Math.swift in Sources */,
 				8CC4839E29385C0C00003294 /* main.swift in Sources */,
 				8CC483B62938681200003294 /* Day02.swift in Sources */,
 				8CC483BD29386EDE00003294 /* String+Subscripts.swift in Sources */,
@@ -2024,6 +2073,7 @@
 			files = (
 				8CC483AE29385D0C00003294 /* FileInput.swift in Sources */,
 				8CC483B1293865F300003294 /* Puzzle.swift in Sources */,
+				8CF0E9C82B22F0E9000298BC /* Math.swift in Sources */,
 				8CC483A929385C7000003294 /* main.swift in Sources */,
 				8CC483AD29385CAB00003294 /* Day01.swift in Sources */,
 				8CC483BC29386EDE00003294 /* String+Subscripts.swift in Sources */,
@@ -2037,6 +2087,7 @@
 			files = (
 				8CC483CF293A66A400003294 /* Puzzle.swift in Sources */,
 				8CC483C8293A664100003294 /* main.swift in Sources */,
+				8CF0E9CA2B22F0E9000298BC /* Math.swift in Sources */,
 				8CC483D0293A66A400003294 /* String+Advent.swift in Sources */,
 				8CC483CE293A667900003294 /* Day03.swift in Sources */,
 				8CC483D2293A66A400003294 /* String+Subscripts.swift in Sources */,
@@ -2050,6 +2101,7 @@
 			files = (
 				8CC483E6293B233800003294 /* String+Advent.swift in Sources */,
 				8CC483E5293B233800003294 /* Puzzle.swift in Sources */,
+				8CF0E9CB2B22F0E9000298BC /* Math.swift in Sources */,
 				8CC483E3293B233800003294 /* FileInput.swift in Sources */,
 				8CC483DB293B22F200003294 /* main.swift in Sources */,
 				8CC483E4293B233800003294 /* String+Subscripts.swift in Sources */,
@@ -2063,6 +2115,7 @@
 			files = (
 				8CC483F5293E24CE00003294 /* FileInput.swift in Sources */,
 				8CC483F6293E24CE00003294 /* Puzzle.swift in Sources */,
+				8CF0E9CC2B22F0E9000298BC /* Math.swift in Sources */,
 				8CC483EE293E249B00003294 /* main.swift in Sources */,
 				8CC483F4293E24C800003294 /* Day05.swift in Sources */,
 				8CC483F8293E24CE00003294 /* String+Subscripts.swift in Sources */,
@@ -2076,6 +2129,7 @@
 			files = (
 				8CC4840B293E583500003294 /* FileInput.swift in Sources */,
 				8CC4840A293E583500003294 /* String+Subscripts.swift in Sources */,
+				8CF0E9CD2B22F0E9000298BC /* Math.swift in Sources */,
 				8CC48408293E583500003294 /* String+Advent.swift in Sources */,
 				8CC48409293E583500003294 /* Puzzle.swift in Sources */,
 				8CC48401293E4FBD00003294 /* main.swift in Sources */,
@@ -2090,8 +2144,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				GCC_OPTIMIZATION_LEVEL = 3;
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
