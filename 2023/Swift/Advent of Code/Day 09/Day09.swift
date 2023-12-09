@@ -35,17 +35,8 @@ class Day09: Day {
         guard sequence.contains(where: {$0 != 0}) else {
             return 0
         }
-        let diffs = differences(sequence)
+        let diffs = zip(sequence, sequence.dropFirst()).map { $0.1 - $0.0 }
         let ev = extrapolatedValue(fromSequence: diffs, backwards: backwards)
         return !backwards ? ev + sequence.last! : sequence.first! - ev
-    }
-
-    private func differences(_ sequence: [Int]) -> [Int] {
-        guard sequence.count > 1 else { abort() }
-        var diffs = [Int]()
-        for i in 1..<sequence.count {
-            diffs.append(sequence[i]-sequence[i-1])
-        }
-        return diffs
     }
 }
