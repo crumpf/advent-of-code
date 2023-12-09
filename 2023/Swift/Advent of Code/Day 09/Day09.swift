@@ -18,7 +18,11 @@ class Day09: Day {
     }
     
     func part2() -> String {
-        "Not Implemented"
+        let histories = makeHistories()
+        let sum = histories.map { history in
+            extrapolatedValue(fromSequence: history, backwards: true)
+        }.reduce(0, +)
+        return "\(sum)"
     }
 
     private func makeHistories() -> [[Int]] {
@@ -27,13 +31,13 @@ class Day09: Day {
         }
     }
 
-    private func extrapolatedValue(fromSequence sequence: [Int]) -> Int {
+    private func extrapolatedValue(fromSequence sequence: [Int], backwards: Bool = false) -> Int {
         guard sequence.contains(where: {$0 != 0}) else {
             return 0
         }
         let diffs = differences(sequence)
-        let ev = extrapolatedValue(fromSequence: diffs)
-        return ev + sequence.last!
+        let ev = extrapolatedValue(fromSequence: diffs, backwards: backwards)
+        return !backwards ? ev + sequence.last! : sequence.first! - ev
     }
 
     private func differences(_ sequence: [Int]) -> [Int] {
