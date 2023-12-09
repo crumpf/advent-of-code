@@ -19,6 +19,18 @@ class Day08: Day {
     struct Map {
         let instructions: [Character]
         let network: [String: (String, String)]
+
+        func stepsToReachGoal(start: String, goal: (String) -> Bool) -> Int {
+            var node = start
+            var steps = 0
+            while !goal(node) {
+                let inst = instructions[steps % instructions.count]
+                let choices = network[node]!
+                node = inst == "L" ? choices.0 : choices.1
+                steps += 1
+            }
+            return steps
+        }
     }
 
     private func makeMap(input: String) -> Map {
@@ -35,39 +47,21 @@ class Day08: Day {
 
     private func stepsToReachZZZ() -> Int {
         let map = makeMap(input: input)
-        var node = "AAA"
-        var steps = 0
-        while node != "ZZZ" {
-            let inst = map.instructions[steps % map.instructions.count]
-            let choices = map.network[node]!
-            node = inst == "L" ? choices.0 : choices.1
-            steps += 1
+        let steps = map.stepsToReachGoal(start: "AAA") { node in
+            node == "ZZZ"
         }
-
         return steps
     }
 
     private func stepsToReachNodesEndingInZ() -> Int {
         let map = makeMap(input: input)
         let startNodes = map.network.keys.filter { $0.last == "A" }
-        var nodes = startNodes
-        var steps = 0
-        var stepsBeforeLoop = Array(repeating: 0, count: startNodes.count)
-        repeat {
-            let inst = map.instructions[steps % map.instructions.count]
-            steps += 1
-            for i in nodes.indices {
-                let current = nodes[i]
-                let choices = map.network[current]!
-                let next = inst == "L" ? choices.0 : choices.1
-                nodes[i] = next
-                if next.last == "Z" && stepsBeforeLoop[i] == 0 {
-                    stepsBeforeLoop[i] = steps
-                }
+        let loopSteps = startNodes.map { start in
+            map.stepsToReachGoal(start: start) { node in
+                node.last == "Z"
             }
-        } while !stepsBeforeLoop.allSatisfy({$0 != 0})
-
-        return stepsBeforeLoop.reduce(1) { Math.lcm($0, $1) }
+        }
+        return loopSteps.reduce(1) { Math.lcm($0, $1) }
     }
 
 }
