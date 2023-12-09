@@ -1,9 +1,10 @@
 //
-//  DayX.swift
+//  Day08.swift
 //  Advent of Code
 //
-//  Created by Christopher Rumpf on MM/DD/YY.
+//  Created by Christopher Rumpf on 12/08/23.
 //
+//  --- Day 8: Haunted Wasteland ---
 
 import Foundation
 
