@@ -176,8 +176,7 @@ class Day10: Day {
             }
         }
         print("inner:\(inner) outer:\(outer)")
-
-        return -1
+        return inner
     }
 
 }
