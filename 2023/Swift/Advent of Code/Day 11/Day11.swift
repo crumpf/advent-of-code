@@ -23,7 +23,26 @@ class Day11: Day {
     }
     
     func part2() -> String {
-        "Not Implemented"
+        let expansionScale = 1_000_000
+        let image = makeImage(input: input)
+        let expanded = mapExpandedSpace(image: image)
+        let galaxies = galaxyLocations(in: expanded)
+        let sumOfShortestPathsBetweenAllGalaxies = galaxies.enumerated().map { (offset, gStart) in
+            galaxies.dropFirst(offset + 1).reduce(0) { partialResult, gEnd in
+                var distance = 0
+                var x = gStart.x, y = gStart.y
+                while y != gEnd.y {
+                    y += gEnd.y > gStart.y ? 1 : -1
+                    distance += expanded[y][x] == "+" ? expansionScale : 1
+                }
+                while x != gEnd.x {
+                    x += gEnd.x > gStart.x ? 1 : -1
+                    distance += expanded[y][x] == "+" ? expansionScale : 1
+                }
+                return partialResult + distance
+            }
+        }.reduce(0, +)
+        return "\(sumOfShortestPathsBetweenAllGalaxies)"
     }
 
     typealias Image = [[Character]]
@@ -44,6 +63,25 @@ class Day11: Day {
             if !col.contains("#") {
                 for y in expanded.indices {
                     expanded[y].insert(".", at: x)
+                }
+            }
+        }
+        return expanded
+    }
+
+    // map areas of expanded space with a new Character, "+"
+    func mapExpandedSpace(image: Image) -> Image {
+        var expanded = image
+        for (y, row) in expanded.enumerated() {
+            if !row.contains("#") {
+                expanded[y] = Array(repeating: "+", count: row.count)
+            }
+        }
+        for x in expanded.first!.indices {
+            let col = expanded.map { $0[x] }
+            if !col.contains("#") {
+                for y in expanded.indices {
+                    expanded[y][x] = "+"
                 }
             }
         }
