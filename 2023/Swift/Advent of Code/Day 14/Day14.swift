@@ -11,15 +11,36 @@ import Foundation
 class Day14: Day {
     func part1() -> String {
         let dish = makeDish()
-        let newRocks = dish.tilt(.north)
-        let load = newRocks.enumerated().map { step in
-            (newRocks.count - step.offset) * step.element.filter {c in c == "O"}.count
-        }.reduce(0, +)
+        let newRocks = Dish.tilt(rocks: dish.rocks, .north)
+        let load = load(rocks: newRocks)
         return "\(load)"
     }
-    
+
     func part2() -> String {
-        "Not Implemented"
+        let cycles = 1_000_000_000
+        let dish = makeDish()
+        var cache = [[[Character]]]()
+        var rocks = dish.rocks
+        cache.append(rocks) // initial state, zero spins
+        var loopStart = 0
+        // Keep spinning the dish until we find a state of rocks that we've already seen.
+        while true {
+            rocks = Dish.spin(rocks: rocks)
+            if let alreadySeen = cache.firstIndex(of: rocks) {
+                loopStart = alreadySeen
+                break
+            }
+            cache.append(rocks)
+        }
+        let loopLength = cache.count - loopStart
+        let cycleIndex = loopStart + ((cycles-loopStart) % loopLength)
+        return "\(load(rocks: cache[cycleIndex]))"
+    }
+
+    func load(rocks: [[Character]]) -> Int {
+        rocks.enumerated().map { step in
+            (rocks.count - step.offset) * step.element.filter {c in c == "O"}.count
+        }.reduce(0, +)
     }
 
     enum Direction {
@@ -29,7 +50,7 @@ class Day14: Day {
     struct Dish {
         let rocks: [[Character]]
 
-        func tilt(_ direction: Direction) -> [[Character]] {
+        static func tilt(rocks: [[Character]], _ direction: Direction) -> [[Character]] {
             var grid = rocks
             var moved = 0
             let xStride: StrideThrough<Int>
@@ -69,6 +90,13 @@ class Day14: Day {
             } while moved > 0
 
             return grid
+        }
+
+        static func spin(rocks: [[Character]]) -> [[Character]] {
+            var result = tilt(rocks: rocks, .north)
+            result = tilt(rocks: result, .west)
+            result = tilt(rocks: result, .south)
+            return tilt(rocks: result, .east)
         }
     }
 
