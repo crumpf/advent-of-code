@@ -19,9 +19,8 @@ class Day14: Day {
     func part2() -> String {
         let cycles = 1_000_000_000
         let dish = makeDish()
-        var cache = [[[Character]]]()
         var rocks = dish.rocks
-        cache.append(rocks) // initial state, zero spins
+        var cache = [rocks] // initial state, zero spins
         var loopStart = 0
         // Keep spinning the dish until we find a state of rocks that we've already seen.
         while true {
