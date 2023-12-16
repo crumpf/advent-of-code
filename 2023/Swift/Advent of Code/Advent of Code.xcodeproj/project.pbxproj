@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8C1582D32B2E3230004EC41B /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C28AE4C294D625600E623E5 /* Stack.swift */; };
 		8C28AD6A2941953900E623E5 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C28AD692941953900E623E5 /* main.swift */; };
 		8C28AD702941956300E623E5 /* Day08.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C28AD6F2941956300E623E5 /* Day08.swift */; };
 		8C28AD712941956B00E623E5 /* String+Advent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC483B829386EDE00003294 /* String+Advent.swift */; };
@@ -1887,6 +1888,7 @@
 				8C28AE46294CD6F800E623E5 /* String+Subscripts.swift in Sources */,
 				8C28AE47294CD6F800E623E5 /* String+Advent.swift in Sources */,
 				8C28AE49294CD6F800E623E5 /* Puzzle.swift in Sources */,
+				8C1582D32B2E3230004EC41B /* Stack.swift in Sources */,
 				8CF0E9D72B22F0E9000298BC /* Math.swift in Sources */,
 				8C28AE44294CD6C700E623E5 /* Day16.swift in Sources */,
 				8C28AE48294CD6F800E623E5 /* FileInput.swift in Sources */,
