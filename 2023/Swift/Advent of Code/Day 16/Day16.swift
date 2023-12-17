@@ -37,6 +37,18 @@ class Day16: Day {
         let from: SIMD2<Int>
     }
 
+    struct Directions {
+        static var north = SIMD2(0, -1)
+        static var west = SIMD2(-1, 0)
+        static var south = SIMD2(0, 1)
+        static var east = SIMD2(1, 0)
+        static var emptyMap = [north: [north], west: [west], south: [south], east: [east]]
+        static var slashMap = [north: [east], west: [south], south: [west], east: [north]]
+        static var backslashMap = [north: [west], west: [north], south: [east], east: [south]]
+        static var dashMap = [north: [west, east], west: [west], south: [west, east], east: [east]]
+        static var pipeMap = [north: [north], west: [north, south], south: [south], east: [north, south]]
+    }
+
     private func energizedTilesWhenBeamEntersGrid(_ grid: Grid, beam: Beam) -> Set<SIMD2<Int>> {
         var energizedTiles = Set<SIMD2<Int>>()
         var explored: Set<Beam> = [beam]
@@ -44,57 +56,26 @@ class Day16: Day {
         frontier.push(beam)
         while let current = frontier.pop() {
             energizedTiles.insert(current.location)
-            let nextBeams: [Beam]
             let heading = current.location &- current.from
+            let nextVectors: [SIMD2<Int>]
             switch grid.char(at: current.location) {
             case ".":
-                nextBeams = [Beam(location: current.location &+ heading, from: current.location)]
+                nextVectors = Directions.emptyMap[heading]!
             case "/":
-                let newVector: SIMD2<Int>
-                if heading.y == 1 {
-                    newVector = SIMD2(-1, 0)
-                } else if heading.y == -1 {
-                    newVector = SIMD2(1, 0)
-                } else if heading.x == 1 {
-                    newVector = SIMD2(0, -1)
-                } else {
-                    newVector = SIMD2(0, 1)
-                }
-                nextBeams = [Beam(location: current.location &+ newVector, from: current.location)]
+                nextVectors = Directions.slashMap[heading]!
             case "\\":
-                let newVector: SIMD2<Int>
-                if heading.y == 1 {
-                    newVector = SIMD2(1, 0)
-                } else if heading.y == -1 {
-                    newVector = SIMD2(-1, 0)
-                } else if heading.x == 1 {
-                    newVector = SIMD2(0, 1)
-                } else {
-                    newVector = SIMD2(0, -1)
-                }
-                nextBeams = [Beam(location: current.location &+ newVector, from: current.location)]
+                nextVectors = Directions.backslashMap[heading]!
             case "-":
-                if heading.x != 0 {
-                    nextBeams = [Beam(location: current.location &+ heading, from: current.location)]
-                } else {
-                    nextBeams = [
-                        Beam(location: current.location &+ SIMD2(-1, 0), from: current.location),
-                        Beam(location: current.location &+ SIMD2(1, 0), from: current.location)
-                    ]
-                }
+                nextVectors = Directions.dashMap[heading]!
             case "|":
-                if heading.y != 0 {
-                    nextBeams = [Beam(location: current.location &+ heading, from: current.location)]
-                } else {
-                    nextBeams = [
-                        Beam(location: current.location &+ SIMD2(0, -1), from: current.location),
-                        Beam(location: current.location &+ SIMD2(0, 1), from: current.location)
-                    ]
-                }
+                nextVectors = Directions.pipeMap[heading]!
             default:
                 continue
             }
 
+            let nextBeams = nextVectors.map { v in
+                Beam(location: current.location &+ v, from: current.location)
+            }
             for next in nextBeams where !explored.contains(next) {
                 if grid.contains(next.location) {
                     explored.insert(next)
