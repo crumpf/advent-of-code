@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		8C1582D32B2E3230004EC41B /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C28AE4C294D625600E623E5 /* Stack.swift */; };
+		8C1582D42B2F431D004EC41B /* WeightedPathfinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C727A68295A0ACD00626531 /* WeightedPathfinding.swift */; };
+		8C1582D52B2F4323004EC41B /* Pathfinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C28AE1D2949B44F00E623E5 /* Pathfinding.swift */; };
 		8C28AD6A2941953900E623E5 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C28AD692941953900E623E5 /* main.swift */; };
 		8C28AD702941956300E623E5 /* Day08.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C28AD6F2941956300E623E5 /* Day08.swift */; };
 		8C28AD712941956B00E623E5 /* String+Advent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC483B829386EDE00003294 /* String+Advent.swift */; };
@@ -89,7 +91,6 @@
 		8C28AE47294CD6F800E623E5 /* String+Advent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC483B829386EDE00003294 /* String+Advent.swift */; };
 		8C28AE48294CD6F800E623E5 /* FileInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC4839129385AA300003294 /* FileInput.swift */; };
 		8C28AE49294CD6F800E623E5 /* Puzzle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC483B0293865F300003294 /* Puzzle.swift */; };
-		8C28AE4D294D625600E623E5 /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C28AE4C294D625600E623E5 /* Stack.swift */; };
 		8C28AE5A294D7BDA00E623E5 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C28AE59294D7BDA00E623E5 /* main.swift */; };
 		8C28AE60294D7C1300E623E5 /* Day17.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C28AE5E294D7C1300E623E5 /* Day17.swift */; };
 		8C28AE62294D7C2500E623E5 /* String+Subscripts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC483B929386EDE00003294 /* String+Subscripts.swift */; };
@@ -154,10 +155,14 @@
 		8C28AF25295893BB00E623E5 /* String+Subscripts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC483B929386EDE00003294 /* String+Subscripts.swift */; };
 		8C28AF26295893BB00E623E5 /* FileInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC4839129385AA300003294 /* FileInput.swift */; };
 		8C28AF27295893C100E623E5 /* Day25.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C28AF1F2958939200E623E5 /* Day25.swift */; };
+		8C3451D12B2F478300B658F4 /* HeapModule in Frameworks */ = {isa = PBXBuildFile; productRef = 8C3451D02B2F478300B658F4 /* HeapModule */; };
+		8C3451D22B2F47E000B658F4 /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C28AE4C294D625600E623E5 /* Stack.swift */; };
+		8C3451D32B2F47E400B658F4 /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C28AE4C294D625600E623E5 /* Stack.swift */; };
+		8C3451D42B2F47E800B658F4 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C28AE192949A83E00E623E5 /* Queue.swift */; };
+		8C3451D62B2F485500B658F4 /* HeapModule in Frameworks */ = {isa = PBXBuildFile; productRef = 8C3451D52B2F485500B658F4 /* HeapModule */; };
 		8C63F84B2B260114007EEED8 /* Pathfinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C28AE1D2949B44F00E623E5 /* Pathfinding.swift */; };
 		8C63F84C2B260136007EEED8 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C28AE192949A83E00E623E5 /* Queue.swift */; };
 		8C63F84E2B2608BF007EEED8 /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C28AE4C294D625600E623E5 /* Stack.swift */; };
-		8C727A622959786A00626531 /* HeapModule in Frameworks */ = {isa = PBXBuildFile; productRef = 8C727A612959786A00626531 /* HeapModule */; };
 		8C727A69295A0ACD00626531 /* WeightedPathfinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C727A68295A0ACD00626531 /* WeightedPathfinding.swift */; };
 		8CA01542293F0F4F0085A2E1 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CA01541293F0F4F0085A2E1 /* main.swift */; };
 		8CA01548293F0F860085A2E1 /* Day07.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CA01546293F0F860085A2E1 /* Day07.swift */; };
@@ -627,7 +632,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8C727A622959786A00626531 /* HeapModule in Frameworks */,
+				8C3451D62B2F485500B658F4 /* HeapModule in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -677,6 +682,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C3451D12B2F478300B658F4 /* HeapModule in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1186,7 +1192,7 @@
 			);
 			name = AdventUnitTests;
 			packageProductDependencies = (
-				8C727A612959786A00626531 /* HeapModule */,
+				8C3451D52B2F485500B658F4 /* HeapModule */,
 			);
 			productName = AdventUnitTests;
 			productReference = 8C28ADA22943ED0B00E623E5 /* AdventUnitTests.xctest */;
@@ -1307,6 +1313,9 @@
 			dependencies = (
 			);
 			name = "Day 17";
+			packageProductDependencies = (
+				8C3451D02B2F478300B658F4 /* HeapModule */,
+			);
 			productName = "Day 17";
 			productReference = 8C28AE57294D7BDA00E623E5 /* Day 17 */;
 			productType = "com.apple.product-type.tool";
@@ -1670,7 +1679,7 @@
 			);
 			mainGroup = 8CC4837C2938584100003294;
 			packageReferences = (
-				8C727A602959786A00626531 /* XCRemoteSwiftPackageReference "swift-collections" */,
+				8C3451CF2B2F478300B658F4 /* XCRemoteSwiftPackageReference "swift-collections" */,
 			);
 			productRefGroup = 8CC483862938584100003294 /* Products */;
 			projectDirPath = "";
@@ -1793,7 +1802,6 @@
 				8C28ADCF294538E000E623E5 /* Day11.swift in Sources */,
 				8C28ADAA2943EDD700E623E5 /* FileInput.swift in Sources */,
 				8C28ADBF2943F12000E623E5 /* Day04.swift in Sources */,
-				8C28AE4D294D625600E623E5 /* Stack.swift in Sources */,
 				8C28ADBE2943F12000E623E5 /* Day03.swift in Sources */,
 				8C28ADFE2948B0DD00E623E5 /* Day13.swift in Sources */,
 				8C28AE1E2949B44F00E623E5 /* Pathfinding.swift in Sources */,
@@ -1804,6 +1812,7 @@
 				8C28ADBA2943F12000E623E5 /* Day10.swift in Sources */,
 				8C28ADA52943ED0B00E623E5 /* AdventUnitTests.swift in Sources */,
 				8C28ADA92943EDAE00E623E5 /* Day01.swift in Sources */,
+				8C3451D22B2F47E000B658F4 /* Stack.swift in Sources */,
 				8C28AF0E2956BB0600E623E5 /* Day21.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1900,11 +1909,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				8C28AE65294D7C2500E623E5 /* String+Advent.swift in Sources */,
+				8C1582D42B2F431D004EC41B /* WeightedPathfinding.swift in Sources */,
 				8C28AE64294D7C2500E623E5 /* Puzzle.swift in Sources */,
+				8C3451D42B2F47E800B658F4 /* Queue.swift in Sources */,
 				8CF0E9D82B22F0E9000298BC /* Math.swift in Sources */,
 				8C28AE60294D7C1300E623E5 /* Day17.swift in Sources */,
 				8C28AE62294D7C2500E623E5 /* String+Subscripts.swift in Sources */,
+				8C3451D32B2F47E400B658F4 /* Stack.swift in Sources */,
 				8C28AE63294D7C2500E623E5 /* FileInput.swift in Sources */,
+				8C1582D52B2F4323004EC41B /* Pathfinding.swift in Sources */,
 				8C28AE5A294D7BDA00E623E5 /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3024,7 +3037,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		8C727A602959786A00626531 /* XCRemoteSwiftPackageReference "swift-collections" */ = {
+		8C3451CF2B2F478300B658F4 /* XCRemoteSwiftPackageReference "swift-collections" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apple/swift-collections.git";
 			requirement = {
@@ -3035,9 +3048,14 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		8C727A612959786A00626531 /* HeapModule */ = {
+		8C3451D02B2F478300B658F4 /* HeapModule */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 8C727A602959786A00626531 /* XCRemoteSwiftPackageReference "swift-collections" */;
+			package = 8C3451CF2B2F478300B658F4 /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = HeapModule;
+		};
+		8C3451D52B2F485500B658F4 /* HeapModule */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8C3451CF2B2F478300B658F4 /* XCRemoteSwiftPackageReference "swift-collections" */;
 			productName = HeapModule;
 		};
 /* End XCSwiftPackageProductDependency section */
