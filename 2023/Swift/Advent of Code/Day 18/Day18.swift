@@ -1,30 +1,37 @@
 //
-//  DayX.swift
+//  Day18.swift
 //  Advent of Code
 //
-//  Created by Christopher Rumpf on MM/DD/YY.
+//  Created by Christopher Rumpf on 12/18/23.
 //
+//  --- Day 18: Lavaduct Lagoon ---
 
 import Foundation
 
 class Day18: Day {
     func part1() -> String {
         let digPlan = DigPlan(input: input)
-        let perimeter = digPlan.digPerimeter()
+        let perimeter = Set(digPlan.digPerimeter())
         let interior = digPlan.interior(ofPerimeter: perimeter)
         return "\(perimeter.count + interior.count)"
     }
     
     func part2() -> String {
         let digPlan = CorrectedDigPlan(input: input)
-        let vertices = digPlan.perimeterVertices()
-        let area = digPlan.area(withinPerimeter: vertices)
-        let perim = zip(vertices, vertices.dropFirst()).reduce(0) { partialResult, pts in
+        let perimeterVertices = digPlan.perimeterVertices()
+        let area = digPlan.area(withinVertices: perimeterVertices)
+        let perimeter = zip(perimeterVertices, perimeterVertices.dropFirst()).reduce(0) { partialResult, pts in
             let diff = pts.1 &- pts.0
             return partialResult + abs(diff.x) + abs(diff.y)
         }
-        //TODO: Not sure why I have to fudge the answer by 1 to get the answer. I need to prove this to myself.
-        return "\(area + (perim / 2) + 1)"
+        // Each location in the dig plan represents one cube dug in the ground. So, the vertices I've calculated
+        // are in the center of a hole, not on the hole's outer edge. Thus, it's necessary to figure out the part of our
+        // total hole that is on the perimeter that hasn't already been taken into account with the area calculation.
+        // Turns out this is the Perimeter/2 + 1. The 1 comes from the extra space not accounted for at the corners
+        // of our polygon. If you start with a square, there are four corners not accounted for that each need 1/4 space.
+        // As you indent or extrude parts of the polygon, the new interior and exterior corners always balance each
+        // other, so we just need to account for the original missing 1.
+        return "\(area + (perimeter / 2) + 1)"
     }
 
 
@@ -70,13 +77,13 @@ class Day18: Day {
             })
         }
 
-        func digPerimeter() -> Set<Point> {
+        func digPerimeter() -> [Point] {
             var current = Point.zero
-            var perimeter = Set<Point>([current])
+            var perimeter = [current]
             for command in commands {
                 (1...command.distance).forEach { dist in
                     let digPoint = current &+ (command.direction.vector &* dist)
-                    perimeter.insert(digPoint)
+                    perimeter.append(digPoint)
                 }
                 current = current &+ (command.direction.vector &* command.distance)
             }
@@ -130,12 +137,10 @@ class Day18: Day {
             return vertices
         }
 
-        func area(withinPerimeter perim: [Point]) -> Int {
+        func area(withinVertices vertices: [Point]) -> Int {
             // shoelace formula: https://en.wikipedia.org/wiki/Shoelace_formula
-            var area = 0
-            for pair in zip(perim, perim.dropFirst()) {
-                area += pair.0.x * pair.1.y
-                area -= pair.0.y * pair.1.x
+            let area = zip(vertices, vertices.dropFirst()).reduce(0) { partialResult, pair in
+                partialResult + pair.0.x * pair.1.y - pair.0.y * pair.1.x
             }
             return area / 2
         }
