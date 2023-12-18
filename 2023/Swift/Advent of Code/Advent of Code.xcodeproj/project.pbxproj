@@ -160,6 +160,7 @@
 		8C3451D32B2F47E400B658F4 /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C28AE4C294D625600E623E5 /* Stack.swift */; };
 		8C3451D42B2F47E800B658F4 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C28AE192949A83E00E623E5 /* Queue.swift */; };
 		8C3451D62B2F485500B658F4 /* HeapModule in Frameworks */ = {isa = PBXBuildFile; productRef = 8C3451D52B2F485500B658F4 /* HeapModule */; };
+		8C3451D72B309C2F00B658F4 /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C28AE4C294D625600E623E5 /* Stack.swift */; };
 		8C63F84B2B260114007EEED8 /* Pathfinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C28AE1D2949B44F00E623E5 /* Pathfinding.swift */; };
 		8C63F84C2B260136007EEED8 /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C28AE192949A83E00E623E5 /* Queue.swift */; };
 		8C63F84E2B2608BF007EEED8 /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C28AE4C294D625600E623E5 /* Stack.swift */; };
@@ -1930,6 +1931,7 @@
 				8C28AE75294EDF8500E623E5 /* FileInput.swift in Sources */,
 				8CF0E9D92B22F0E9000298BC /* Math.swift in Sources */,
 				8C28AE6E294EDF4B00E623E5 /* main.swift in Sources */,
+				8C3451D72B309C2F00B658F4 /* Stack.swift in Sources */,
 				8C28AE76294EDF8500E623E5 /* String+Advent.swift in Sources */,
 				8C28AE78294EDF8500E623E5 /* String+Subscripts.swift in Sources */,
 				8C28AE74294EDF7900E623E5 /* Day18.swift in Sources */,
