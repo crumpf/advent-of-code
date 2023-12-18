@@ -10,14 +10,12 @@ import Foundation
 class Day17: Day {
     func part1() -> String {
         let block = Block(input: input)
-        let leastHeat = block.leastHeat()
-        return "\(leastHeat)"
+        return "\(block.leastHeat())"
     }
     
     func part2() -> String {
         let block = Block(input: input, isUltra: true)
-        let leastHeat = block.leastHeat()
-        return "\(leastHeat)"
+        return "\(block.leastHeat())"
     }
 }
 
@@ -39,19 +37,15 @@ fileprivate extension Grid {
     }
 
     struct Directions {
-        static var north = SIMD2(0, -1)
-        static var west = SIMD2(-1, 0)
-        static var south = SIMD2(0, 1)
-        static var east = SIMD2(1, 0)
+        static var north = SIMD2(0, -1), west = SIMD2(-1, 0), south = SIMD2(0, 1), east = SIMD2(1, 0)
     }
 }
 
 fileprivate struct Block: WeightedPathfinding {
     let grid: Grid
     let isUltra: Bool
-
-    private let start: SIMD2<Int>
-    private let goal: SIMD2<Int>
+    let start: SIMD2<Int>
+    let goal: SIMD2<Int>
 
     init(input: String, isUltra: Bool = false) {
         grid = input.lines().map { s in
@@ -65,6 +59,17 @@ fileprivate struct Block: WeightedPathfinding {
         start = SIMD2.zero
         goal = SIMD2(dims.x-1, dims.y-1)
     }
+
+    func leastHeat() -> Int {
+        let path = DijkstraSearch.findPath(
+            from: Node(point: start, heading: SIMD2.zero, movesAlongHeading: 0),
+            isDestination: { vertex in
+                vertex.point == goal
+            }, in: self)
+        return path?.cost ?? -1
+    }
+
+    //MARK: Pathfinding
 
     struct Node: Hashable {
         let point: SIMD2<Int>
@@ -82,51 +87,31 @@ fileprivate struct Block: WeightedPathfinding {
 
     func neighbors(for vertex: Vertex) -> [Vertex] {
         if !isUltra {
-            let gridNeighbors = grid.neighbors(to: vertex.point)
-            return gridNeighbors.map { point in
-                let headingToNeighbor = point &- vertex.point
-                return Node(point: point, heading: headingToNeighbor,
-                            movesAlongHeading: headingToNeighbor == vertex.heading ? vertex.movesAlongHeading + 1 : 1)
-            }
-            .filter { $0.movesAlongHeading <= 3 && $0.point != vertex.point &- vertex.heading}
+            return grid.neighbors(to: vertex.point)
+                .map { point in
+                    let headingToNeighbor = point &- vertex.point
+                    let movesAlongHeading = headingToNeighbor == vertex.heading ? vertex.movesAlongHeading + 1 : 1
+                    return Node(point: point, heading: headingToNeighbor, movesAlongHeading: movesAlongHeading)
+                }
+                .filter { $0.movesAlongHeading <= 3 && $0.point != vertex.point &- vertex.heading }
         } else {
             guard !(1..<4).contains(vertex.movesAlongHeading) else {
                 let nextNode = Node(point: vertex.point &+ vertex.heading, heading: vertex.heading, movesAlongHeading: vertex.movesAlongHeading + 1)
                 return grid.contains(nextNode.point) ? [nextNode] : []
             }
 
-            let gridNeighbors = grid.neighbors(to: vertex.point)
-            return gridNeighbors.map { point in
-                let headingToNeighbor = point &- vertex.point
-                let movesAlongHeading = headingToNeighbor == vertex.heading ? vertex.movesAlongHeading + 1 : 1
-                return Node(point: point, heading: headingToNeighbor, movesAlongHeading: movesAlongHeading)
-            }
-            .filter {
-                if $0.point == goal && $0.movesAlongHeading < 4 {
-                    return false
+            return grid.neighbors(to: vertex.point)
+                .map { point in
+                    let headingToNeighbor = point &- vertex.point
+                    let movesAlongHeading = headingToNeighbor == vertex.heading ? vertex.movesAlongHeading + 1 : 1
+                    return Node(point: point, heading: headingToNeighbor, movesAlongHeading: movesAlongHeading)
                 }
-                return $0.movesAlongHeading <= 10 && $0.point != vertex.point &- vertex.heading
-            }
-        }
-    }
-
-    func leastHeat() -> Int {
-        let path = DijkstraSearch.findPath(
-            from: Node(point: start, heading: SIMD2.zero, movesAlongHeading: 0),
-            isDestination: { vertex in
-                vertex.point == goal
-            }, in: self)
-
-        printPathFromNode(path)
-
-        return path?.cost ?? -1
-    }
-
-    private func printPathFromNode(_ pathNode: WeightedPathNode<Block.Vertex, Block.Cost>?) {
-        var current = pathNode
-        while let n = current {
-            print("\(n.vertex) : \(n.cost)")
-            current = current?.predecessor as? WeightedPathNode
+                .filter {
+                    if $0.point == goal && $0.movesAlongHeading < 4 {
+                        return false
+                    }
+                    return $0.movesAlongHeading <= 10 && $0.point != vertex.point &- vertex.heading
+                }
         }
     }
 }
