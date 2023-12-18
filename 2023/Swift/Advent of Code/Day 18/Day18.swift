@@ -16,7 +16,15 @@ class Day18: Day {
     }
     
     func part2() -> String {
-        "Not Implemented"
+        let digPlan = CorrectedDigPlan(input: input)
+        let vertices = digPlan.perimeterVertices()
+        let area = digPlan.area(withinPerimeter: vertices)
+        let perim = zip(vertices, vertices.dropFirst()).reduce(0) { partialResult, pts in
+            let diff = pts.1 &- pts.0
+            return partialResult + abs(diff.x) + abs(diff.y)
+        }
+        //TODO: Not sure why I have to fudge the answer by 1 to get the answer. I need to prove this to myself.
+        return "\(area + (perim / 2) + 1)"
     }
 
 
@@ -34,11 +42,21 @@ class Day18: Day {
             case .right: return Vector(1,0)
             }
         }
+
+        static func makeDigDirection(digit: Character) -> DigDirection? {
+            switch digit {
+            case "0": return .right
+            case "1": return .down
+            case "2": return .left
+            case "3": return .up
+            default: return nil
+            }
+        }
     }
 
     struct Command {
         let direction: DigDirection
-        let meters: Int
+        let distance: Int
         let color: String
     }
 
@@ -48,7 +66,7 @@ class Day18: Day {
         init(input: String) {
             commands = input.lines().map({ line in
                 let comps = line.components(separatedBy: .whitespaces)
-                return Command(direction: DigDirection(rawValue: comps[0])!, meters: Int(comps[1])!, color: comps[2])
+                return Command(direction: DigDirection(rawValue: comps[0])!, distance: Int(comps[1])!, color: comps[2])
             })
         }
 
@@ -56,18 +74,19 @@ class Day18: Day {
             var current = Point.zero
             var perimeter = Set<Point>([current])
             for command in commands {
-                (1...command.meters).forEach { dist in
+                (1...command.distance).forEach { dist in
                     let digPoint = current &+ (command.direction.vector &* dist)
                     perimeter.insert(digPoint)
                 }
-                current = current &+ (command.direction.vector &* command.meters)
+                current = current &+ (command.direction.vector &* command.distance)
             }
             return perimeter
         }
 
         func interior(ofPerimeter perimeter: Set<Point>) -> Set<Point> {
             let sortedByX = perimeter.sorted { $0.x < $1.x }
-            let leftmost = sortedByX.first! // // flood-fill starting from the point to the right of the leftmost point in our perimeter. this should be an interior point.
+            // flood-fill starting from the point to the right of the leftmost point in our perimeter. this should be an interior point.
+            let leftmost = sortedByX.first(where:{!perimeter.contains($0 &+ DigDirection.right.vector)})!
             let minX = leftmost.x, maxX = sortedByX.last!.x
             let minY = perimeter.min { $0.y < $1.y }!.y, maxY = perimeter.max { $0.y < $1.y }!.y
             var interior = Set<Point>()
@@ -78,14 +97,47 @@ class Day18: Day {
                 let adjs = DigDirection.allCases
                     .map { pt &+ $0.vector }
                     .filter { !perimeter.contains($0) && !interior.contains($0)  }
-                adjs.forEach {
-                    if !(minX...maxX).contains($0.x) || !(minY...maxY).contains($0.y) {
+                adjs.forEach { adjacent in
+                    if !(minX...maxX).contains(adjacent.x) || !(minY...maxY).contains(adjacent.y) {
                         abort()
                     }
-                    frontier.push($0)
+                    frontier.push(adjacent)
                 }
             }
             return interior
+        }
+    }
+
+    struct CorrectedDigPlan {
+        let commands: [Command]
+
+        init(input: String) {
+            commands = input.lines().map({ line in
+                let comps = line.components(separatedBy: .whitespaces)
+                let dist = Int(comps[2][2...6], radix: 16)!
+                let dir = DigDirection.makeDigDirection(digit: comps[2][7])!
+                return Command(direction: dir, distance: dist, color: "\(comps[0]) \(comps[1])")
+            })
+        }
+
+        func perimeterVertices() -> [Point] {
+            var current = Point.zero
+            var vertices = [current]
+            for command in commands {
+                current = current &+ (command.direction.vector &* command.distance)
+                vertices.append(current)
+            }
+            return vertices
+        }
+
+        func area(withinPerimeter perim: [Point]) -> Int {
+            // shoelace formula: https://en.wikipedia.org/wiki/Shoelace_formula
+            var area = 0
+            for pair in zip(perim, perim.dropFirst()) {
+                area += pair.0.x * pair.1.y
+                area -= pair.0.y * pair.1.x
+            }
+            return area / 2
         }
     }
 }
