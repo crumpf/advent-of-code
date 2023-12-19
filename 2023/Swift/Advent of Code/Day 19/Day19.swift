@@ -23,59 +23,9 @@ class Day19: Day {
         let partRatings: [[String: Int]]
 
         init(input: String) {
-            let regex = Regex {
-                Capture { OneOrMore(.word) }
-                "{"
-                Capture { OneOrMore(.any) }
-                "}"
-            }
-            let lessThanRegex = Regex {
-                Capture { OneOrMore(.word) }
-                "<"
-                Capture { OneOrMore(.digit) }
-                ":"
-                Capture { OneOrMore(.word) }
-            }
-            let moreThanRegex = Regex {
-                Capture { OneOrMore(.word) }
-                ">"
-                Capture { OneOrMore(.digit) }
-                ":"
-                Capture { OneOrMore(.word) }
-            }
-
-            var workflowsCache: [String: [Rule]] = [:]
             let parts = input.components(separatedBy: "\n\n")
-            parts[0].enumerateLines { line, stop in
-                if let match = line.matches(of: regex).first {
-                    let (_, name, rules) = match.output
-                    workflowsCache[String(name)] = rules.components(separatedBy: ",").map { rule in
-                        if let m = rule.matches(of: lessThanRegex).first {
-                            let (_, lhs, rhs, res) = m.output
-                            return Rule(lhs: String(lhs), op: "<", rhs: Int(rhs), result: String(res))
-                        } else if let m = rule.matches(of: moreThanRegex).first {
-                            let (_, lhs, rhs, res) = m.output
-                            return Rule(lhs: String(lhs), op: ">", rhs: Int(rhs), result: String(res))
-                        } else {
-                            return Rule(lhs: nil, op: nil, rhs: nil, result: rule)
-                        }
-                    }
-
-                }
-            }
-            workflows = workflowsCache
-
-            var ratingsCache: [[String: Int]] = []
-            parts[1].enumerateLines { line, stop in
-                let dict = line.dropFirst().dropLast()
-                    .components(separatedBy: ",")
-                    .reduce(into: [String: Int]()) { partialResult, partRating in
-                        let comps = partRating.components(separatedBy: "=")
-                        partialResult[comps[0]] = Int(comps[1])
-                    }
-                ratingsCache.append(dict)
-            }
-            partRatings = ratingsCache
+            workflows = Self.makeWorkflows(lines: parts[0].lines())
+            partRatings = Self.makePartRatings(lines: parts[1].lines())
         }
 
         func sumOfRatingNumbersForAcceptedParts() -> Int {
@@ -98,6 +48,52 @@ class Day19: Day {
                 }
             }
             return false
+        }
+
+        private static func makeWorkflows(lines: [String]) -> [String: [Rule]] {
+            let rulesRegex = Regex {
+                Capture { OneOrMore(.word) }
+                "{"
+                Capture { OneOrMore(.any) }
+                "}"
+            }
+            let comparisonRegex = Regex {
+                Capture { One(.anyOf("xmas")) }
+                Capture { One(.anyOf("<>")) }
+                Capture { OneOrMore(.digit) }
+                ":"
+                Capture { OneOrMore(.word) }
+            }
+
+            var workflowsCache: [String: [Rule]] = [:]
+            for line in lines {
+                if let match = line.matches(of: rulesRegex).first {
+                    let (_, name, rules) = match.output
+                    workflowsCache[String(name)] = rules.components(separatedBy: ",").map { rule in
+                        if let m = rule.matches(of: comparisonRegex).first {
+                            let (_, lhs, op, rhs, res) = m.output
+                            return Rule(lhs: String(lhs), op: String(op), rhs: Int(rhs), result: String(res))
+                        } else {
+                            return Rule(lhs: nil, op: nil, rhs: nil, result: rule)
+                        }
+                    }
+                }
+            }
+            return workflowsCache
+        }
+
+        private static func makePartRatings(lines: [String]) -> [[String: Int]] {
+            var ratingsCache: [[String: Int]] = []
+            for line in lines {
+                let dict = line.dropFirst().dropLast()
+                    .components(separatedBy: ",")
+                    .reduce(into: [String: Int]()) { partialResult, partRating in
+                        let comps = partRating.components(separatedBy: "=")
+                        partialResult[comps[0]] = Int(comps[1])
+                    }
+                ratingsCache.append(dict)
+            }
+            return ratingsCache
         }
 
         struct Rule {
