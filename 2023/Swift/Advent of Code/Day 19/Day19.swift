@@ -65,15 +65,13 @@ class Day19: Day {
                 var xmas = seed.xmas
                 for rule in rules {
                     var satisfied: [String: ClosedRange<Int>]?
-                    if rule.op ==  "<", let lhs = rule.lhs, let rhs = rule.rhs {
-                        let range = xmas[rule.lhs!]!
-                        xmas[lhs] = range.clamped(to: 1...(rhs-1))
+                    if rule.op == "<", let lhs = rule.lhs, let rhs = rule.rhs, let range = xmas[lhs] {
                         satisfied = xmas
+                        satisfied?[lhs] = range.clamped(to: 1...(rhs-1))
                         xmas[lhs] = range.clamped(to: rhs...4000)
-                    } else if rule.op == ">", let lhs = rule.lhs, let rhs = rule.rhs {
-                        let range = xmas[rule.lhs!]!
-                        xmas[lhs] = range.clamped(to: (rhs+1...4000))
+                    } else if rule.op == ">", let lhs = rule.lhs, let rhs = rule.rhs, let range = xmas[lhs] {
                         satisfied = xmas
+                        satisfied?[lhs] = range.clamped(to: (rhs+1...4000))
                         xmas[lhs] = range.clamped(to: 1...rhs)
                     }
 
