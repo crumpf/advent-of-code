@@ -24,13 +24,19 @@ class Day18: Day {
             let diff = pts.1 &- pts.0
             return partialResult + abs(diff.x) + abs(diff.y)
         }
-        // Each location in the dig plan represents one cube dug in the ground. So, the vertices I've calculated
+        // Each location in the dig plan represents one cube dug in the ground. So the vertices I've calculated
         // are in the center of a hole, not on the hole's outer edge. Thus, it's necessary to figure out the part of our
         // total hole that is on the perimeter that hasn't already been taken into account with the area calculation.
         // Turns out this is the Perimeter/2 + 1. The 1 comes from the extra space not accounted for at the corners
         // of our polygon. If you start with a square, there are four corners not accounted for that each need 1/4 space.
         // As you indent or extrude parts of the polygon, the new interior and exterior corners always balance each
         // other, so we just need to account for the original missing 1.
+        //
+        // Heh, after research further it turns out that the area of a polygon with integer vertex coords can be
+        // described by Pick's Theorem https://en.wikipedia.org/wiki/Pick%27s_theorem
+        // A = i + b/2 - 1
+        // and solving for the interior points yields:
+        // i = A - b/2 + 1
         return "\(area + (perimeter / 2) + 1)"
     }
 
