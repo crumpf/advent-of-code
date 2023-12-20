@@ -15,7 +15,8 @@ class Day19: Day {
     }
     
     func part2() -> String {
-        "Not Implemented"
+        let puzzle = Puzzle(input: input)
+        return "\(puzzle.distinctCombinationsOfAcceptedRatings())"
     }
 
     struct Puzzle {
@@ -48,6 +49,51 @@ class Day19: Day {
                 }
             }
             return false
+        }
+
+        struct Seed {
+            let name: String
+            let xmas: [String: ClosedRange<Int>]
+        }
+
+        func distinctCombinationsOfAcceptedRatings() -> Int {
+            let start = Seed(name: "in", xmas: ["x": 1...4000, "m": 1...4000, "a": 1...4000, "s": 1...4000])
+            var accepted: [[String: ClosedRange<Int>]] = []
+            var frontier = Stack<Seed>()
+            frontier.push(start)
+            while let seed = frontier.pop(), let rules = workflows[seed.name] {
+                var xmas = seed.xmas
+                for rule in rules {
+                    var satisfied: [String: ClosedRange<Int>]?
+                    if rule.op ==  "<", let lhs = rule.lhs, let rhs = rule.rhs {
+                        let range = xmas[rule.lhs!]!
+                        xmas[lhs] = range.clamped(to: 1...(rhs-1))
+                        satisfied = xmas
+                        xmas[lhs] = range.clamped(to: rhs...4000)
+                    } else if rule.op == ">", let lhs = rule.lhs, let rhs = rule.rhs {
+                        let range = xmas[rule.lhs!]!
+                        xmas[lhs] = range.clamped(to: (rhs+1...4000))
+                        satisfied = xmas
+                        xmas[lhs] = range.clamped(to: 1...rhs)
+                    }
+
+                    switch rule.result {
+                    case "A":
+                        accepted.append(satisfied ?? xmas)
+                    case "R":
+                        break
+                    default:
+                        frontier.push(Seed(name: rule.result, xmas: satisfied ?? xmas))
+                    }
+                }
+            }
+
+            return accepted.map { xmas in
+                xmas.values.reduce(1) { partialResult, range in
+                    partialResult * range.count
+                }
+            }
+            .reduce(0, +)
         }
 
         private static func makeWorkflows(lines: [String]) -> [String: [Rule]] {

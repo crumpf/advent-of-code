@@ -10,6 +10,8 @@
 		8C1582D32B2E3230004EC41B /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C28AE4C294D625600E623E5 /* Stack.swift */; };
 		8C1582D42B2F431D004EC41B /* WeightedPathfinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C727A68295A0ACD00626531 /* WeightedPathfinding.swift */; };
 		8C1582D52B2F4323004EC41B /* Pathfinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C28AE1D2949B44F00E623E5 /* Pathfinding.swift */; };
+		8C2632312B32886B0027617C /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C28AE4C294D625600E623E5 /* Stack.swift */; };
+		8C2632322B32BC140027617C /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C28AE192949A83E00E623E5 /* Queue.swift */; };
 		8C28AD6A2941953900E623E5 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C28AD692941953900E623E5 /* main.swift */; };
 		8C28AD702941956300E623E5 /* Day08.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C28AD6F2941956300E623E5 /* Day08.swift */; };
 		8C28AD712941956B00E623E5 /* String+Advent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC483B829386EDE00003294 /* String+Advent.swift */; };
@@ -1946,8 +1948,10 @@
 				8C28AE8D2950DB0C00E623E5 /* String+Advent.swift in Sources */,
 				8CF0E9DA2B22F0E9000298BC /* Math.swift in Sources */,
 				8C28AE8B2950DAD200E623E5 /* Day19.swift in Sources */,
+				8C2632312B32886B0027617C /* Stack.swift in Sources */,
 				8C28AE8E2950DB0C00E623E5 /* FileInput.swift in Sources */,
 				8C28AE902950DB0C00E623E5 /* String+Subscripts.swift in Sources */,
+				8C2632322B32BC140027617C /* Queue.swift in Sources */,
 				8C28AE852950DAAA00E623E5 /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2372,6 +2376,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
