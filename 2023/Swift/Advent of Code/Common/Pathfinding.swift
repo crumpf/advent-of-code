@@ -19,6 +19,17 @@ class PathNode<Vertex: Hashable> {
         self.vertex = vertex
         self.predecessor = predecessor
     }
+
+    func iteratePath(body: (Int, PathNode<Vertex>, inout Bool) -> Void) {
+        var i = 0
+        var it: PathNode<Vertex>? = self
+        var stop = false
+        while it != nil && !stop {
+            body(i, it!, &stop)
+            it = it?.predecessor
+            i += 1
+        }
+    }
 }
 
 struct BreadthFirstSearch<Graph: Pathfinding> {

@@ -43,6 +43,11 @@
 		8C2632512B3490660027617C /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C28AE192949A83E00E623E5 /* Queue.swift */; };
 		8C2632522B34906A0027617C /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C28AE4C294D625600E623E5 /* Stack.swift */; };
 		8C2632542B3492330027617C /* HeapModule in Frameworks */ = {isa = PBXBuildFile; productRef = 8C2632532B3492330027617C /* HeapModule */; };
+		8C2632562B372F950027617C /* HeapModule in Frameworks */ = {isa = PBXBuildFile; productRef = 8C2632552B372F950027617C /* HeapModule */; };
+		8C2632572B372F9C0027617C /* Pathfinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C28AE1D2949B44F00E623E5 /* Pathfinding.swift */; };
+		8C2632582B372FA00027617C /* WeightedPathfinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C727A68295A0ACD00626531 /* WeightedPathfinding.swift */; };
+		8C2632592B372FA40027617C /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C28AE4C294D625600E623E5 /* Stack.swift */; };
+		8C26325A2B372FA70027617C /* Queue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C28AE192949A83E00E623E5 /* Queue.swift */; };
 		8C28AD6A2941953900E623E5 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C28AD692941953900E623E5 /* main.swift */; };
 		8C28AD702941956300E623E5 /* Day08.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C28AD6F2941956300E623E5 /* Day08.swift */; };
 		8C28AD712941956B00E623E5 /* String+Advent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CC483B829386EDE00003294 /* String+Advent.swift */; };
@@ -761,6 +766,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C2632562B372F950027617C /* HeapModule in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1458,6 +1464,9 @@
 			dependencies = (
 			);
 			name = "Day 23";
+			packageProductDependencies = (
+				8C2632552B372F950027617C /* HeapModule */,
+			);
 			productName = "Day 23";
 			productReference = 8C28AEDA2955EB0A00E623E5 /* Day 23 */;
 			productType = "com.apple.product-type.tool";
@@ -2064,8 +2073,12 @@
 				8CF0E9DE2B22F0E9000298BC /* Math.swift in Sources */,
 				8C28AEED2955EB8600E623E5 /* Puzzle.swift in Sources */,
 				8C28AEEC2955EB8600E623E5 /* FileInput.swift in Sources */,
+				8C2632592B372FA40027617C /* Stack.swift in Sources */,
 				8C26324C2B335ABE0027617C /* Weak.swift in Sources */,
+				8C26325A2B372FA70027617C /* Queue.swift in Sources */,
 				8C28AEEE2955EB8600E623E5 /* String+Advent.swift in Sources */,
+				8C2632582B372FA00027617C /* WeightedPathfinding.swift in Sources */,
+				8C2632572B372F9C0027617C /* Pathfinding.swift in Sources */,
 				8C28AEDD2955EB0A00E623E5 /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2526,6 +2539,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -2536,6 +2550,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
@@ -2566,6 +2581,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -2576,6 +2592,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
@@ -3125,6 +3142,11 @@
 
 /* Begin XCSwiftPackageProductDependency section */
 		8C2632532B3492330027617C /* HeapModule */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8C3451CF2B2F478300B658F4 /* XCRemoteSwiftPackageReference "swift-collections" */;
+			productName = HeapModule;
+		};
+		8C2632552B372F950027617C /* HeapModule */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 8C3451CF2B2F478300B658F4 /* XCRemoteSwiftPackageReference "swift-collections" */;
 			productName = HeapModule;

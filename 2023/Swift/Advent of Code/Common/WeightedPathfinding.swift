@@ -57,4 +57,31 @@ struct DijkstraSearch<Graph: WeightedPathfinding> {
         }
         return nil
     }
+
+    static func findPath(
+        from start: Graph.Vertex,
+        neighbors: (WeightedPathNode<Graph.Vertex, Graph.Cost>) -> [Graph.Vertex],
+        isDestination: (Graph.Vertex) -> Bool,
+        in graph: Graph)
+    -> WeightedPathNode<Graph.Vertex, Graph.Cost>? {
+        let startNode = WeightedPathNode(vertex: start, cost: graph.cost(from: start, to: start))
+        var exploredMinimumCosts = [start: startNode.cost]
+        var frontier = Heap<WeightedPathNode<Graph.Vertex, Graph.Cost>>()
+        frontier.insert(startNode)
+        while let currentNode = frontier.popMin() {
+            if isDestination(currentNode.vertex) {
+                return currentNode
+            }
+            guard let currentCost = exploredMinimumCosts[currentNode.vertex] else { return nil }
+            for successor in neighbors(currentNode) {
+                let newCost = currentCost + graph.cost(from: currentNode.vertex, to: successor)
+                if exploredMinimumCosts[successor] == nil || newCost < exploredMinimumCosts[successor]! {
+                    exploredMinimumCosts[successor] = newCost
+                    let node = WeightedPathNode(vertex: successor, predecessor: currentNode, cost: newCost)
+                    frontier.insert(node)
+                }
+            }
+        }
+        return nil
+    }
 }
