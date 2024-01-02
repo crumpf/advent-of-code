@@ -7,6 +7,7 @@
 
 import Foundation
 
+//guard let fileInput = FileInput(pathRelativeToCurrentDirectory: "inputs/day/24/example") else { abort() }
 guard let fileInput = FileInput(pathRelativeToCurrentDirectory: "inputs/day/24/input") else { abort() }
 var startTime = 0.0
 let day = Day24(input: fileInput.raw)
