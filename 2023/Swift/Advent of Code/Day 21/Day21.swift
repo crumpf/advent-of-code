@@ -15,9 +15,9 @@ class Day21: Day {
     }
     
     func part2() -> String {
-        let garden = Garden(input: input, infinite: true)
-        return "\(garden.numberOfPlotsReachableAfter(steps: 5000))"
+        "Not Implemented"
     }
+
 }
 
 fileprivate typealias Grid = [[Character]]
@@ -25,35 +25,16 @@ fileprivate typealias Grid = [[Character]]
 fileprivate extension Grid {
     func dimensions() -> (x: Int, y: Int) { (x: self[0].count, y: count) }
 
-    func char(at vertex: SIMD2<Int>, infinite: Bool = false) -> Character {
-        if !infinite {
-            return self[vertex.y][vertex.x]
-        } else {
-            let pt = infinitePointToGridPoint(vertex: vertex)
-            return self[pt.y][pt.x]
-        }
-    }
+    func char(at vertex: SIMD2<Int>) -> Character { self[vertex.y][vertex.x] }
 
     func contains(_ vertex: SIMD2<Int>) -> Bool {
         vertex.y >= 0 && vertex.y < count && vertex.x >= 0 && vertex.x < self[0].count
-    }
-
-    func infinitePointToGridPoint(vertex: SIMD2<Int>) -> SIMD2<Int> {
-        let dims = dimensions()
-        return SIMD2<Int>(
-            ((vertex.x % dims.x) + dims.x) % dims.x,
-            ((vertex.y % dims.y) + dims.y) % dims.y
-        )
     }
 
     func neighbors(to vertex: SIMD2<Int>) -> [SIMD2<Int>] {
         [Directions.east, Directions.south, Directions.west, Directions.north]
             .map { vertex &+ $0 }
             .filter(contains(_:))
-    }
-
-    func unrestrainedNeighbors(to vertex: SIMD2<Int>) -> [SIMD2<Int>] {
-        [Directions.east, Directions.south, Directions.west, Directions.north].map { vertex &+ $0 }
     }
 
     struct Directions {
@@ -64,10 +45,8 @@ fileprivate extension Grid {
 fileprivate struct Garden: Pathfinding {
     let grid: Grid
     let start: SIMD2<Int>
-    let isInfinite: Bool
 
-    init(input: String, infinite: Bool = false) {
-        isInfinite = infinite
+    init(input: String) {
         grid = input.lines().map { Array($0) }
         let dims = grid.dimensions()
         let i = input.distance(from: input.startIndex, to: input.firstIndex(of: "S")!)
@@ -79,20 +58,12 @@ fileprivate struct Garden: Pathfinding {
         let steps: Int
     }
 
-    // TODO: this works ok for smaller steps, but as the steps grow the processing time
-    //       is one of those deals that starts to spiral exponentionally, so I need a more clever solution.
     func numberOfPlotsReachableAfter(steps: Int) -> Int {
         var reachable: Set<SIMD2<Int>> = []
         let _ = BreadthFirstSearch.findPath(
             from: Node(point: start, steps: 0),
             isDestination: { vertex in
                 guard vertex.steps < steps + 1 else { return true }
-
-                let pt = grid.infinitePointToGridPoint(vertex: vertex.point)
-                if pt == start && vertex.point != start {
-                    print(vertex)
-                }
-
                 if vertex.steps == steps {
                     reachable.insert(vertex.point)
                 }
@@ -106,14 +77,8 @@ fileprivate struct Garden: Pathfinding {
     typealias Vertex = Node
 
     func neighbors(for vertex: Vertex) -> [Vertex] {
-        if !isInfinite {
-            grid.neighbors(to: vertex.point)
-                .filter { grid.char(at: $0) != "#" }
-                .map { Node(point: $0, steps: vertex.steps + 1) }
-        } else {
-            grid.unrestrainedNeighbors(to: vertex.point)
-                .filter { grid.char(at: $0, infinite: true) != "#" }
-                .map { Node(point: $0, steps: vertex.steps + 1) }
-        }
+        grid.neighbors(to: vertex.point)
+            .filter { grid.char(at: $0) != "#" }
+            .map { Node(point: $0, steps: vertex.steps + 1) }
     }
 }
