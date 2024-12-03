@@ -19,7 +19,7 @@ struct Day02: AdventDay {
   // Replace this with your solution for the second part of the day's challenge.
   func part2() -> Any {
     // Sum the maximum entries in each set of data
-    0
+    reports.filter(isDampenerSafe(report:)).count
   }
 
   // a report only counts as safe if both of the following are true:
@@ -33,5 +33,17 @@ struct Day02: AdventDay {
       }
       return (1...3).contains(abs(pair.1 - pair.0))
     }
+  }
+
+  // Now, the same rules apply as before, except if removing a single level from an unsafe report would make it safe, the report instead counts as safe
+  private func isDampenerSafe(report: [Int]) -> Bool {
+    for index in report.indices {
+      var r = report
+      r.remove(at: index)
+      if isSafe(report: r) {
+        return true
+      }
+    }
+    return false
   }
 }
