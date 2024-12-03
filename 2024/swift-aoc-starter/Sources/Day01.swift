@@ -23,6 +23,10 @@ struct Day01: AdventDay {
 
   // Replace this with your solution for the second part of the day's challenge.
   func part2() -> Any {
-    0
+    let lists = makeLists()
+    // calculate similarity score
+    return lists.0.reduce(0) { partialResult, num in
+      partialResult + num * lists.1.filter({ $0 == num }).count
+    }
   }
 }
