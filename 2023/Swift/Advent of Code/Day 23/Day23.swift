@@ -15,7 +15,8 @@ class Day23: Day {
     }
     
     func part2() -> String {
-        "Not Implemented"
+        let map = Map(input: input)
+        return "\(map.stepsInTheLongestHikeSlopsAsNormalPaths())"
     }
 }
 
@@ -76,6 +77,29 @@ fileprivate struct Map: WeightedPathfinding {
         return longest
     }
 
+    func stepsInTheLongestHikeSlopsAsNormalPaths() -> Int {
+        var longest = 0
+        let _ = DijkstraSearch.findPath(
+            from: Node(v: start, steps: 0),
+            neighbors: { path in
+                let seen = Set(pointsSeen(path: path))
+                let adjs = self.neighborsWithSlopesAsNormal(for: path.vertex)
+                return adjs.filter({!seen.contains($0.v)})
+            },
+            isDestination: { vertex in
+                if vertex.v == end {
+                    print(vertex.steps)
+                }
+                if vertex.v == end && vertex.steps > longest {
+                    longest = vertex.steps
+                }
+                return false
+            },
+            in: self)
+
+        return longest
+    }
+
     func pointsSeen(path: PathNode<Vertex>) -> [SIMD2<Int>] {
         var seen = [SIMD2<Int>]()
         path.iteratePath { _, node, _ in seen.append(node.vertex.v) }
@@ -105,5 +129,11 @@ fileprivate struct Map: WeightedPathfinding {
                 .filter { grid.char(at: $0) != "#" }
                 .map { Node(v: $0, steps: vertex.steps + 1) }
         }
+    }
+
+    func neighborsWithSlopesAsNormal(for vertex: Vertex) -> [Vertex] {
+        return grid.neighbors(to: vertex.v)
+            .filter { grid.char(at: $0) != "#" }
+            .map { Node(v: $0, steps: vertex.steps + 1) }
     }
 }

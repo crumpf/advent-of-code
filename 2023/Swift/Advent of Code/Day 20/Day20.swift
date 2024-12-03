@@ -25,7 +25,9 @@ class Day20: Day {
     }
     
     func part2() -> String {
-        "Not Implemented"
+        let machine = Machine(input: input)
+        let presses = machine.pressesToSendPulsetoRx()
+        return "\(presses)"
     }
 
     enum ModuleType: String {
@@ -35,7 +37,7 @@ class Day20: Day {
     }
 
     struct Machine {
-        let modules: [String: Module]
+        fileprivate let modules: [String: Module]
         init(input: String) {
             let connectionRegex = Regex {
                 Optionally { Capture { One(.anyOf("%&")) } }
@@ -84,12 +86,24 @@ class Day20: Day {
         func pushButton() {
             modules["broadcaster"]?.receivePulse(false, from: nil)
         }
+
+        func pressesToSendPulsetoRx() -> Int {
+            // Looking for  when a single low pulse is sent to rx.
+            // rx has a single input:
+            // &nc -> rx
+            // Since nc is Conjunction, it only sends low when it remembers high pulses for all inputs:
+            // &hh -> nc, &fn -> nc, &fh -> nc, &lk -> nc
+
+            //TODO
+
+            return -1
+        }
     }
 }
 
 // access modifiers on these classes are fast and loose, it's AoC, baby!
 
-class Module {
+fileprivate class Module {
     var name: String = ""
     var inputs: [Weak<Module>]  = []
     var outputs: [Module] = []
@@ -108,14 +122,14 @@ class Module {
     var pulseCounts = (low: 0, high: 0)
 }
 
-class BroadcastModule: Module {
+fileprivate class BroadcastModule: Module {
     override func receivePulse(_ pulse: Bool, from: Module?) {
         super.receivePulse(pulse, from: from)
         sendPulse(pulse)
     }
 }
 
-class FlipFlopModule: Module {
+fileprivate class FlipFlopModule: Module {
     private(set) var state = false
     override func receivePulse(_ pulse: Bool, from: Module?) {
         super.receivePulse(pulse, from: from)
@@ -125,7 +139,7 @@ class FlipFlopModule: Module {
     }
 }
 
-class ConjunctionModule: Module {
+fileprivate class ConjunctionModule: Module {
     private(set) var memory = [String: Bool]()
     override func receivePulse(_ pulse: Bool, from: Module?) {
         super.receivePulse(pulse, from: from)
