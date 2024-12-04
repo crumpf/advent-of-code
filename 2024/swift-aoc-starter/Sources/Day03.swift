@@ -16,15 +16,11 @@ struct Day03: AdventDay {
   }
   
   var instructions: [[(instruction: String, x: Int, y: Int)]] {
-    let regex = /mul\(\d{1,3},\d{1,3}\)|do\(\)|don't\(\)/
-    let mulCapture = /mul\((\d{1,3}),(\d{1,3})\)/
+    let regex = /mul\((\d{1,3}),(\d{1,3})\)|do\(\)|don't\(\)/
     return data.split(separator: "\n").map { line in
       line.matches(of: regex).map {
-        if $0.output.starts(with: "mul") {
-          let (_, x, y) = $0.output.matches(of: mulCapture).first!.output
-          return (String($0.output), Int(x)!, Int(y)!)
-        }
-        return (String($0.output), 0, 0)
+        let (match, x, y) = $0.output
+        return match.starts(with: "mul") ? (String(match), Int(x!)!, Int(y!)!) : (String(match), 0, 0)
       }
     }
   }
