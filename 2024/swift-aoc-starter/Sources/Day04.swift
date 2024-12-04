@@ -16,7 +16,7 @@ struct Day04: AdventDay {
     for (y, row) in g.enumerated() {
       for (x, c) in row.enumerated(){
         if c == "X" {
-          result += vectors.map {
+          result += xmasVectors.map {
             $0.map { SIMD2(x, y) &+ $0 }
           }
           .filter {
@@ -31,8 +31,23 @@ struct Day04: AdventDay {
 
   // Replace this with your solution for the second part of the day's challenge.
   func part2() -> Any {
-    // Sum the maximum entries in each set of data
-    0
+    let g = grid
+    var result = 0
+    for (y, row) in g.enumerated() {
+      for (x, c) in row.enumerated(){
+        if c == "A" {
+          result += crossMasVectors.map {
+            $0.map { SIMD2(x, y) &+ $0 }
+          }
+          .filter {
+            let mapped = $0.compactMap { g.contains($0) ? g.char(at: $0) : nil }
+            return mapped == ["M", "A", "S"] || mapped == ["S", "A", "M"]
+          }
+          .count == 2 ? 1 : 0
+        }
+      }
+    }
+    return result
   }
 
   static let north = [SIMD2(0, 0), SIMD2(0, -1), SIMD2(0, -2), SIMD2(0, -3)],
@@ -40,9 +55,14 @@ struct Day04: AdventDay {
              south = [SIMD2(0, 0), SIMD2(0, 1), SIMD2(0, 2), SIMD2(0, 3)],
              east = [SIMD2(0, 0), SIMD2(1, 0), SIMD2(2, 0), SIMD2(3, 0)]
 
-  var vectors: [[SIMD2<Int>]] {
+  var xmasVectors: [[SIMD2<Int>]] {
     [Self.north, zip(Self.north, Self.west).map(&+), Self.west, zip(Self.south, Self.west).map(&+),
      Self.south, zip(Self.south, Self.east).map(&+), Self.east, zip(Self.north, Self.east).map(&+),]
+  }
+
+  var crossMasVectors: [[SIMD2<Int>]] {
+    [[SIMD2(-1, -1), SIMD2(0, 0), SIMD2(1, 1)],
+     [SIMD2(1, -1), SIMD2(0, 0), SIMD2(-1, 1)]]
   }
 }
 
