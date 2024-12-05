@@ -18,11 +18,8 @@ struct Day05: AdventDay {
       partialResult[rule.x] = (partialResult[rule.x] ?? []) + [rule.y]
     }
     let valid = rules.pageUpdates.filter { update in
-      for i in (0..<(update.endIndex-1)) {
-        let num = update[i]
-        if false == update[i+1..<update.endIndex].allSatisfy({ later in
-          return ordering[num]?.contains(later) ?? false
-        }) {
+      for (offset, page) in update.dropLast().enumerated() {
+        if !Set(update.dropFirst(offset+1)).isSubset(of: ordering[page] ?? []) {
           return false
         }
       }
