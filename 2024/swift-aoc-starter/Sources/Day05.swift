@@ -13,13 +13,10 @@ struct Day05: AdventDay {
 
   // Replace this with your solution for the first part of the day's challenge.
   func part1() -> Any {
-    let rules = safetyProtocols
-    let ordering = safetyProtocols.pageOrderingRules.reduce(into: [Int:[Int]]()) { partialResult, rule in
-      partialResult[rule.x] = (partialResult[rule.x] ?? []) + [rule.y]
-    }
-    let valid = rules.pageUpdates.filter { update in
+    let safetyProtocol = makeSafetyProtocol()
+    let valid = safetyProtocol.pageUpdates.filter { update in
       for (offset, page) in update.dropLast().enumerated() {
-        if !Set(update.dropFirst(offset+1)).isSubset(of: ordering[page] ?? []) {
+        if !Set(update.dropFirst(offset+1)).isSubset(of: safetyProtocol.pagesFollowingMap[page] ?? []) {
           return false
         }
       }
@@ -30,24 +27,60 @@ struct Day05: AdventDay {
 
   // Replace this with your solution for the second part of the day's challenge.
   func part2() -> Any {
-    // Sum the maximum entries in each set of data
-    0
+    let safetyProtocol = makeSafetyProtocol()
+    let isValidUpdate: ([Int]) -> Bool = { update in
+      for (offset, page) in update.dropLast().enumerated() {
+        if !Set(update.dropFirst(offset+1)).isSubset(of: safetyProtocol.pagesFollowingMap[page] ?? []) {
+          return false
+        }
+      }
+      return true
+    }
+    let correctedUpdate: ([Int]) -> [Int] = { update in
+      var mutableUpdate = update
+      while !isValidUpdate(mutableUpdate) {
+        for (offset, page) in mutableUpdate.dropLast().enumerated() {
+          let requiredFollowing = safetyProtocol.pagesFollowingMap[page] ?? []
+          let following = mutableUpdate.dropFirst(offset+1)
+          let neededEarlier = following.filter { !requiredFollowing.contains($0) }
+          if !neededEarlier.isEmpty {
+            let neededLater = following.filter { requiredFollowing.contains($0) }
+            mutableUpdate = neededEarlier + mutableUpdate[0...offset] + neededLater
+            break
+          }
+        }
+      }
+      return mutableUpdate
+    }
+
+    return safetyProtocol.pageUpdates
+      .filter { !isValidUpdate($0) }
+      .map { correctedUpdate($0) }
+      .map { $0[$0.count/2] }.reduce(0, +)
   }
   
-  var safetyProtocols: SafetyProtocol {
+  func makeSafetyProtocol() -> SafetyProtocol {
     let sections = data.split(separator: "\n\n")
     let rules = sections[0].split(separator: "\n").map {
       let (_, x, y) = $0.matches(of: /(\d+)\|(\d+)/).first!.output
-      return (Int(x)!, Int(y)!)
+      return (x: Int(x)!, y: Int(y)!)
     }
     let updates = sections[1].split(separator: "\n").map {
       $0.split(separator: ",").map { Int($0)! }
     }
-    return SafetyProtocol(pageOrderingRules: rules, pageUpdates: updates)
+    let followingMap = rules.reduce(into: [Int: Set<Int>]()) { partialResult, rule in
+      if partialResult[rule.x] != nil {
+        partialResult[rule.x]!.insert(rule.y)
+      } else {
+        partialResult[rule.x] = Set<Int>([rule.y])
+      }
+    }
+    return SafetyProtocol(pageOrderingRules: rules, pageUpdates: updates, pagesFollowingMap: followingMap)
   }
   
   struct SafetyProtocol {
     let pageOrderingRules: [(x: Int, y: Int)]
     let pageUpdates: [[Int]]
+    let pagesFollowingMap: [Int: Set<Int>]
   }
 }
