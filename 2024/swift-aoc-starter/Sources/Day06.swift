@@ -26,12 +26,44 @@ struct Day06: AdventDay {
 
   // Replace this with your solution for the second part of the day's challenge.
   func part2() -> Any {
-    0
+    let grid = makeGrid()
+    guard let start = grid.start else { return 0 }
+
+    var obstacles: Set<SIMD2<Int>> = []
+
+    // try placing obstacles and seeing if we create a cycle as a result
+    for y in (0..<grid.dimensions().height) {
+      for x in (0..<grid.dimensions().width) {
+        var pos = DirectionalPosition(vector: start, dir: .north)
+        var visited: Set<DirectionalPosition> = []
+        while grid.contains(pos.vector) {
+          if visited.contains(pos) {
+            obstacles.insert(SIMD2(x,y))
+            break
+          } else {
+            visited.insert(pos)
+          }
+          let next = DirectionalPosition(vector: pos.vector &+ pos.dir.vector, dir: pos.dir)
+          if let c = grid.char(at: next.vector), c == "#" || next.vector == SIMD2(x,y) {
+            pos = DirectionalPosition(vector: pos.vector, dir: pos.dir.turnRight())
+          } else {
+            pos = next
+          }
+        }
+      }
+    }
+
+    return obstacles.count
   }
 
   func makeGrid() -> Grid {
     let grid = data.split(separator: "\n").map { Array($0) }
     return Grid(grid: grid)
+  }
+
+  struct DirectionalPosition: Hashable {
+    let vector: SIMD2<Int>
+    let dir: Dir
   }
 
   enum Dir {
@@ -74,7 +106,7 @@ struct Day06: AdventDay {
       return nil
     }
 
-    func dimensions() -> (x: Int, y: Int) { (x: grid[0].count, y: grid.count) }
+    func dimensions() -> (width: Int, height: Int) { (grid[0].count, grid.count) }
 
     func char(at vertex: SIMD2<Int>) -> Character? {
       contains(vertex) ? grid[vertex.y][vertex.x] : nil
