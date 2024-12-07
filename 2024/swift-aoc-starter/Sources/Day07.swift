@@ -5,7 +5,7 @@ struct Day07: AdventDay {
   // Save your data in a corresponding text file in the `Data` directory.
   var data: String
 
-  func makeCalibrationEquations() -> [(Int, [Int])] {
+  var calibrationEquations: [(Int, [Int])] {
     data.split(separator: "\n").map {
       let components = $0.split(separator: ": ")
       return (Int(components[0])!, components[1].split(separator: " ").map { Int($0)! })
@@ -14,14 +14,14 @@ struct Day07: AdventDay {
 
   // Replace this with your solution for the first part of the day's challenge.
   func part1() -> Any {
-    let equations = makeCalibrationEquations()
-    return equations.filter(isPossible(equation:)).reduce(0) { $0 + $1.0 }
+//    calibrationEquations.filter(isPossible(equation:)).reduce(0) { $0 + $1.0 }
+    calibrationEquations.filter { isPossible(testValue: $0.0, numbers: $0.1) }.reduce(0) { $0 + $1.0 }
   }
 
   // Replace this with your solution for the second part of the day's challenge.
   func part2() -> Any {
-    let equations = makeCalibrationEquations()
-    return equations.filter(isPossibleWithConcatenation(equation:)).reduce(0) { $0 + $1.0 }
+//    calibrationEquations.filter(isPossibleWithConcatenation(equation:)).reduce(0) { $0 + $1.0 }
+    calibrationEquations.filter { isPossible(testValue: $0.0, numbers: $0.1, supportsConcatenation: true) }.reduce(0) { $0 + $1.0 }
   }
 
   func isPossible(equation: (Int, [Int])) -> Bool {
@@ -61,6 +61,21 @@ struct Day07: AdventDay {
         return true
       }
     }
+    return false
+  }
+
+  // speedier recursive solution to the iterative solutions above
+  func isPossible(testValue: Int, numbers: [Int], supportsConcatenation: Bool = false) -> Bool {
+    guard numbers.count > 1, numbers.first! <= testValue else {
+      return numbers.first == testValue
+    }
+    
+    if isPossible(testValue: testValue, numbers: [numbers[0] + numbers[1]] + numbers.dropFirst(2), supportsConcatenation: supportsConcatenation)
+        || isPossible(testValue: testValue, numbers: [numbers[0] * numbers[1]] + numbers.dropFirst(2), supportsConcatenation: supportsConcatenation)
+        || (supportsConcatenation && isPossible(testValue: testValue, numbers: [Int("\(numbers[0])\(numbers[1])")!] + numbers.dropFirst(2), supportsConcatenation: supportsConcatenation)) {
+      return true
+    }
+
     return false
   }
 }
