@@ -6,22 +6,7 @@ struct Day06: AdventDay {
 
   // Replace this with your solution for the first part of the day's challenge.
   func part1() -> Any {
-    let grid = makeGrid()
-    guard var patrol = grid.start else { return 0 }
-
-    var dir = Dir.north
-    var visited: Set<SIMD2<Int>> = []
-    while grid.contains(patrol) {
-      visited.insert(patrol)
-      let next = patrol &+ dir.vector
-      if let c = grid.char(at: next), c == "#" {
-        dir = dir.turnRight()
-      } else {
-        patrol = next
-      }
-    }
-
-    return visited.count
+    makeGrid().visitedVerticies.count
   }
 
   // Replace this with your solution for the second part of the day's challenge.
@@ -32,23 +17,21 @@ struct Day06: AdventDay {
     var obstacles: Set<SIMD2<Int>> = []
 
     // try placing obstacles and seeing if we create a cycle as a result
-    for y in (0..<grid.dimensions().height) {
-      for x in (0..<grid.dimensions().width) {
-        var pos = DirectionalPosition(vector: start, dir: .north)
-        var visited: Set<DirectionalPosition> = []
-        while grid.contains(pos.vector) {
-          if visited.contains(pos) {
-            obstacles.insert(SIMD2(x,y))
-            break
-          } else {
-            visited.insert(pos)
-          }
-          let next = DirectionalPosition(vector: pos.vector &+ pos.dir.vector, dir: pos.dir)
-          if let c = grid.char(at: next.vector), c == "#" || next.vector == SIMD2(x,y) {
-            pos = DirectionalPosition(vector: pos.vector, dir: pos.dir.turnRight())
-          } else {
-            pos = next
-          }
+    for possibleObstacle in grid.visitedVerticies {
+      var pos = DirectionalPosition(vertex: start, dir: .north)
+      var visited: Set<DirectionalPosition> = []
+      while grid.contains(pos.vertex) {
+        if visited.contains(pos) {
+          obstacles.insert(possibleObstacle)
+          break
+        } else {
+          visited.insert(pos)
+        }
+        let next = DirectionalPosition(vertex: pos.vertex &+ pos.dir.vector, dir: pos.dir)
+        if let c = grid.char(at: next.vertex), c == "#" || next.vertex == possibleObstacle {
+          pos = DirectionalPosition(vertex: pos.vertex, dir: pos.dir.turnRight())
+        } else {
+          pos = next
         }
       }
     }
@@ -62,12 +45,13 @@ struct Day06: AdventDay {
   }
 
   struct DirectionalPosition: Hashable {
-    let vector: SIMD2<Int>
+    let vertex: SIMD2<Int>
     let dir: Dir
   }
 
   enum Dir {
     case north, east, south, west
+
     var vector: SIMD2<Int> {
       switch self {
       case .north:
@@ -80,6 +64,7 @@ struct Day06: AdventDay {
         return SIMD2(-1, 0)
       }
     }
+
     func turnRight() -> Dir {
       switch self {
       case .north:
@@ -104,6 +89,24 @@ struct Day06: AdventDay {
         }
       }
       return nil
+    }
+
+    var visitedVerticies: Set<SIMD2<Int>> {
+      guard var patrol = start else { return [] }
+
+      var dir = Dir.north
+      var visited: Set<SIMD2<Int>> = []
+      while contains(patrol) {
+        visited.insert(patrol)
+        let next = patrol &+ dir.vector
+        if let c = char(at: next), c == "#" {
+          dir = dir.turnRight()
+        } else {
+          patrol = next
+        }
+      }
+
+      return visited
     }
 
     func dimensions() -> (width: Int, height: Int) { (grid[0].count, grid.count) }
