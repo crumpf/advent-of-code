@@ -1,4 +1,5 @@
 import Algorithms
+import Foundation
 
 struct Day07: AdventDay {
   // Save your data in a corresponding text file in the `Data` directory.
@@ -19,7 +20,8 @@ struct Day07: AdventDay {
 
   // Replace this with your solution for the second part of the day's challenge.
   func part2() -> Any {
-    0
+    let equations = makeCalibrationEquations()
+    return equations.filter(isPossibleWithConcatenation(equation:)).reduce(0) { $0 + $1.0 }
   }
 
   func isPossible(equation: (Int, [Int])) -> Bool {
@@ -31,6 +33,31 @@ struct Day07: AdventDay {
       let padded = String(repeating: "0", count: operatorCount - binary.count) + binary
       let result = zip(padded, numbers.dropFirst()).reduce(numbers.first!) { partialResult, elem in
         elem.0 == "0" ? partialResult + elem.1 : partialResult * elem.1
+      }
+      if testValue == result {
+        return true
+      }
+    }
+    return false
+  }
+
+  func isPossibleWithConcatenation(equation: (Int, [Int])) -> Bool {
+    let testValue = equation.0
+    let numbers = equation.1
+    let operatorCount = equation.1.count - 1
+    let numberOfPermutations = (pow(3, operatorCount) as NSDecimalNumber).intValue
+    for permutation in (0..<numberOfPermutations) {
+      let binary = String(permutation, radix: 3)
+      let padded = String(repeating: "0", count: operatorCount - binary.count) + binary
+      let result = zip(padded, numbers.dropFirst()).reduce(numbers.first!) { partialResult, elem in
+        switch elem.0 {
+        case "0":
+          return partialResult + elem.1
+        case "1":
+          return partialResult * elem.1
+        default: // case "2"
+          return Int("\(partialResult)\(elem.1)")!
+        }
       }
       if testValue == result {
         return true
