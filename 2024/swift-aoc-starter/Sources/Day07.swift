@@ -25,9 +25,8 @@ struct Day07: AdventDay {
   }
 
   func isPossible(equation: (Int, [Int])) -> Bool {
-    let testValue = equation.0
-    let numbers = equation.1
-    let operatorCount = equation.1.count - 1
+    let testValue = equation.0, numbers = equation.1
+    let operatorCount = numbers.count - 1
     for permutation in (0..<(1<<operatorCount)) {
       let binary = String(permutation, radix: 2)
       let padded = String(repeating: "0", count: operatorCount - binary.count) + binary
@@ -42,13 +41,12 @@ struct Day07: AdventDay {
   }
 
   func isPossibleWithConcatenation(equation: (Int, [Int])) -> Bool {
-    let testValue = equation.0
-    let numbers = equation.1
-    let operatorCount = equation.1.count - 1
-    let numberOfPermutations = (pow(3, operatorCount) as NSDecimalNumber).intValue
+    let testValue = equation.0, numbers = equation.1
+    let operatorCount = numbers.count - 1
+    let numberOfPermutations = Int("\(pow(3, operatorCount))")!
     for permutation in (0..<numberOfPermutations) {
-      let binary = String(permutation, radix: 3)
-      let padded = String(repeating: "0", count: operatorCount - binary.count) + binary
+      let radix3 = String(permutation, radix: 3)
+      let padded = String(repeating: "0", count: operatorCount - radix3.count) + radix3
       let result = zip(padded, numbers.dropFirst()).reduce(numbers.first!) { partialResult, elem in
         switch elem.0 {
         case "0":
