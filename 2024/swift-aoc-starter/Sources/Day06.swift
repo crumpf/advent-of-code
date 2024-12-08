@@ -41,7 +41,7 @@ struct Day06: AdventDay {
 
   func makeGrid() -> Grid {
     let grid = data.split(separator: "\n").map { Array($0) }
-    return Grid(grid: grid)
+    return Grid(map: grid)
   }
 
   struct DirectionalPosition: Hashable {
@@ -80,10 +80,10 @@ struct Day06: AdventDay {
   }
 
   struct Grid {
-    let grid: [[Character]]
+    let map: [[Character]]
 
     var start: SIMD2<Int>? {
-      for (y, row) in grid.enumerated() {
+      for (y, row) in map.enumerated() {
         for (x, c) in row.enumerated() {
           if c == "^" { return SIMD2(x, y) }
         }
@@ -109,14 +109,14 @@ struct Day06: AdventDay {
       return visited
     }
 
-    func dimensions() -> (width: Int, height: Int) { (grid[0].count, grid.count) }
+    func dimensions() -> (width: Int, height: Int) { (map[0].count, map.count) }
 
     func char(at vertex: SIMD2<Int>) -> Character? {
-      contains(vertex) ? grid[vertex.y][vertex.x] : nil
+      contains(vertex) ? map[vertex.y][vertex.x] : nil
     }
 
     func contains(_ vertex: SIMD2<Int>) -> Bool {
-      grid.indices.contains(vertex.y) && grid[0].indices.contains(vertex.x)
+      map.indices.contains(vertex.y) && map[0].indices.contains(vertex.x)
     }
   }
 }
