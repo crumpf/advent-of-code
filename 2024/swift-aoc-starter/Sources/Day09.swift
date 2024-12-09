@@ -46,7 +46,43 @@ struct Day09: AdventDay {
 
   // Replace this with your solution for the second part of the day's challenge.
   func part2() -> Any {
-    // Sum the maximum entries in each set of data
-    0
+    let lengths = diskMap
+    var written = Array(repeating: 0, count: lengths.count)
+    var fileIDs: [Int?] = diskMap.enumerated().map { $0.offset % 2 == 0 ? $0.offset / 2 : nil }
+    var position = 0, checksum = 0
+    var index = 0
+    while index < fileIDs.count {
+      var spaceRemaining = lengths[index] - written[index]
+      if let fileID = fileIDs[index] {
+        for _ in (0..<spaceRemaining) {
+          checksum += position * fileID
+          position += 1
+        }
+        written[index] += spaceRemaining
+      } else {
+        // try to move something into this free space
+        var searchIndex = fileIDs.endIndex - 1
+        while spaceRemaining > 0, searchIndex > index {
+          if let fileID = fileIDs[searchIndex] {
+            let spaceRequired = lengths[searchIndex]
+            if spaceRequired <= spaceRemaining {
+              for _ in (0..<spaceRequired) {
+                checksum += position * fileID
+                position += 1
+              }
+              written[index] += spaceRequired
+              spaceRemaining -= spaceRequired
+              fileIDs[searchIndex] = nil
+            }
+          }
+          searchIndex -= 1
+        }
+        if spaceRemaining > 0 {
+          position += spaceRemaining
+        }
+      }
+      index += 1
+    }
+    return checksum
   }
 }
