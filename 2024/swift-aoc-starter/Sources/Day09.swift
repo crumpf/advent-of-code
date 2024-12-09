@@ -11,15 +11,15 @@ struct Day09: AdventDay {
 
   var checksum: Int {
     var map = diskMap
-    var position = -1, checksum = 0, endIndex = map.endIndex - 1
+    var position = 0, checksum = 0, endIndex = map.endIndex - 1
     endIndex -= endIndex % 2 == 0 ? 0 : 1 // make sure endIndex doesn't start on free space
     for index in map.indices {
       let isFreeSpace = index % 2 != 0
       for _ in (0..<map[index]) {
-        position += 1
         if !isFreeSpace {
           let fileID = index / 2
           checksum += position * fileID
+          position += 1
         } else {
           guard endIndex > index else {
             return checksum
@@ -32,6 +32,7 @@ struct Day09: AdventDay {
           }
           let fileID = endIndex / 2
           checksum += position * fileID
+          position += 1
           map[endIndex] -= 1
         }
       }
