@@ -55,7 +55,7 @@ struct Day09: AdventDay {
         }
         written[index] += spaceRemaining
       } else {
-        // try to move something into this free space
+        // look for another fileID that can fit in the remaining space
         var searchIndex = fileIDs.endIndex - 1
         while spaceRemaining > 0, searchIndex > index {
           if let fileID = fileIDs[searchIndex] {
@@ -67,7 +67,7 @@ struct Day09: AdventDay {
               }
               written[index] += spaceRequired
               spaceRemaining -= spaceRequired
-              fileIDs[searchIndex] = nil
+              fileIDs[searchIndex] = nil // we just moved and computed checksum for this fileId, so remove it from the list
             }
           }
           searchIndex -= 1
