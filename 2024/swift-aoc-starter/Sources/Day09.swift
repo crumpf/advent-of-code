@@ -9,28 +9,27 @@ struct Day09: AdventDay {
     data.split(separator: "\n").first!.map { Int(String($0))! }
   }
 
-  var checksum: Int {
+  // Replace this with your solution for the first part of the day's challenge.
+  func part1() -> Any {
     var map = diskMap
+    let isFreeSpaceIndex: (Int) -> Bool = { $0 % 2 != 0 }
+    let fileIDAtIndex: (Int) -> Int = { $0 / 2 }
     var position = 0, checksum = 0, endIndex = map.endIndex - 1
-    endIndex -= endIndex % 2 == 0 ? 0 : 1 // make sure endIndex doesn't start on free space
+    if isFreeSpaceIndex(endIndex) { endIndex -= 1 } // make sure endIndex doesn't start on free space
     for index in map.indices {
-      let isFreeSpace = index % 2 != 0
-      for _ in (0..<map[index]) {
-        if !isFreeSpace {
-          let fileID = index / 2
-          checksum += position * fileID
+      let length = map[index]
+      for _ in (0..<length) {
+        if !isFreeSpaceIndex(index) {
+          checksum += position * fileIDAtIndex(index)
           position += 1
         } else {
+          while endIndex > index, map[endIndex] == 0 {
+            endIndex -= 2 // jump over next free space and go to next file index
+          }
           guard endIndex > index else {
             return checksum
           }
-          while map[endIndex] == 0 {
-            endIndex -= 2
-            guard endIndex > index else {
-              return checksum
-            }
-          }
-          let fileID = endIndex / 2
+          let fileID = fileIDAtIndex(endIndex)
           checksum += position * fileID
           position += 1
           map[endIndex] -= 1
@@ -38,11 +37,6 @@ struct Day09: AdventDay {
       }
     }
     return checksum
-  }
-
-  // Replace this with your solution for the first part of the day's challenge.
-  func part1() -> Any {
-    checksum
   }
 
   // Replace this with your solution for the second part of the day's challenge.
