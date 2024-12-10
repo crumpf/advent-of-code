@@ -15,7 +15,7 @@ struct Day10: AdventDay {
     let trails = topoMap.trailheadsAndSummits()
     return trails.trailheads.map {
       var summitsReached: Set<TopoMap.Vertex> = []
-      _ = BreadthFirstSearch.findPath(from: $0, isDestination: { vertex in
+      _ = topoMap.findPath(from: $0, isDestination: { vertex in
         if let height = topoMap.value(at: vertex), height == 9 {
           summitsReached.insert(vertex)
           if summitsReached.count == trails.summits.count {
@@ -23,7 +23,7 @@ struct Day10: AdventDay {
           }
         }
         return false
-      }, in: topoMap)
+      })
       return summitsReached.count
     }
     .reduce(0, +)
@@ -31,10 +31,22 @@ struct Day10: AdventDay {
 
   // Replace this with your solution for the second part of the day's challenge.
   func part2() -> Any {
-    0
+    let topoMap = makeTopoMap()
+    let trails = topoMap.trailheadsAndSummits()
+    return trails.trailheads.map {
+      var distinctTrails = 0
+      _ = topoMap.findPath(from: $0, isDestination: { vertex in
+        if let height = topoMap.value(at: vertex), height == 9 {
+          distinctTrails += 1
+        }
+        return false
+      }, findShortest: false)
+      return distinctTrails
+    }
+    .reduce(0, +)
   }
   
-  struct TopoMap: Pathfinding {
+  struct TopoMap {
     typealias Vertex = SIMD2<Int>
 
     let map: [[Int]]
@@ -61,7 +73,6 @@ struct Day10: AdventDay {
       return (trailheads, summits)
     }
     
-    // MARK: Pathfinding
     func neighbors(for vertex: Vertex) -> [Vertex] {
       guard let height = value(at: vertex) else { return [] }
       return [Vertex(0,-1), Vertex(0,1), Vertex(-1,0), Vertex(1,0)].map { vertex &+ $0 }
@@ -69,6 +80,30 @@ struct Day10: AdventDay {
           if let adjHeight = value(at: $0), adjHeight - height == 1 { return true }
           return false
         }
+    }
+
+    // BFS search, `findShortest = false` disables using set of explored nodes to find shortest path.
+    // Theh topo map is a directed graph so it shouldn't produce cycles
+    func findPath(from start: Vertex, isDestination: (Vertex) -> Bool, findShortest: Bool = true) -> PathNode<Vertex>? {
+      var frontier = Queue<PathNode<Vertex>>()
+      frontier.enqueue(PathNode(vertex: start))
+      var explored: Set<Vertex> = [start]
+      while let currentNode = frontier.dequeue() {
+        if isDestination(currentNode.vertex) {
+          return currentNode
+        }
+        if findShortest {
+          for successor in neighbors(for: currentNode.vertex) where !explored.contains(successor) {
+            explored.insert(successor)
+            frontier.enqueue(PathNode(vertex: successor, predecessor: currentNode))
+          }
+        } else {
+          for successor in neighbors(for: currentNode.vertex) {
+            frontier.enqueue(PathNode(vertex: successor, predecessor: currentNode))
+          }
+        }
+      }
+      return nil
     }
   }
 
