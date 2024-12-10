@@ -12,38 +12,13 @@ struct Day10: AdventDay {
   // Replace this with your solution for the first part of the day's challenge.
   func part1() -> Any {
     let topoMap = makeTopoMap()
-    let trails = topoMap.trailheadsAndSummits()
-    return trails.trailheads.map {
-      var summitsReached: Set<TopoMap.Vertex> = []
-      _ = topoMap.findPath(from: $0, isDestination: { vertex in
-        if let height = topoMap.value(at: vertex), height == 9 {
-          summitsReached.insert(vertex)
-          if summitsReached.count == trails.summits.count {
-            return true
-          }
-        }
-        return false
-      })
-      return summitsReached.count
-    }
-    .reduce(0, +)
+    return topoMap.trailheads().map { topoMap.score(trailhead: $0) }.reduce(0, +)
   }
 
   // Replace this with your solution for the second part of the day's challenge.
   func part2() -> Any {
     let topoMap = makeTopoMap()
-    let trails = topoMap.trailheadsAndSummits()
-    return trails.trailheads.map {
-      var distinctTrails = 0
-      _ = topoMap.findPath(from: $0, isDestination: { vertex in
-        if let height = topoMap.value(at: vertex), height == 9 {
-          distinctTrails += 1
-        }
-        return false
-      }, findShortest: false)
-      return distinctTrails
-    }
-    .reduce(0, +)
+    return topoMap.trailheads().map { topoMap.rating(trailhead: $0) }.reduce(0, +)
   }
   
   struct TopoMap {
@@ -61,16 +36,14 @@ struct Day10: AdventDay {
       map.indices.contains(vertex.y) && map[0].indices.contains(vertex.x)
     }
     
-    func trailheadsAndSummits() -> (trailheads: [Vertex], summits: [Vertex]) {
+    func trailheads() -> [Vertex] {
       var trailheads: [Vertex] = []
-      var summits: [Vertex] = []
       for y in map.indices {
         for x in map[0].indices {
           if map[y][x] == 0 { trailheads.append(Vertex(x, y)) }
-          else if map[y][x] == 9 { summits.append(Vertex(x, y)) }
         }
       }
-      return (trailheads, summits)
+      return trailheads
     }
     
     func neighbors(for vertex: Vertex) -> [Vertex] {
@@ -82,28 +55,37 @@ struct Day10: AdventDay {
         }
     }
 
-    // BFS search, `findShortest = false` disables using set of explored nodes to find shortest path.
-    // Theh topo map is a directed graph so it shouldn't produce cycles
-    func findPath(from start: Vertex, isDestination: (Vertex) -> Bool, findShortest: Bool = true) -> PathNode<Vertex>? {
+    // A trailhead's `score` is the number of 9-height positions reachable from that trailhead via a hiking trail
+    func score(trailhead: Vertex) -> Int {
+      var summitsReached: Set<TopoMap.Vertex> = []
+      findPathsToSummits(from: trailhead, summitReached: { path in
+        summitsReached.insert(path.vertex)
+      })
+      return summitsReached.count
+    }
+
+    // A trailhead's `rating` is the number of distinct hiking trails which begin at that trailhead
+    func rating(trailhead: Vertex) -> Int {
+      var distinctTrails = 0
+      findPathsToSummits(from: trailhead, summitReached: { path in
+        distinctTrails += 1
+      })
+      return distinctTrails
+    }
+
+    // This is a BFS search but doesn't use a set of explored nodes to find shortest path like a normal BFS.
+    // The topo map is a directed graph so it shouldn't produce cycles. It should find all paths to summits (height == 9).
+    func findPathsToSummits(from start: Vertex, summitReached: (PathNode<Vertex>) -> Void) {
       var frontier = Queue<PathNode<Vertex>>()
       frontier.enqueue(PathNode(vertex: start))
-      var explored: Set<Vertex> = [start]
       while let currentNode = frontier.dequeue() {
-        if isDestination(currentNode.vertex) {
-          return currentNode
+        if let height = value(at: currentNode.vertex), height == 9 {
+          summitReached(currentNode)
         }
-        if findShortest {
-          for successor in neighbors(for: currentNode.vertex) where !explored.contains(successor) {
-            explored.insert(successor)
-            frontier.enqueue(PathNode(vertex: successor, predecessor: currentNode))
-          }
-        } else {
-          for successor in neighbors(for: currentNode.vertex) {
-            frontier.enqueue(PathNode(vertex: successor, predecessor: currentNode))
-          }
+        for successor in neighbors(for: currentNode.vertex) {
+          frontier.enqueue(PathNode(vertex: successor, predecessor: currentNode))
         }
       }
-      return nil
     }
   }
 
