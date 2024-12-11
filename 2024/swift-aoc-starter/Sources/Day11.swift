@@ -11,8 +11,8 @@ struct Day11: AdventDay {
 
   // Replace this with your solution for the first part of the day's challenge.
   func part1() -> Any {
-    stones.map {
-      var lookup = [ObservedStone: Int]()
+    var lookup = [ObservedStone: Int]()
+    return stones.map {
       return countAfterObserving(stone: ObservedStone(number: $0, blinks: 0), times: 25, stoneCountLookup: &lookup)
     }
     .reduce(0, +)
@@ -20,8 +20,8 @@ struct Day11: AdventDay {
 
   // Replace this with your solution for the second part of the day's challenge.
   func part2() -> Any {
-    stones.map {
-      var lookup = [ObservedStone: Int]()
+    var lookup = [ObservedStone: Int]()
+    return stones.map {
       return countAfterObserving(stone: ObservedStone(number: $0, blinks: 0), times: 75, stoneCountLookup: &lookup)
     }
     .reduce(0, +)
