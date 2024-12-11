@@ -11,48 +11,32 @@ struct Day11: AdventDay {
 
   // Replace this with your solution for the first part of the day's challenge.
   func part1() -> Any {
-    stones.map { countAfterBlinking(atStone: $0, times: 25) }.reduce(0, +)
+    stones.map {
+      var lookup = [ObservedStone: Int]()
+      return countAfterObserving(stone: ObservedStone(number: $0, blinks: 0), times: 25, stoneCountLookup: &lookup)
+    }
+    .reduce(0, +)
   }
 
   // Replace this with your solution for the second part of the day's challenge.
   func part2() -> Any {
     stones.map {
-      var c = [ObservedStone: Int]()
-      return countAfterObserving(stone: ObservedStone(number: $0, blinks: 0), times: 75, countMap: &c)
+      var lookup = [ObservedStone: Int]()
+      return countAfterObserving(stone: ObservedStone(number: $0, blinks: 0), times: 75, stoneCountLookup: &lookup)
     }
     .reduce(0, +)
   }
 
-  func countAfterBlinking(atStone stone: Int, times: Int, blinksSoFar: Int = 0) -> Int {
-    guard blinksSoFar < times else { return 1 }
-
-    if stone == 0 {
-      return countAfterBlinking(atStone: 1, times: times, blinksSoFar: blinksSoFar + 1)
-    }
-
-    let stoneString = "\(stone)"
-    if stoneString.count.isMultiple(of: 2) {
-      let half = stoneString.count / 2
-      return countAfterBlinking(atStone: Int(stoneString.dropLast(half))!, times: times, blinksSoFar: blinksSoFar + 1)
-        + countAfterBlinking(atStone: Int(stoneString.dropFirst(half))!, times: times, blinksSoFar: blinksSoFar + 1)
-    }
-
-    return countAfterBlinking(atStone: stone * 2024, times: times, blinksSoFar: blinksSoFar + 1)
-  }
-
-  func countAfterObserving(stone: ObservedStone, times: Int, countMap: inout [ObservedStone: Int]) -> Int {
+  func countAfterObserving(stone: ObservedStone, times: Int, stoneCountLookup: inout [ObservedStone: Int]) -> Int {
     guard stone.blinks < times else { return 1 }
 
-    if let count = countMap[stone] {
+    if let count = stoneCountLookup[stone] {
       return count
     }
 
     return stone.blink().map {
-      if let count = countMap[$0] {
-        return count
-      }
-      let count = countAfterObserving(stone: $0, times: times, countMap: &countMap)
-      countMap[$0] = count
+      let count = countAfterObserving(stone: $0, times: times, stoneCountLookup: &stoneCountLookup)
+      stoneCountLookup[$0] = count
       return count
     }
     .reduce(0, +)
