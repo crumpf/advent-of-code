@@ -16,7 +16,11 @@ struct Day11: AdventDay {
 
   // Replace this with your solution for the second part of the day's challenge.
   func part2() -> Any {
-    0
+    stones.map {
+      var c = [ObservedStone: Int]()
+      return countAfterObserving(stone: ObservedStone(number: $0, blinks: 0), times: 75, countMap: &c)
+    }
+    .reduce(0, +)
   }
 
   func countAfterBlinking(atStone stone: Int, times: Int, blinksSoFar: Int = 0) -> Int {
@@ -34,5 +38,41 @@ struct Day11: AdventDay {
     }
 
     return countAfterBlinking(atStone: stone * 2024, times: times, blinksSoFar: blinksSoFar + 1)
+  }
+
+  func countAfterObserving(stone: ObservedStone, times: Int, countMap: inout [ObservedStone: Int]) -> Int {
+    guard stone.blinks < times else { return 1 }
+
+    if let count = countMap[stone] {
+      return count
+    }
+
+    return stone.blink().map {
+      if let count = countMap[$0] {
+        return count
+      }
+      let count = countAfterObserving(stone: $0, times: times, countMap: &countMap)
+      countMap[$0] = count
+      return count
+    }
+    .reduce(0, +)
+  }
+
+  struct ObservedStone: Hashable {
+    let number: Int
+    let blinks: Int
+
+    func blink() -> [ObservedStone] {
+      if number == 0 {
+        return [ObservedStone(number: 1, blinks: blinks + 1)]
+      }
+      let stoneString = "\(number)"
+      if stoneString.count.isMultiple(of: 2) {
+        let half = stoneString.count / 2
+        return [ObservedStone(number: Int(stoneString.dropLast(half))!, blinks: blinks + 1),
+                ObservedStone(number: Int(stoneString.dropFirst(half))!, blinks: blinks + 1)]
+      }
+      return [ObservedStone(number: number * 2024, blinks: blinks + 1)]
+    }
   }
 }
