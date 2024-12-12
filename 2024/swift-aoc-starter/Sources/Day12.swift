@@ -65,26 +65,27 @@ struct Day12: AdventDay {
     }
     
     func region(from start: Vertex, visited: inout Set<Vertex>) -> Region {
-      var area = 0, perimeter = 0
+      var area = 0
+      var perimeters: [Vertex] = []
       var frontier = Queue<Vertex>()
       frontier.enqueue(start)
       var explored: Set<Vertex> = [start]
       while let currentNode = frontier.dequeue() {
         area += 1
-        perimeter += self.perimeter(for: currentNode)
+        perimeters.append(contentsOf: perimeter(for: currentNode))
         for successor in neighbors(for: currentNode) where !explored.contains(successor) {
           explored.insert(successor)
           frontier.enqueue(successor)
         }
       }
       visited.formUnion(explored)
-      return Region(area: area, perimeter: perimeter)
+      return Region(area: area, perimeter: perimeters.count)
     }
     
-    func perimeter(for vertex: Vertex) -> Int {
+    func perimeter(for vertex: Vertex) -> [Vertex] {
       adjacentVerticies(to: vertex).filter {
         !contains($0) || map[$0.y][$0.x] != map[vertex.y][vertex.x]
-      }.count
+      }
     }
     
     struct Region {
