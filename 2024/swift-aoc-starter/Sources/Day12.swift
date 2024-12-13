@@ -11,12 +11,12 @@ struct Day12: AdventDay {
   
   // Replace this with your solution for the first part of the day's challenge.
   func part1() -> Any {
-    makeGarden().priceToFenceAllRegions()
+    makeGarden().findRegions().map { $0.area * $0.perimeter }.reduce(0, +)
   }
 
   // Replace this with your solution for the second part of the day's challenge.
   func part2() -> Any {
-    0
+    makeGarden().findRegions().map { $0.area * $0.sides }.reduce(0, +)
   }
   
   struct Garden {
@@ -33,21 +33,13 @@ struct Day12: AdventDay {
     func contains(_ vertex: Vertex) -> Bool {
       map.indices.contains(vertex.y) && map[0].indices.contains(vertex.x)
     }
-    
-    func adjacentVerticies(to vertex: Vertex) -> [Vertex] {
-      guard contains(vertex) else { return [] }
-      return [Vertex(0,-1), Vertex(0,1), Vertex(-1,0), Vertex(1,0)].map { vertex &+ $0 }
-    }
-    
+
+    // neighbor verticies contained within the map that are same value as the vertex passed in
     func neighbors(for vertex: Vertex) -> [Vertex] {
-      adjacentVerticies(to: vertex).filter {
+      [Vertex(1,0), Vertex(0,1), Vertex(-1,0), Vertex(0,-1)].map { vertex &+ $0 }.filter {
         guard let current = value(at: vertex), let next = value(at: $0), current == next else { return false }
         return true
       }
-    }
-    
-    func priceToFenceAllRegions() -> Int {
-      findRegions().map { $0.area * $0.perimeter }.reduce(0, +)
     }
     
     func findRegions() -> [Region] {
@@ -66,30 +58,85 @@ struct Day12: AdventDay {
     
     func region(from start: Vertex, visited: inout Set<Vertex>) -> Region {
       var area = 0
-      var perimeters: [Vertex] = []
+      var perimeter: Set<PerimeterPoint> = []
       var frontier = Queue<Vertex>()
       frontier.enqueue(start)
       var explored: Set<Vertex> = [start]
       while let currentNode = frontier.dequeue() {
         area += 1
-        perimeters.append(contentsOf: perimeter(for: currentNode))
+        perimeter.formUnion(self.perimeter(for: currentNode))
         for successor in neighbors(for: currentNode) where !explored.contains(successor) {
           explored.insert(successor)
           frontier.enqueue(successor)
         }
       }
       visited.formUnion(explored)
-      return Region(area: area, perimeter: perimeters.count)
+
+      let sides = self.sides(ofPerimeter: perimeter)
+      return Region(area: area, perimeter: perimeter.count, sides: sides)
     }
     
-    func perimeter(for vertex: Vertex) -> [Vertex] {
-      adjacentVerticies(to: vertex).filter {
-        !contains($0) || map[$0.y][$0.x] != map[vertex.y][vertex.x]
+    func perimeter(for vertex: Vertex) -> [PerimeterPoint] {
+      [(Vertex(-1,0), Edge.verticalLeft), (Vertex(1,0), Edge.verticalRight),
+       (Vertex(0,-1), Edge.horizontalTop), (Vertex(0,1), Edge.horizontalBottom)]
+        .map {
+          (vertex &+ $0.0, $0.1)
+        }
+        .filter {
+          !contains($0.0) || map[$0.0.y][$0.0.x] != map[vertex.y][vertex.x]
+        }
+        .map { PerimeterPoint(vertex: $0.0, edge: $0.1) }
+    }
+
+    func sides(ofPerimeter perimeter: Set<PerimeterPoint>) -> Int {
+      var count = 0
+      var remaining = Array(perimeter)
+      while !remaining.isEmpty {
+        let first = remaining.removeFirst()
+        count += 1
+        // find and remove other perimeter points that share this side
+        switch first.edge {
+        case .horizontalTop, .horizontalBottom:
+          let horizontals = [Vertex(-1,0), Vertex(1,0)].compactMap {
+            matching(first, in: remaining, alongVector: $0)
+          }.flatMap { $0 }
+
+          if !horizontals.isEmpty {
+            horizontals.forEach { remaining.remove(at: remaining.firstIndex(of: $0)!) }
+          }
+        case .verticalLeft, .verticalRight:
+          let verticals = [Vertex(0,-1), Vertex(0,1)].compactMap {
+            matching(first, in: remaining, alongVector: $0)
+          }.flatMap { $0 }
+
+          if !verticals.isEmpty {
+            verticals.forEach { remaining.remove(at: remaining.firstIndex(of: $0)!) }
+          }
+        }
       }
+      return count
     }
-    
+
+    func matching(_ point: PerimeterPoint, in perimeter: [PerimeterPoint], alongVector: SIMD2<Int>) -> [PerimeterPoint]? {
+      var mutablePerimeter = perimeter
+      if let firstIndex = mutablePerimeter.firstIndex(of: PerimeterPoint(vertex: point.vertex &+ alongVector, edge: point.edge)) {
+        let removed = mutablePerimeter.remove(at: firstIndex)
+        return [removed] + (matching(removed, in: mutablePerimeter, alongVector: alongVector) ?? [])
+      }
+      return nil
+    }
+
     struct Region {
-      let area, perimeter: Int
+      let area, perimeter, sides: Int
+    }
+
+    struct PerimeterPoint: Hashable {
+      let vertex: Vertex
+      let edge: Edge
+    }
+
+    enum Edge {
+      case horizontalTop, horizontalBottom, verticalLeft, verticalRight
     }
   }
 
