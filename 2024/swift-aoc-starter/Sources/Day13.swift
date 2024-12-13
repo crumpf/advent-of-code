@@ -33,23 +33,23 @@ struct Day13: AdventDay {
     let prize: XY
 
     // This solution looks obtuse, but it's simply solving 2 linear equations by substitution one into the other.
-    // I pen and papered the math and then coded it. The Double casts all over the place are 🤮.
     // The 2 equations I solved for are:
     //   (1) A * a.x + B * b.x = prize.x
     //   (2) A * a.y + B * b.y = prize.y
-    // Only A and B, the number of presses, are unknown, so I just expressed a solution for B in one equation, and substitued
+    // Only A and B, the number of presses, are unknown, so I expressed a solution for B in one equation, and substitued
     // it into the other to solve for A. Then I substituted the solved A back into the B equation to solve for B. Since
-    // the solution is on an integer boundary I rounded the A and B solutions and checked to make sure the equations
-    // still held up before returning winning prize.
+    // the solution is on an integer boundary, A and B solutions are checked to make sure they don't have remainders
+    // before returning winning prize. Ultimately,
     // B = (prize.x - A * a.x) / b.x
-    // A = (prize.y - (b.y * prize.x / b.x)) / (a.y - (b.y * a.x / b.x))
+    // A = (b.x * prize.y - b.y * prize.x) / (b.x * a.y - b.y * a.x)
     // High school math FTW.
     func prizeSolution(correction: Int = 0) -> (tokens: Int, aPresses: Int, bPresses: Int)? {
       let fixed = (x: Double(prize.x) + Double(correction), y: Double(prize.y) + Double(correction))
-      let doubleA = (x: Double(a.x), y: Double(a.y)), doubleB = (x: Double(b.x), y: Double(b.y))
-      let A = ( (fixed.y - (doubleB.y * fixed.x / doubleB.x)) / (doubleA.y - (doubleB.y * doubleA.x / doubleB.x)) ).rounded()
-      let B = ( (fixed.x - A * doubleA.x) / doubleB.x ).rounded()
-      if A * doubleA.x + B * doubleB.x == fixed.x && A * doubleA.y + B * doubleB.y == fixed.y {
+      let ax = Double(a.x), ay = Double(a.y), bx = Double(b.x), by = Double(b.y)
+      let A = ( (bx * fixed.y - by * fixed.x) / (bx * ay - by * ax) )
+      let B = ( (fixed.x - A * ax) / bx )
+
+      if A.truncatingRemainder(dividingBy: 1) == 0 && B.truncatingRemainder(dividingBy: 1) == 0 {
         return (Int(A)*3 + Int(B), Int(A), Int(B))
       } else {
         return nil
