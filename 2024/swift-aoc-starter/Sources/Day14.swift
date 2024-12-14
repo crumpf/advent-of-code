@@ -33,7 +33,37 @@ struct Day14: AdventDay {
   }
 
   func part2() -> Any {
-    0
+    let initialRobotData = parseData()
+    var robots = initialRobotData.vectors
+    for t in 1...100_000 {
+      for index in robots.indices {
+        robots[index] = nextVector(from: robots[index], withinWidth: initialRobotData.width, height: initialRobotData.height)
+      }
+      // There's an easter egg in here somewhere. I'm taking a wild-ass guess that it's a large contiguous
+      // region in the center of the map.
+      // The horrible assumption here is that I'm guessing that 1) any contiguous group > 100 is what we're
+      // looking for and 2) that it touches the center.
+      // At least for my input those assumptions held, but I was lucky that the frame or the hidden
+      // tree image was on the center and not the tree itself. I should revisit this with a more
+      // correct solution.
+      let seed = SIMD2(initialRobotData.width / 2, initialRobotData.height / 2)
+      let region = self.region(from: seed, positions: Set(robots.map { $0.position}) )
+      if region.count > 100 {
+        print("time \(t) count: \(region.count)")
+        let xsorted = region.sorted(by: {$0.x < $1.x})
+        let ysorted = region.sorted(by: {$0.y < $1.y})
+        for y in ysorted.first!.y...ysorted.last!.y {
+          var row = ""
+          for x in xsorted.first!.x...xsorted.last!.x {
+            row += Set(robots.map { $0.position }).contains(SIMD2(x, y)) ? "#" : "."
+          }
+          print(row)
+        }
+        return t
+      }
+    }
+    
+    return -1
   }
   
   func nextVector(from vector: Vector, withinWidth width: Int, height: Int) -> Vector {
@@ -56,4 +86,21 @@ struct Day14: AdventDay {
     let position: SIMD2<Int>
     let velocity: SIMD2<Int>
   }
+  
+  func region(from start: SIMD2<Int>, positions: Set<SIMD2<Int>>) -> Set<SIMD2<Int>> {
+    var frontier = Queue<SIMD2<Int>>()
+    frontier.enqueue(start)
+    var explored: Set<SIMD2<Int>> = [start]
+    while let currentNode = frontier.dequeue() {
+      let neighbors = [SIMD2(1,0), SIMD2(0,1), SIMD2(-1,0), SIMD2(0,-1)]
+        .map { currentNode &+ $0 }
+        .filter { positions.contains($0) }
+      for successor in neighbors where !explored.contains(successor) {
+        explored.insert(successor)
+        frontier.enqueue(successor)
+      }
+    }
+    return explored
+  }
+
 }
