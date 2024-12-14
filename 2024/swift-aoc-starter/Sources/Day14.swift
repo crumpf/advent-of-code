@@ -24,14 +24,10 @@ struct Day14: AdventDay {
         robots[index] = nextVector(from: robots[index], withinWidth: initialRobotData.width, height: initialRobotData.height)
       }
     }
-    let quadrant: (SIMD2<Int>) -> Int? = {
-      guard $0.x >= 0, $0.x < initialRobotData.width, $0.x != initialRobotData.width / 2,
-            $0.y >= 0, $0.y < initialRobotData.height, $0.y != initialRobotData.height / 2
-      else { return nil }
-      return $0.y < initialRobotData.height / 2 ? ($0.x < initialRobotData.width / 2 ? 0 : 1) : ($0.x < initialRobotData.width / 2 ? 2 : 3)
-    }
-    return robots.reduce(into: Array(Array(repeating: 0, count: 4))) {
-      if let q = quadrant($1.position) { $0[q] += 1 }
+    return robots.reduce(into: Array(repeating: 0, count: 4)) {
+      if let q = quadrant(of: $1.position, withinWidth: initialRobotData.width, height: initialRobotData.height) {
+        $0[q] += 1
+      }
     }
     .reduce(1, *)
   }
@@ -47,6 +43,13 @@ struct Day14: AdventDay {
     if pos.y < 0 { pos.y = height + pos.y % height }
     else if pos.y >= height { pos.y = pos.y % height }
     return Vector(position: pos, velocity: vector.velocity)
+  }
+  
+  func quadrant(of v: SIMD2<Int>, withinWidth width: Int, height: Int) -> Int? {
+    guard v.x >= 0, v.x < width, v.x != width / 2,
+          v.y >= 0, v.y < height, v.y != height / 2
+    else { return nil }
+    return v.y < height / 2 ? (v.x < width / 2 ? 0 : 1) : (v.x < width / 2 ? 2 : 3)
   }
   
   struct Vector {
