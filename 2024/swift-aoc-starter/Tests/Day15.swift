@@ -38,6 +38,27 @@ struct Day15Tests {
 
   @Test func testPart2() async throws {
     let challenge = Day15(data: testData)
-    #expect(String(describing: challenge.part2()) == "0")
+    #expect(String(describing: challenge.part2()) == "9021")
+  }
+  
+  @Test func testMyTest() async throws {
+    let myData = """
+      ##########
+      #..O..O.O#
+      #....O.O.#
+      #.OOO.O.O#
+      #.OO@OOO.#
+      #O#O.O...#
+      #O..O..O.#
+      #...OO.OO#
+      #....O...#
+      ##########
+
+      <<<<>>>>>>>>>^^^^vvvv
+      
+      """
+
+    let challenge = Day15(data: myData)
+    print(challenge.part2())
   }
 }

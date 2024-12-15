@@ -27,7 +27,87 @@ struct Day15: AdventDay {
   }
 
   func part2() -> Any {
-    0
+    let warehouse = warehouse()
+    let wideWalls = Set(warehouse.walls.map { [SIMD2(2 * $0.x, $0.y), SIMD2(2 * $0.x + 1, $0.y)] }.flatMap(Array.init))
+    var wideBoxes = Set(warehouse.boxes.map { SIMD2( 2 * $0.x, $0.y) })
+    var robot = SIMD2(warehouse.robot.x * 2, warehouse.robot.y)
+    for instruction in warehouse.instructions {
+      if canMove(direction: instruction, point: robot, width: 1, walls: wideWalls, boxes: wideBoxes) {
+        robot = moveBoxes(&wideBoxes, direction: instruction, point: robot, width: 1, walls: wideWalls) ?? robot
+      }
+    }
+    return wideBoxes.reduce(0) { $0 + 100 * $1.y + $1.x }
+  }
+  
+  func canMove(direction: Character, point: SIMD2<Int>, width: Int, walls: Set<SIMD2<Int>>, boxes: Set<SIMD2<Int>>) -> Bool {
+    let vector: SIMD2<Int>
+    switch direction {
+    case ">": vector = SIMD2(1,0)
+    case "v": vector = SIMD2(0,1)
+    case "<": vector = SIMD2(-1,0)
+    case "^": vector = SIMD2(0,-1)
+    default: return false
+    }
+    let points = Array(0..<width).map {
+      point &+ vector &+ SIMD2($0,0)
+    }
+    
+    guard walls.intersection(points).isEmpty else { return false }
+    
+    let intersectedBoxes = boxes.filter {
+      $0 != point && !Set([$0, $0 &+ SIMD2(1,0)]).intersection(points).isEmpty
+    }
+    for box in intersectedBoxes {
+      if !canMove(direction: direction, point: box, width: 2, walls: walls, boxes: boxes) {
+        return false
+      }
+    }
+    
+    return true
+  }
+  
+  func moveBoxes(_ boxes: inout Set<SIMD2<Int>>, direction: Character, point: SIMD2<Int>, width: Int, walls: Set<SIMD2<Int>>) -> SIMD2<Int>? {
+    let vector: SIMD2<Int>
+    switch direction {
+    case ">": vector = SIMD2(1,0)
+    case "v": vector = SIMD2(0,1)
+    case "<": vector = SIMD2(-1,0)
+    case "^": vector = SIMD2(0,-1)
+    default: return nil
+    }
+    let points = Array(0..<width).map {
+      point &+ vector &+ SIMD2($0,0)
+    }
+    
+    guard walls.intersection(points).isEmpty else { return nil }
+    
+    let intersectedBoxes = boxes.filter {
+      $0 != point && !Set([$0, $0 &+ SIMD2(1,0)]).intersection(points).isEmpty
+    }
+    for box in intersectedBoxes {
+      boxes.remove(box)
+      if let movedBox = moveBoxes(&boxes, direction: direction, point: box , width: 2, walls: walls) {
+        boxes.insert(movedBox)
+      } else {
+        boxes.insert(box)
+      }
+    }
+    
+    return points[0]
+  }
+  
+  func printMap(width: Int, height: Int, robot: SIMD2<Int>, walls: Set<SIMD2<Int>>, boxes: Set<SIMD2<Int>>) {
+    for y in 0..<height {
+      var row = ""
+      for x in 0..<width {
+        let pt = SIMD2(x, y)
+        if walls.contains(pt) { row += "#" }
+        else if boxes.contains(pt) { row += "O" }
+        else if robot == pt { row += "@" }
+        else { row += "." }
+      }
+      print(row)
+    }
   }
 
   struct Warehouse {
