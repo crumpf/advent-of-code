@@ -22,7 +22,21 @@ struct Day16: AdventDay {
   }
 
   func part2() -> Any {
-    0
+    let maze = makeMaze()
+    let start = maze.firstLocation(of: "S")!
+    let end = maze.firstLocation(of: "E")!
+    let allPaths = maze.findAllPaths(
+      from: Maze.Node(location: start, heading: .east),
+      isDestination: { pathNode in
+        pathNode.vertex.location == end
+      })
+    var bestTiles = Set<SIMD2<Int>>()
+    allPaths.forEach {
+      $0.iteratePath { _, node, _ in
+        bestTiles.insert(node.vertex.location)
+      }
+    }
+    return bestTiles.count
   }
 
   struct Maze: WeightedPathfinding {
@@ -63,6 +77,35 @@ struct Day16: AdventDay {
     struct Node: Hashable {
       let location: SIMD2<Int>
       let heading: Heading
+    }
+
+    // modified Dijkstra to explore all routes <= to a cost, not just < cost
+    func findAllPaths(
+      from start: Vertex,
+      isDestination: (WeightedPathNode<Vertex, Cost>) -> Bool)
+    -> [WeightedPathNode<Vertex, Cost>] {
+      var allPaths = [WeightedPathNode<Vertex, Cost>]()
+      var minTotalCost = Int.max
+      let startNode = WeightedPathNode(vertex: start, cost: cost(from: start, to: start))
+      var exploredMinimumCosts = [start: startNode.cost]
+      var frontier = Heap<WeightedPathNode<Vertex, Cost>>()
+      frontier.insert(startNode)
+      while let currentNode = frontier.popMin() {
+        if isDestination(currentNode) {
+          allPaths.append(currentNode)
+          if currentNode.cost < minTotalCost { minTotalCost = currentNode.cost }
+        }
+        guard let currentCost = exploredMinimumCosts[currentNode.vertex] else { return allPaths }
+        for successor in neighbors(for: currentNode.vertex) {
+          let newCost = currentCost + cost(from: currentNode.vertex, to: successor)
+          if exploredMinimumCosts[successor] == nil || newCost <= exploredMinimumCosts[successor]! {
+            exploredMinimumCosts[successor] = newCost
+            let node = WeightedPathNode(vertex: successor, predecessor: currentNode, cost: newCost)
+            frontier.insert(node)
+          }
+        }
+      }
+      return allPaths.filter { $0.cost == minTotalCost }
     }
 
     // Pathfinding protocols
