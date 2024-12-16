@@ -25,7 +25,7 @@ struct Day16: AdventDay {
     let maze = makeMaze()
     let start = maze.firstLocation(of: "S")!
     let end = maze.firstLocation(of: "E")!
-    let allPaths = maze.findAllPaths(
+    let allPaths = maze.findAllShortestPaths(
       from: Maze.Node(location: start, heading: .east),
       isDestination: { pathNode in
         pathNode.vertex.location == end
@@ -79,33 +79,36 @@ struct Day16: AdventDay {
       let heading: Heading
     }
 
-    // modified Dijkstra to explore all routes <= to a cost, not just < cost
-    func findAllPaths(
+    // A modified Dijkstra Algorithm to find all shortest paths to the destination which explores all
+    // routes <= to a cost (not just < cost as with regular Dijkstra). Should be that the first path
+    // to reach the destination sets a bestTotalCost, but there may be other paths out there that
+    // have that cost too and others that might be more than that so those get filtered out.
+    func findAllShortestPaths(
       from start: Vertex,
       isDestination: (WeightedPathNode<Vertex, Cost>) -> Bool)
     -> [WeightedPathNode<Vertex, Cost>] {
       var allPaths = [WeightedPathNode<Vertex, Cost>]()
-      var minTotalCost = Int.max
+      var bestTotalCost = Int.max
       let startNode = WeightedPathNode(vertex: start, cost: cost(from: start, to: start))
       var exploredMinimumCosts = [start: startNode.cost]
       var frontier = Heap<WeightedPathNode<Vertex, Cost>>()
       frontier.insert(startNode)
       while let currentNode = frontier.popMin() {
-        if isDestination(currentNode) {
+        if isDestination(currentNode) && currentNode.cost <= bestTotalCost {
+          bestTotalCost = currentNode.cost
           allPaths.append(currentNode)
-          if currentNode.cost < minTotalCost { minTotalCost = currentNode.cost }
         }
         guard let currentCost = exploredMinimumCosts[currentNode.vertex] else { return allPaths }
         for successor in neighbors(for: currentNode.vertex) {
           let newCost = currentCost + cost(from: currentNode.vertex, to: successor)
-          if exploredMinimumCosts[successor] == nil || newCost <= exploredMinimumCosts[successor]! {
+          if newCost < bestTotalCost && (exploredMinimumCosts[successor] == nil || newCost <= exploredMinimumCosts[successor]!) {
             exploredMinimumCosts[successor] = newCost
             let node = WeightedPathNode(vertex: successor, predecessor: currentNode, cost: newCost)
             frontier.insert(node)
           }
         }
       }
-      return allPaths.filter { $0.cost == minTotalCost }
+      return allPaths
     }
 
     // Pathfinding protocols
