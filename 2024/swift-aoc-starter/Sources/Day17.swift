@@ -65,7 +65,7 @@ struct Day17: AdventDay {
           b = a / Int("\(pow(2, comboOperand(operand)))")!
         case 7: //cdv
           c = a / Int("\(pow(2, comboOperand(operand)))")!
-        default: print("ONOZ instructionPointer:\(instructionPointer) opcode:\(opcode) operand:\(operand)")
+        default: print("ONOZ instructionPointer:\(instructionPointer) opcode:\(opcode) operand:\(operand)"); abort()
         }
         instructionPointer += 2
       }
@@ -77,7 +77,7 @@ struct Day17: AdventDay {
       case 4: return a
       case 5: return b
       case 6: return c
-      case 7: abort()
+      case 7: print("ONOZ combo operand 7 is reserved"); abort()
       default: return operand
       }
     }
