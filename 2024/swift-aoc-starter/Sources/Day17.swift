@@ -41,9 +41,11 @@ struct Day17: AdventDay {
       c = program.c
       var instructionPointer = 0
       while true {
-        guard program.program.indices.contains(instructionPointer) else { return output }
+        guard program.program.indices.contains(instructionPointer),
+              program.program.indices.contains(instructionPointer + 1)
+        else { return output }
+
         let opcode = program.program[instructionPointer]
-        guard program.program.indices.contains(instructionPointer + 1) else { return output }
         let operand = program.program[instructionPointer + 1]
         switch opcode {
         case 0: //adv
