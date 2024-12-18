@@ -16,7 +16,7 @@ struct Day18: AdventDay {
   }
 
   func part2() -> Any {
-    0
+    part2FirstByteThatPreventsTheExitFromBeingReachable(width: 71, height: 71)
   }
 
   func part1MinimumStepsToReachExit(width: Int, height: Int, numberCorrupted: Int) -> Any {
@@ -27,6 +27,18 @@ struct Day18: AdventDay {
       steps = i
     })
     return steps
+  }
+
+  func part2FirstByteThatPreventsTheExitFromBeingReachable(width: Int, height: Int) -> Any {
+    let corruptedLocations = incomingBytePositions
+    for (offset, location) in corruptedLocations.enumerated() {
+      let maze = Maze(corruptedLocations: Set(corruptedLocations[0...offset]), width: width, height: height)
+      let path = BreadthFirstSearch.findPath(from: SIMD2.zero, to: SIMD2(width-1, height-1), in: maze)
+      if path == nil {
+        return "\(location.x),\(location.y)"
+      }
+    }
+    return "none"
   }
 
   struct Maze: Pathfinding {

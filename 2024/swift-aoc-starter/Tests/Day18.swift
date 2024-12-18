@@ -42,6 +42,6 @@ struct Day18Tests {
 
   @Test func testPart2() async throws {
     let challenge = Day18(data: testData)
-    #expect(String(describing: challenge.part2()) == "32000")
+    #expect(String(describing: challenge.part2FirstByteThatPreventsTheExitFromBeingReachable(width: 7, height: 7)) == "6,1")
   }
 }
