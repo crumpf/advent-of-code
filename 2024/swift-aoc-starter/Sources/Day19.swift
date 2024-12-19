@@ -12,9 +12,8 @@ struct Day19: AdventDay {
 
   func part2() -> Any {
     let onsen = Onsen(data: data)
-    let regex = try! Regex("^(\(onsen.patterns.joined(separator: "|")))+$")
     var cache = [String: Int]()
-    return onsen.designs.filter { $0.matches(of:regex).count != 0 }
+    return onsen.designs
       .map { numberOfArrangements(design: $0, patterns: onsen.patterns, cache: &cache) }
       .reduce(0, +)
   }
