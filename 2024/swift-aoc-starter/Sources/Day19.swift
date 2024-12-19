@@ -11,7 +11,25 @@ struct Day19: AdventDay {
   }
 
   func part2() -> Any {
-    0
+    let onsen = Onsen(data: data)
+    let regex = try! Regex("^(\(onsen.patterns.joined(separator: "|")))+$")
+    var cache = [String: Int]()
+    return onsen.designs.filter { $0.matches(of:regex).count != 0 }
+      .map { numberOfArrangements(design: $0, patterns: onsen.patterns, cache: &cache) }
+      .reduce(0, +)
+  }
+
+  func numberOfArrangements(design: String, patterns: [String], cache: inout [String: Int]) -> Int {
+    if let cached = cache[design] { return cached }
+
+    let count = patterns.filter { design.starts(with: $0) }
+      .map {
+        let remaining = String(design.dropFirst($0.count))
+        return remaining.isEmpty ? 1 : numberOfArrangements(design: remaining, patterns: patterns, cache: &cache)
+      }
+      .reduce(0, +)
+    cache[design] = count
+    return count
   }
 
   struct Onsen {
