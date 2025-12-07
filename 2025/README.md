@@ -1,0 +1,1 @@
+The directory under `swift-aoc-starter` is built upon the Advent of Code Swift Starter Project contributed to the community from https://github.com/swiftlang/swift-aoc-starter-example.
