@@ -58,17 +58,28 @@ struct Day02: AdventDay {
       
       (min...max).forEach { i in
         let str = "\(i)"
-        // regex explainer:
-        //  •  (.+) captures any non-empty substring.
-        //  •  \1+ means “one or more repetitions of whatever was captured.”
-        let regex = /^(.+)\1+$/
-        if let _  = str.firstMatch(of: regex) {
+        if isRepeatedPattern(str) {
           invalidSum += i
         }
       }
     }
     
     return invalidSum
+  }
+  
+  func isRepeatedPattern(_ s: String) -> Bool {
+    guard s.count >= 2 else { return false }
+    
+    // look for 2 or more repetitions
+    for reps in 2...s.count {
+      if s.count.isMultiple(of: reps) {
+        let subLen = s.count / reps
+        if String(repeating: String(s.prefix(subLen)), count: reps) == s {
+          return true
+        }
+      }
+    }
+    return false
   }
 
 }
