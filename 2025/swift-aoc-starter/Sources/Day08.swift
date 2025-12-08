@@ -46,7 +46,34 @@ struct Day08: AdventDay {
   }
 
   func part2() -> Any {
-    0
+    makeSingleCircuit()
+  }
+  
+  func makeSingleCircuit() -> Any {
+    let boxes = boxCoords
+    var circuits = boxes.map { Set([$0]) }
+    let connections = calculateAndSortConnections(boxes: boxes)
+    
+    for connection in connections {
+      let pair = Array(connection.pair)
+      let fromIndex = circuits.firstIndex {
+        $0.contains(pair[0])
+      }!
+      let toIndex = circuits.firstIndex {
+        $0.contains(pair[1])
+      }!
+
+      if fromIndex != toIndex {
+        circuits[fromIndex].formUnion(circuits[toIndex])
+        circuits.remove(at: toIndex)
+      }
+
+      if circuits.count == 1 {
+        return pair[0].x * pair[1].x
+      }
+    }
+    
+    return "oops..."
   }
 
   struct Coord3D: Hashable {
