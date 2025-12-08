@@ -26,9 +26,32 @@ struct Day01: AdventDay {
     return password
   }
 
-  // Replace this with your solution for the second part of the day's challenge.
   func part2() -> Any {
-    // Sum the maximum entries in each set of data
-    0
+    var dial = 50
+    var password = 0
+    rotations.forEach {
+      let revs = abs($0) / 100
+      let mod = $0 % 100
+      
+      password += revs // guaranteed to pass 0 on every complete revolution
+      
+      // look for any giblets
+      if $0 > 0 {
+        // clockwise
+        if dial + mod >= 100 {
+          password += 1
+        }
+      } else if $0 < 0 {
+        // anti-clockwise
+        if dial != 0 && (dial + mod) <= 0 {
+          password += 1
+        }
+      }
+      
+      let nextDial = (dial + $0) % 100
+      let normalizedNextDial = nextDial >= 0 ? nextDial : 100 + nextDial
+      dial = normalizedNextDial
+    }
+    return password
   }
 }
