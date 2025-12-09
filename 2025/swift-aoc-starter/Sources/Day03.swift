@@ -10,26 +10,32 @@ struct Day03: AdventDay {
 
   func part1() -> Any {
     let joltages = batteryBanks.map {
-      let batteries = Array($0)
-      var mostSigIdx = 0
-      for (idx, power) in batteries.dropLast().enumerated() {
-        if power > batteries[mostSigIdx] {
-          mostSigIdx = idx
-        }
-      }
-      var leastSigIdx = mostSigIdx + 1
-      for idx in leastSigIdx..<batteries.count {
-        if batteries[idx] > batteries[leastSigIdx] {
-          leastSigIdx = idx
-        }
-      }
-      return Int("\(batteries[mostSigIdx])\(batteries[leastSigIdx])")!
+      largestJoltage(in: $0, size: 2)
     }
-
     return joltages.reduce(0, +)
   }
 
   func part2() -> Any {
-    0
+    let joltages = batteryBanks.map {
+      largestJoltage(in: $0, size: 12)
+    }
+    return joltages.reduce(0, +)
   }
+  
+  func largestJoltage(in bank: String, size: Int) -> Int {
+    let batteries = Array(bank)
+    var joltage = ""
+    var nextLargestIndex = 0
+    for digit in 0..<size {
+      for i in nextLargestIndex...(batteries.count-(size - digit)) {
+        if batteries[i] > batteries[nextLargestIndex] {
+          nextLargestIndex = i
+        }
+      }
+      joltage.append(batteries[nextLargestIndex])
+      nextLargestIndex += 1
+    }
+    return Int(joltage)!
+  }
+  
 }
