@@ -29,8 +29,12 @@ struct Day05: AdventDay {
   }
 
   func part2() -> Any {
+    optimizeRanges(database.freshRanges).reduce(0) { $0 + $1.count }
+  }
+  
+  func optimizeRanges(_ ranges: [ClosedRange<Int>]) -> [ClosedRange<Int>] {
     var optimized = [ClosedRange<Int>]()
-    let sorted = database.freshRanges.sorted { r1, r2 in
+    let sorted = ranges.sorted { r1, r2 in
       r1.lowerBound < r2.lowerBound
     }
 
@@ -45,6 +49,6 @@ struct Day05: AdventDay {
     }
     optimized.append(working)
 
-    return optimized.reduce(0) { $0 + $1.count }
+    return optimized
   }
 }
