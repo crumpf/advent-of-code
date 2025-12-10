@@ -29,6 +29,22 @@ struct Day05: AdventDay {
   }
 
   func part2() -> Any {
-    0
+    var optimized = [ClosedRange<Int>]()
+    let sorted = database.freshRanges.sorted { r1, r2 in
+      r1.lowerBound < r2.lowerBound
+    }
+
+    var working = sorted[0]
+    for r in sorted.dropFirst() {
+      if working.overlaps(r) {
+        working = working.lowerBound...max(working.upperBound, r.upperBound)
+      } else {
+        optimized.append(working)
+        working = r
+      }
+    }
+    optimized.append(working)
+
+    return optimized.reduce(0) { $0 + $1.count }
   }
 }
