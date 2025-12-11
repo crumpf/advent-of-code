@@ -37,15 +37,14 @@ struct Day10: AdventDay {
   }
 
   func part1() -> Any {
-    machines.compactMap(fewestPressesToConfigure).reduce(0, +)
+    machines.compactMap(fewestPressesToConfigureLights).reduce(0, +)
   }
 
   func part2() -> Any {
-    0
+    machines.compactMap(fewestPressesToConfigureJoltages).reduce(0, +)
   }
 
-  private func fewestPressesToConfigure(_ machine: Machine) -> Int? {
-    let lights = Array(repeating: false, count: machine.lightDiagram.count)
+  private func fewestPressesToConfigureLights(_ machine: Machine) -> Int? {
     let schematicsIndices = Array(machine.buttonSchematics.indices)
     // let's do a BFS search using the basic algorithm of my general-purpose BFS implementation
     // Each vertex will be the current state of the lights and the index of the button to press
@@ -55,7 +54,7 @@ struct Day10: AdventDay {
     }
     let toggle: (MachineVertex) -> [Bool] = { vertex in
       guard machine.buttonSchematics.indices.contains(vertex.buttonIndex) else {
-        return lights
+        return vertex.lights
       }
       var lights = vertex.lights
       for i in machine.buttonSchematics[vertex.buttonIndex] {
@@ -64,7 +63,7 @@ struct Day10: AdventDay {
       return lights
     }
     // we'll start with all lights off and no button to press
-    let start = MachineVertex(lights: lights, buttonIndex: -1)
+    let start = MachineVertex(lights: Array(repeating: false, count: machine.lightDiagram.count), buttonIndex: -1)
     var frontier = Queue<PathNode<MachineVertex>>()
     frontier.enqueue(PathNode(vertex: start))
     var explored: Set<MachineVertex> = [start]
@@ -90,4 +89,52 @@ struct Day10: AdventDay {
     }
     return nil
   }
+
+  private func fewestPressesToConfigureJoltages(_ machine: Machine) -> Int? {
+    let schematicsIndices = Array(machine.buttonSchematics.indices)
+    // let's do a BFS search using the basic algorithm of my general-purpose BFS implementation
+    // Each vertex will be the current state of the joltages and the index of the button to press
+    struct MachineVertex : Hashable {
+      let joltages: [Int]
+      let buttonIndex: Int
+    }
+    let pressButton: (MachineVertex) -> [Int] = { vertex in
+      guard machine.buttonSchematics.indices.contains(vertex.buttonIndex) else {
+        return vertex.joltages
+      }
+      var joltages = vertex.joltages
+      for i in machine.buttonSchematics[vertex.buttonIndex] {
+        joltages[i] += 1
+      }
+      return joltages
+    }
+    // we'll start with all joltages 0 and no button to press
+    let start = MachineVertex(joltages: Array(repeating: 0, count: machine.lightDiagram.count), buttonIndex: -1)
+    var frontier = Queue<PathNode<MachineVertex>>()
+    frontier.enqueue(PathNode(vertex: start))
+    var explored: Set<MachineVertex> = [start]
+    while let currentNode = frontier.dequeue() {
+      let newJoltages = pressButton(currentNode.vertex)
+      if newJoltages == machine.joltageRequirements {
+        // found the fewest presses
+        var presses = 0
+        currentNode.iteratePath(body: { i, node, stop in
+          presses = i
+        })
+        return presses
+      }
+      if zip(newJoltages, machine.joltageRequirements).allSatisfy({$0 <= $1}) {
+        let neighbors: [MachineVertex] = schematicsIndices.compactMap {
+          // neighbors don't exclude the index we just pressed since pressing multiple times is totally valid
+          MachineVertex(joltages: newJoltages, buttonIndex: $0)
+        }
+        for successor in neighbors where !explored.contains(successor) {
+          explored.insert(successor)
+          frontier.enqueue(PathNode(vertex: successor, predecessor: currentNode))
+        }
+      }
+    }
+    return nil
+  }
+
 }
