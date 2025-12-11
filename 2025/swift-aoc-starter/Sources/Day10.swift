@@ -8,7 +8,7 @@ struct Day10: AdventDay {
   //All that remains of the manual are some indicator light diagrams, button wiring schematics, and joltage requirements for each machine.
   struct Machine {
     let lightDiagram: [Bool]
-    let schematics: [[Int]]
+    let buttonSchematics: [[Int]]
     let joltageRequirements: [Int]
   }
 
@@ -28,7 +28,7 @@ struct Day10: AdventDay {
       // match.joltages = "3,5,4,7"
       return Machine(
         lightDiagram: match.diagram.map { $0 == "." ? false : true },
-        schematics: match.schematics.split(separator: .whitespace).map {
+        buttonSchematics: match.schematics.split(separator: .whitespace).map {
           $0.dropFirst().dropLast().split(separator: ",").compactMap { Int($0) }
         },
         joltageRequirements: match.joltages.split(separator: ",").compactMap { Int($0) }
@@ -37,10 +37,57 @@ struct Day10: AdventDay {
   }
 
   func part1() -> Any {
-    7
+    machines.compactMap(fewestPressesToConfigure).reduce(0, +)
   }
 
   func part2() -> Any {
     0
+  }
+
+  private func fewestPressesToConfigure(_ machine: Machine) -> Int? {
+    let lights = Array(repeating: false, count: machine.lightDiagram.count)
+    let schematicsIndices = Array(machine.buttonSchematics.indices)
+    // let's do a BFS search using the basic algorithm of my general-purpose BFS implementation
+    // Each vertex will be the current state of the lights and the index of the button to press
+    struct MachineVertex : Hashable {
+      let lights: [Bool]
+      let buttonIndex: Int
+    }
+    let toggle: (MachineVertex) -> [Bool] = { vertex in
+      guard machine.buttonSchematics.indices.contains(vertex.buttonIndex) else {
+        return lights
+      }
+      var lights = vertex.lights
+      for i in machine.buttonSchematics[vertex.buttonIndex] {
+        lights[i] = !lights[i]
+      }
+      return lights
+    }
+    // we'll start with all lights off and no button to press
+    let start = MachineVertex(lights: lights, buttonIndex: -1)
+    var frontier = Queue<PathNode<MachineVertex>>()
+    frontier.enqueue(PathNode(vertex: start))
+    var explored: Set<MachineVertex> = [start]
+    while let currentNode = frontier.dequeue() {
+      let toggledLights = toggle(currentNode.vertex)
+      if toggledLights == machine.lightDiagram {
+        // found the fewest presses
+        var presses = 0
+        currentNode.iteratePath(body: { i, node, stop in
+          presses = i
+        })
+        return presses
+      }
+      let neighbors: [MachineVertex] = schematicsIndices.compactMap {
+        // neighbors should exclude the index we just pressed since pressing it just goes back to a previous state
+        guard $0 != currentNode.vertex.buttonIndex else { return nil }
+        return MachineVertex(lights: toggledLights, buttonIndex: $0)
+      }
+      for successor in neighbors where !explored.contains(successor) {
+        explored.insert(successor)
+        frontier.enqueue(PathNode(vertex: successor, predecessor: currentNode))
+      }
+    }
+    return nil
   }
 }
