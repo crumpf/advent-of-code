@@ -16,7 +16,8 @@ struct Day11: AdventDay {
   }
 
   func part2() -> Any {
-    0
+    let pathsToOut = traverseDevicesMap(devicesToOutputs, fromPath: ["svr"], to: "out", containing: ["dac", "fft"])
+    return pathsToOut.count
   }
 
   private func traverseDevicesMap(_ map: [String: [String]], fromPath path: [String], to goal: String) -> [[String]] {
@@ -26,6 +27,20 @@ struct Day11: AdventDay {
         result.append(path + [device])
       } else {
         result += traverseDevicesMap(map, fromPath: path + [device], to: goal)
+      }
+    }
+    return result
+  }
+
+  private func traverseDevicesMap(_ map: [String: [String]], fromPath path: [String], to goal: String, containing: [String]) -> [[String]] {
+    var result = [[String]]()
+    for device in map[path.last!]! {
+      if device == goal {
+        if containing.allSatisfy(path.contains) {
+          result.append(path + [device])
+        }
+      } else {
+        result += traverseDevicesMap(map, fromPath: path + [device], to: goal, containing: containing)
       }
     }
     return result
